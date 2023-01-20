@@ -14,6 +14,8 @@ public class node {
     Vector2 globalPosition = new Vector2(0,0);
     Vector2 parentPosition;
 
+    node parent = this;
+
     public node(){
 
         position = new Vector2(0,0);
@@ -27,16 +29,25 @@ public class node {
         updateGlobalPosition();
     }
 
+    public node getParent(){
+        return parent;
+    }
+
     public void update(){
 
-        updateGlobalPosition();
-        for (node child:children) {
-            child.parentPosition.set(globalPosition);
-        }
+        updateParentPos();
         for (node child: children){
             child.update();
         }
 
+    }
+
+    public void updateParentPos(){
+        updateGlobalPosition();
+        for (node child:children) {
+            child.parentPosition.set(globalPosition);
+            child.parent = this;
+        }
     }
 
     public void render(SpriteBatch batch){
@@ -47,6 +58,26 @@ public class node {
 
     public void addChild(node child){
         children.add(child);
+    }
+
+
+    //returns true if the child was found
+    public boolean removeChild(node child){
+
+        if (children.contains(child,true)){
+            children.removeIndex(children.indexOf(child,true));
+            return true;
+        }
+
+        return false;
+
+    }
+
+    public void free(){
+        getParent().removeChild(this);
+        for (node child : children){
+            child.free();
+        }
     }
 
     public void updateGlobalPosition() {
