@@ -16,7 +16,7 @@ public class colliderObject extends node{
     public boolean overlaps(colliderObject other){
 
         if (other == this){
-            System.out.println("collider equals this!");
+            //System.out.println("collider equals this!");
             return false;
         }
 

@@ -35,6 +35,8 @@ public class node {
 
     public void updateCascade(){
 
+        //System.out.println(this);
+
         update();
 
         updateParentPos();
@@ -56,10 +58,26 @@ public class node {
         }
     }
 
-    public void render(SpriteBatch batch){
+    public void renderCascade(SpriteBatch batch){
+        render(batch);
         for (node child: children){
-            child.render(batch);
+            child.renderCascade(batch);
         }
+    }
+
+    public void render(SpriteBatch batch){
+
+    }
+
+    public void debugCascade(){
+        debug();
+        for (node child: children){
+            child.debugCascade();
+        }
+    }
+
+    public void debug(){
+
     }
 
     public void addChild(node child){

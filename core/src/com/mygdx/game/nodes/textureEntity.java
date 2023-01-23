@@ -26,7 +26,8 @@ public class textureEntity extends node {
 
         batch.draw(sprite,globalPosition.x - size.x/2,globalPosition.y-size.y/2);
 
-        super.render(batch);
+
+        //super.render(batch);
     }
 
 

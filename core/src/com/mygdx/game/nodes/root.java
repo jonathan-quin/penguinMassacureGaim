@@ -14,11 +14,13 @@ public class root {
     }
 
     public void update(){
-        rootNode.update();
+        rootNode.updateCascade();
     }
     public void render(SpriteBatch batch){
-        rootNode.render(batch);
+        rootNode.renderCascade(batch);
     }
+
+    public void debug(){rootNode.debugCascade();}
 
 
 }
