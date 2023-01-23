@@ -33,12 +33,18 @@ public class node {
         return parent;
     }
 
-    public void update(){
+    public void updateCascade(){
+
+        update();
 
         updateParentPos();
         for (node child: children){
-            child.update();
+            child.updateCascade();
         }
+
+    }
+
+    public void update(){
 
     }
 
