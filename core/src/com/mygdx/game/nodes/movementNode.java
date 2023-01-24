@@ -27,49 +27,70 @@ public class movementNode extends colliderObject{
             return returnVal;
         }
 
-        System.out.println("doing tests");
+
 
         if ( (int)distance.x != 0 && !testMove((int) Math.signum(distance.x),0)) {
+
             int high = (int) distance.x;
-            int low = (int) Math.signum(distance.x);
-
+            int low = 0;
             int n = (int)((high + low)/2);
-
-            System.out.println(low);
-
-            System.out.println("move2zero " + moveTowardsZero(low,-1));
 
             while (Math.abs(low) + 1 < Math.abs(high)){
 
                 if (testMove(n,0)){
-                  // System.out.println(n);
+
                     high = n;
-                    returnVal.x = moveTowardsZero(n,2);
+                    returnVal.x = moveTowardsZero(n,1);
+
                 }
                 else{
-                   // System.out.println("found a way to not collide");
+
                     low = n;
-                    returnVal.x = moveTowardsZero(n,1);
+                    returnVal.x = n;
                 }
 
-                System.out.println(high + " " + low);
-
-
                 n = (int)((high + low)/2);
-                System.out.println(n);
+
 
             }
+        }
+        else{
+            returnVal.x = 0;
+        }
+
+        if ( (int)distance.y != 0 && !testMove(0,(int) Math.signum(distance.y))) {
+
+            int high = (int) distance.y;
+            int low = 0;
+            int n = (int)((high + low)/2);
+
+            while (Math.abs(low) + 1 < Math.abs(high)){
+
+                if (testMove(0,n)){
+
+                    high = n;
+                    returnVal.y = moveTowardsZero(n,1);
+
+                }
+                else{
+
+                    low = n;
+                    returnVal.y = n;
+                }
+
+                n = (int)((high + low)/2);
 
 
-
-
+            }
+        }
+        else{
+            returnVal.y = 0;
         }
 
 
 
         position.add(returnVal);
-        System.out.println(returnVal);
-       System.out.println(position);
+
         return returnVal;
 
     }
