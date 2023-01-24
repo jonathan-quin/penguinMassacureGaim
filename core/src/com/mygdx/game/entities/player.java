@@ -9,7 +9,7 @@ import com.mygdx.game.nodes.*;
 
 public class player extends movementNode {
 
-
+    private float speed = 15;
 
     public player(root myRoot) {
         this(myRoot,0f,0f);
@@ -33,12 +33,15 @@ public class player extends movementNode {
 
         //System.out.println("ghfdsjkgealk");
 
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) targetSpeed.x -= 10;
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) targetSpeed.x += 10;
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) targetSpeed.x -= speed;
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) targetSpeed.x += speed;
 
-        if(Gdx.input.isKeyPressed(Input.Keys.UP)) targetSpeed.y += 10;
-        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) targetSpeed.y -= 10;
+        if(Gdx.input.isKeyPressed(Input.Keys.UP)) targetSpeed.y += speed;
+        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) targetSpeed.y -= speed;
 
+
+
+        targetSpeed.set( targetSpeed.nor().scl(speed));
 
         moveAndSlide(targetSpeed);
 

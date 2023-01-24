@@ -17,7 +17,7 @@ public class testScene extends root {
         rootNode.addChild( new player(this,200,200) );
 
         staticNode platform = new staticNode(this,400,400);
-        platform.addChild(new collisionShape(64,64));
+        platform.addChild(new collisionShape(128,128));
         rootNode.addChild(platform);
 
     }
