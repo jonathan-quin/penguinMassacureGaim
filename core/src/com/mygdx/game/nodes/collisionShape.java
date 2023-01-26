@@ -32,14 +32,14 @@ public class collisionShape extends node{
     public boolean overlaps(collisionShape other){
         updateGlobalPosition();
         rect.x = globalPosition.x - rect.width/2;
-        rect.y = globalPosition.y - rect.width/2;
+        rect.y = globalPosition.y - rect.height/2;
         return (rect.overlaps(other.getRect()));
     }
 
     public boolean overlaps(Array<collisionShape> others){
         updateGlobalPosition();
         rect.x = globalPosition.x - rect.width/2;
-        rect.y = globalPosition.y - rect.width/2;
+        rect.y = globalPosition.y - rect.height/2;
 
         for (collisionShape other : others){
             if (rect.overlaps(other.getRect())) return true;
@@ -52,7 +52,7 @@ public class collisionShape extends node{
     public Rectangle getRect(){
         updateGlobalPosition();
         rect.x = globalPosition.x - rect.width/2;
-        rect.y = globalPosition.y - rect.width/2;
+        rect.y = globalPosition.y - rect.height/2;
         return rect;
 
     }

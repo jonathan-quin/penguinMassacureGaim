@@ -16,12 +16,13 @@ public class player extends movementNode {
     }
 
     public player(root myRoot, float x, float y) {
+
         super(myRoot, x, y);
 
         Texture penguinTX = new Texture("penguinForNow.png");
-        addChild(new textureEntity(penguinTX,0,0,32,32));
-        addChild(new collisionShape(16,20));
-        addChild(new collisionShape(16,16,12,8));
+        //addChild(new textureEntity(penguinTX,0,0,32,32));
+        addChild(new collisionShape(16,40));
+        addChild(new collisionShape(16,16,25,8));
 
     }
 
@@ -38,8 +39,6 @@ public class player extends movementNode {
 
         if(Gdx.input.isKeyPressed(Input.Keys.UP)) targetSpeed.y += speed;
         if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) targetSpeed.y -= speed;
-
-
 
         targetSpeed.set( targetSpeed.nor().scl(speed));
 
