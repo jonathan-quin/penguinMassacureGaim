@@ -20,7 +20,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		scene1 = new testScene();
 
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 800, 480);
+		camera.setToOrtho(false, 1024, 600);
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class MyGdxGame extends ApplicationAdapter {
 
 		batch.end();
 
-		scene1.debug();
+		//scene1.debug();
 
 	}
 	

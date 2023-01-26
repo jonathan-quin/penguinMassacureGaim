@@ -68,9 +68,14 @@ public class collisionShape extends node{
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
             globals.globalShape.begin(ShapeRenderer.ShapeType.Filled); //I'm using the Filled ShapeType, but remember you have three of them
             globals.globalShape.setColor(new Color(0, 0, 1, 0.5f));
-            globals.globalShape.rect( globalPosition.x - rect.width/2,  globalPosition.y-rect.height/2,rect.width,rect.height); //assuming you have created those x, y, width and height variables
+            globals.globalShape.rect( (globalPosition.x - rect.width/2)-globals.cameraOffset.x + 512,  (globalPosition.y - rect.height/2)-globals.cameraOffset.y + 300,rect.width,rect.height);//globalPosition.y-rect.height/2,rect.width,rect.height); //assuming you have created those x, y, width and height variables
             globals.globalShape.end();
             Gdx.gl.glDisable(GL20.GL_BLEND);
+            System.out.print(globalPosition );
+            System.out.print(" ");
+            System.out.println((globalPosition.x - rect.width/2)-(globals.cameraOffset.x));
+
+
         }
 
 
