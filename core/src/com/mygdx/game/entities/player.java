@@ -20,9 +20,9 @@ public class player extends movementNode {
         super(myRoot, x, y);
 
         Texture penguinTX = new Texture("penguinForNow.png");
-        //addChild(new textureEntity(penguinTX,0,0,32,32));
-        addChild(new collisionShape(16,40));
-        addChild(new collisionShape(16,16,25,8));
+        addChild(new textureEntity(penguinTX,0,2,32,32));
+        addChild(new collisionShape(16,24));
+        //addChild(new collisionShape(16,16,25,8));
 
     }
 
@@ -43,6 +43,8 @@ public class player extends movementNode {
         targetSpeed.set( targetSpeed.nor().scl(speed));
 
         moveAndSlide(targetSpeed);
+
+        globals.cameraOffset.set(position);
 
     }
 

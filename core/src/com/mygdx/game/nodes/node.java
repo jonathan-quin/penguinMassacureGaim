@@ -10,9 +10,9 @@ import com.badlogic.gdx.utils.Array;
 
 public class node {
     public Array<node> children = new Array<node>();
-    Vector2 position;
-    Vector2 globalPosition = new Vector2(0,0);
-    Vector2 parentPosition;
+    public Vector2 position;
+    public Vector2 globalPosition = new Vector2(0,0);
+    public Vector2 parentPosition;
 
     node parent = this;
 

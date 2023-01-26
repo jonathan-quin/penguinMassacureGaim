@@ -1,7 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.nodes.*;
@@ -9,6 +9,7 @@ import com.mygdx.game.scenes.testScene;
 
 public class MyGdxGame extends ApplicationAdapter {
 	SpriteBatch batch;
+	private OrthographicCamera camera;
 
 
 	root scene1;// = new testScene();
@@ -17,6 +18,9 @@ public class MyGdxGame extends ApplicationAdapter {
 	public void create () {
 		batch = new SpriteBatch();
 		scene1 = new testScene();
+
+		camera = new OrthographicCamera();
+		camera.setToOrtho(false, 800, 480);
 	}
 
 	@Override
@@ -26,9 +30,13 @@ public class MyGdxGame extends ApplicationAdapter {
 
 		scene1.update();
 
+
+		camera.position.set(globals.cameraOffset,camera.position.z);
+		camera.update();
+		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 
-		//scene1.render(batch);
+		scene1.render(batch);
 
 		batch.end();
 
