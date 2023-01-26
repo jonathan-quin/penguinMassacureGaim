@@ -17,8 +17,15 @@ public class collisionShape extends node{
     Rectangle rect = new Rectangle();
 
     public collisionShape(int sizeX,int sizeY){
+        this(sizeX,sizeY,0,0);
+    }
+
+    public collisionShape(int sizeX,int sizeY,int posX, int posY){
         rect.width = sizeX;
         rect.height = sizeY;
+        position.x = posX;
+        position.y = posY;
+
     }
 
 

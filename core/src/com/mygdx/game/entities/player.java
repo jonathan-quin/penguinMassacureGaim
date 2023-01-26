@@ -9,7 +9,7 @@ import com.mygdx.game.nodes.*;
 
 public class player extends movementNode {
 
-    private float speed = 15;
+    private float speed = 5;
 
     public player(root myRoot) {
         this(myRoot,0f,0f);
@@ -20,8 +20,8 @@ public class player extends movementNode {
 
         Texture penguinTX = new Texture("penguinForNow.png");
         addChild(new textureEntity(penguinTX,0,0,32,32));
-        addChild(new collisionShape(16,16));
-
+        addChild(new collisionShape(16,20));
+        addChild(new collisionShape(16,16,12,8));
 
     }
 
