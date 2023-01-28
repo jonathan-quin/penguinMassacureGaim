@@ -15,25 +15,32 @@ public class movementNode extends colliderObject{
     private Vector2 tempPos = new Vector2(0,0);
     public Vector2 moveAndSlide(Vector2 distance){
 
-        if (distance.x == 0 && distance.y == 0) return Vector2.Zero;
 
-        Vector2 returnVal = Vector2.Zero;
 
-        tempPos.set(position);
+        if ((int)distance.x == 0 && (int)distance.y == 0) return distance.cpy();
+
+        Vector2 returnVal = new Vector2(0,0);
+
+
+
 
         if (!testMove(distance)) {
-            returnVal.set(distance);
+            returnVal.set(distance.x,distance.y);
             position.add(returnVal);
             return returnVal;
         }
 
 
 
-        if ( (int)distance.x != 0 && !testMove((int) Math.signum(distance.x),0)) {
+        if ( !isZeroApprox(distance.x) && !testMove((int) Math.signum(distance.x),0)) {
 
             int high = (int) distance.x;
             int low = 0;
             int n = (int)((high + low)/2);
+
+            returnVal.x = distance.x;
+
+            if (!testMove(distance.x,0)) high = low;
 
             while (Math.abs(low) + 1 < Math.abs(high)){
 
@@ -58,11 +65,17 @@ public class movementNode extends colliderObject{
             returnVal.x = 0;
         }
 
-        if ( (int)distance.y != 0 && !testMove(0,(int) Math.signum(distance.y))) {
+        position.add(returnVal);
+
+        if ( !isZeroApprox(distance.y) && !testMove(0,(int) Math.signum(distance.y))) {
 
             int high = (int) distance.y;
             int low = 0;
             int n = (int)((high + low)/2);
+
+            returnVal.y = distance.y;
+
+            if (!testMove(0, distance.y)) high = low;
 
             while (Math.abs(low) + 1 < Math.abs(high)){
 
@@ -89,7 +102,7 @@ public class movementNode extends colliderObject{
 
 
 
-        position.add(returnVal);
+        position.add(0,returnVal.y);
 
         return returnVal;
 
@@ -117,7 +130,7 @@ public class movementNode extends colliderObject{
 
         Vector2 returnVal = Vector2.Zero;
 
-        tempPos.set(position);
+
 
         if (!testMove(distance)) returnVal.set(distance);
 
@@ -128,6 +141,12 @@ public class movementNode extends colliderObject{
         position.add(returnVal);
 
         return returnVal;
+
+    }
+
+    public boolean isZeroApprox(float num){
+
+        return (num < 0.01 && num > -0.01);
 
     }
 

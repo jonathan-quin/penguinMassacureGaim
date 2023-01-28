@@ -40,7 +40,7 @@ public class MyGdxGame extends ApplicationAdapter {
 
 		batch.end();
 
-		//scene1.debug();
+		scene1.debug();
 
 	}
 	

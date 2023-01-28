@@ -36,6 +36,16 @@ public class collisionShape extends node{
         return (rect.overlaps(other.getRect()));
     }
 
+    public void extend(Vector2 dir){
+        position.add( dir.scl(0.5f) );
+        dir.add( dir.scl(0.5f) );
+    }
+
+    public void retract(Vector2 dir){
+        position.sub( dir.scl(0.5f) );
+        dir.sub( dir.scl(0.5f) );
+    }
+
     public boolean overlaps(Array<collisionShape> others){
         updateGlobalPosition();
         rect.x = globalPosition.x - rect.width/2;
@@ -71,9 +81,9 @@ public class collisionShape extends node{
             globals.globalShape.rect( (globalPosition.x - rect.width/2)-globals.cameraOffset.x + 512,  (globalPosition.y - rect.height/2)-globals.cameraOffset.y + 300,rect.width,rect.height);//globalPosition.y-rect.height/2,rect.width,rect.height); //assuming you have created those x, y, width and height variables
             globals.globalShape.end();
             Gdx.gl.glDisable(GL20.GL_BLEND);
-            System.out.print(globalPosition );
-            System.out.print(" ");
-            System.out.println((globalPosition.x - rect.width/2)-(globals.cameraOffset.x));
+            //System.out.print(globalPosition );
+            //System.out.print(" ");
+            //System.out.println((globalPosition.x - rect.width/2)-(globals.cameraOffset.x));
 
 
         }

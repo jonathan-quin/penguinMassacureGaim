@@ -9,7 +9,19 @@ import com.mygdx.game.nodes.*;
 
 public class player extends movementNode {
 
+    private float MAXSPEED = 180;
+
     private float speed = 5;
+    private Vector2 vel = new Vector2(0,0);
+
+    private float JUMPFORCE = 200;
+
+    private float GRAVITY = 500;
+
+    private float ACCEL = 6;
+
+    //private double
+
 
     public player(root myRoot) {
         this(myRoot,0f,0f);
@@ -28,24 +40,46 @@ public class player extends movementNode {
 
     private final Vector2 targetSpeed = new Vector2();
 
-    public void update(){
+    public void update(double delta){
 
-        targetSpeed.set(0,0);
 
-        //System.out.println("ghfdsjkgealk");
 
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) targetSpeed.x -= speed;
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) targetSpeed.x += speed;
+        targetSpeed.set(0.0f,0.0f);
 
-        if(Gdx.input.isKeyPressed(Input.Keys.UP)) targetSpeed.y += speed;
-        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) targetSpeed.y -= speed;
 
-        targetSpeed.set( targetSpeed.nor().scl(speed));
 
-        moveAndSlide(targetSpeed);
+
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) targetSpeed.x -= MAXSPEED;
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) targetSpeed.x += MAXSPEED;
+
+
+
+        vel.x  = lerp(vel.x,targetSpeed.x, ACCEL * (float)delta);
+
+        vel.y -= GRAVITY * delta;
+
+        if(Gdx.input.isKeyPressed(Input.Keys.UP) && testMove(0,-10)) vel.y = (float) JUMPFORCE;
+
+        //move(vel);
+        System.out.println("vel.x:" + vel.x);
+        //System.out.println("target.x:" + targetSpeed.x);
+
+        System.out.println("vel.y:" + vel.y);
+
+        System.out.println(delta + " " + 1/delta);
+
+        float inverseDelta  = 1f/(float)delta;
+
+        vel = moveAndSlide( vel.cpy().scl((float)delta) ).cpy().scl( 60 );
 
         globals.cameraOffset.set(position);
 
+
+
+    }
+
+    private float lerp(float a, float b, float f){
+        return a + f * (b - a);
     }
 
 

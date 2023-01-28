@@ -1,5 +1,6 @@
 package com.mygdx.game.nodes;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
@@ -37,7 +38,7 @@ public class node {
 
         //System.out.println(this);
 
-        update();
+        update(Gdx.graphics.getDeltaTime());
 
         updateParentPos();
         for (node child: children){
@@ -46,7 +47,7 @@ public class node {
 
     }
 
-    public void update(){
+    public void update(double delta){
 
     }
 

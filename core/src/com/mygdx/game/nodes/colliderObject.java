@@ -62,6 +62,7 @@ public class colliderObject extends node{
     public boolean removeChild(node child){
 
         if (children.contains(child,true)){
+
             children.removeIndex(children.indexOf(child,true));
 
         }
@@ -84,6 +85,7 @@ public class colliderObject extends node{
         }
         myRoot.colliders.removeIndex(myRoot.colliders.indexOf(this,true));
     }
+
 
 
 
