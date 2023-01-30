@@ -38,7 +38,7 @@ public class node {
 
         //System.out.println(this);
 
-        update(Gdx.graphics.getDeltaTime());
+        update(Math.min(1/6f, Gdx.graphics.getDeltaTime()));
 
         updateParentPos();
         for (node child: children){

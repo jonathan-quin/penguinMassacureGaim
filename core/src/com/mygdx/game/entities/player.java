@@ -14,9 +14,9 @@ public class player extends movementNode {
     private float speed = 5;
     private Vector2 vel = new Vector2(0,0);
 
-    private float JUMPFORCE = 200;
+    private float JUMPFORCE = 400;
 
-    private float GRAVITY = 500;
+    private float GRAVITY = 2000;
 
     private float ACCEL = 6;
 
@@ -58,19 +58,14 @@ public class player extends movementNode {
 
         vel.y -= GRAVITY * delta;
 
-        if(Gdx.input.isKeyPressed(Input.Keys.UP) && testMove(0,-10)) vel.y = (float) JUMPFORCE;
+        if(Gdx.input.isKeyPressed(Input.Keys.UP) && testMove(0,-3)) vel.y = (float) JUMPFORCE;
 
-        //move(vel);
-        System.out.println("vel.x:" + vel.x);
-        //System.out.println("target.x:" + targetSpeed.x);
+        System.out.println(position + " delta: " + delta);
 
-        System.out.println("vel.y:" + vel.y);
+        float inverseDelta  = globals.inverse((float)delta);
 
-        System.out.println(delta + " " + 1/delta);
-
-        float inverseDelta  = 1f/(float)delta;
-
-        vel = moveAndSlide( vel.cpy().scl((float)delta) ).cpy().scl( 60 );
+        vel.set ( moveAndSlide( vel.cpy().scl((float)delta) ) );
+        vel.scl(inverseDelta);
 
         globals.cameraOffset.set(position);
 
