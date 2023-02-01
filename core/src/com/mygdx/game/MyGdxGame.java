@@ -34,6 +34,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		camera.position.set(globals.cameraOffset,camera.position.z);
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
+
 		batch.begin();
 
 		scene1.render(batch);
