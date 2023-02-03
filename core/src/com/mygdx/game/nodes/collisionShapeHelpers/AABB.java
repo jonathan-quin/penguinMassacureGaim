@@ -134,7 +134,7 @@ public class AABB {
 
         sweep.hit = this.intersectSegment(box.pos, offset, box.half.x, box.half.y);
         if (sweep.hit != null) {
-            sweep.time = clamp(sweep.hit.time - 0.0000001f, 0, 1);
+            sweep.time = clamp(sweep.hit.time - Math.ulp(sweep.hit.time) /*0.0000001f*/, 0, 1);
             sweep.pos.x = box.pos.x + offset.x * sweep.time;
             sweep.pos.y = box.pos.y + offset.y * sweep.time;
       Vector2 direction = offset.cpy();
