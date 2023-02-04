@@ -33,7 +33,7 @@ public class player extends movementNode {
 
         Texture penguinTX = new Texture("penguinForNow.png");
         addChild(new textureEntity(penguinTX,0,2,32,32));
-        addChild(new collisionShape(16,24));
+        addChild(new collisionShape(8,12));
         //addChild(new collisionShape(16,16,25,8));
 
     }
@@ -52,15 +52,18 @@ public class player extends movementNode {
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) targetSpeed.x -= MAXSPEED;
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) targetSpeed.x += MAXSPEED;
 
+        if(Gdx.input.isKeyPressed(Input.Keys.UP)) vel.y = MAXSPEED;
+        else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) vel.y = -MAXSPEED;
+        else vel.y = 0;
 
 
         vel.x  = lerp(vel.x,targetSpeed.x, ACCEL * (float)delta);
 
-        vel.y -= GRAVITY * delta;
+        //vel.y -= GRAVITY * delta;
 
         if(Gdx.input.isKeyPressed(Input.Keys.UP) && testMove(0,-3)) vel.y = (float) JUMPFORCE;
 
-        System.out.println(position + " delta: " + delta);
+        //System.out.println(position + " delta: " + delta);
 
         float inverseDelta  = globals.inverse((float)delta);
 

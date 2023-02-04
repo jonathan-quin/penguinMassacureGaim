@@ -9,8 +9,8 @@ import static java.lang.Math.abs;
 public class AABB {
 
 
-    Vector2 pos = new Vector2();
-    Vector2 half = new Vector2();
+    public Vector2 pos = new Vector2();
+    public Vector2 half = new Vector2();
 
     public AABB (Vector2 pos,Vector2 half){
         this.pos.set(pos);
@@ -94,12 +94,14 @@ public class AABB {
         float dx = box.pos.x - this.pos.x;
         float px = (box.half.x + this.half.x) - abs(dx);
             if (px <= 0) {
+                System.out.println("HEY");
                 return null;
             }
 
         float dy = box.pos.y - this.pos.y;
         float py = (box.half.y + this.half.y) - abs(dy);
             if (py <= 0) {
+                System.out.println("HEY2");
                 return null;
             }
 
@@ -117,6 +119,7 @@ public class AABB {
                 hit.pos.x = box.pos.x;
                 hit.pos.y = this.pos.y + (this.half.y * sy);
             }
+            System.out.println("not hey");
             return hit;
 
     }
