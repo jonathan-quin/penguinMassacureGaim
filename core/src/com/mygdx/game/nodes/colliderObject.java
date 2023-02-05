@@ -2,6 +2,7 @@ package com.mygdx.game.nodes;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.nodes.collisionShapeHelpers.sweepInfo;
 
 public class colliderObject extends node{
 
@@ -11,6 +12,10 @@ public class colliderObject extends node{
 
     public boolean isColliding(){
         return overlaps(myRoot.colliders);
+    }
+
+    public sweepInfo sweepTest(){
+        return null;
     }
 
     public boolean overlaps(colliderObject other){

@@ -13,7 +13,13 @@ public class movementNode extends colliderObject{
     }
 
     private Vector2 tempPos = new Vector2(0,0);
-    public Vector2 moveAndSlide(Vector2 distance){
+
+    public Vector2 moveAndCollide(Vector2 distance){
+       return moveAndSlideBruteForce(distance);
+    }
+
+
+    public Vector2 moveAndSlideBruteForce(Vector2 distance){
 
 
 
@@ -121,16 +127,18 @@ public class movementNode extends colliderObject{
     public boolean testMove(float x, float y){
         position.add(x,y);
         updateParentPos();
+
         boolean returnValue = isColliding();
         position.sub(x,y);
+
+
+
         return returnValue;
     }
 
     public Vector2 move(Vector2 distance){
 
         Vector2 returnVal = Vector2.Zero;
-
-
 
         if (!testMove(distance)) returnVal.set(distance);
 

@@ -37,8 +37,8 @@ public class MyGdxGame extends ApplicationAdapter {
 
 		batch.begin();
 
-		//scene1.render(batch);
-		System.out.println("------------");
+		scene1.render(batch);
+
 
 		batch.end();
 

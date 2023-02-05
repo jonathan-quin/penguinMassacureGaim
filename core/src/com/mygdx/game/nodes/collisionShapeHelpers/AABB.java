@@ -94,14 +94,14 @@ public class AABB {
         float dx = box.pos.x - this.pos.x;
         float px = (box.half.x + this.half.x) - abs(dx);
             if (px <= 0) {
-                System.out.println("HEY");
+                //System.out.println("HEY");
                 return null;
             }
 
         float dy = box.pos.y - this.pos.y;
         float py = (box.half.y + this.half.y) - abs(dy);
             if (py <= 0) {
-                System.out.println("HEY2");
+                //System.out.println("HEY2");
                 return null;
             }
 
@@ -119,7 +119,7 @@ public class AABB {
                 hit.pos.x = box.pos.x;
                 hit.pos.y = this.pos.y + (this.half.y * sy);
             }
-            System.out.println("not hey");
+            //System.out.println("not hey");
             return hit;
 
     }

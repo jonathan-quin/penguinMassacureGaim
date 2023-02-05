@@ -24,7 +24,10 @@ public class collisionShape extends node{
 
     public collisionShape(int sizeX,int sizeY,int posX, int posY){
 
-        boundingBox = new AABB(new Vector2(posX,posY),new Vector2(sizeX,sizeY));
+        position.set(posX,posY);
+        updateGlobalPosition();
+        boundingBox = new AABB(new Vector2(globalPosition.x,globalPosition.y),new Vector2(sizeX,sizeY));
+
 
     }
 
@@ -47,6 +50,7 @@ public class collisionShape extends node{
 
 
     public AABB getAABB(){
+        boundingBox.pos.set(globalPosition);
         return boundingBox;
     }
 
@@ -68,8 +72,6 @@ public class collisionShape extends node{
             //System.out.print(globalPosition );
             //System.out.print(" ");
             //System.out.println((globalPosition.x - rect.width/2)-(globals.cameraOffset.x));
-
-
         }
 
 
