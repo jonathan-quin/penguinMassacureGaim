@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.globals;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.nodes.collisionShapeHelpers.AABB;
+import com.mygdx.game.nodes.collisionShapeHelpers.sweepInfo;
 
 public class collisionShape extends node{
 
@@ -45,6 +46,29 @@ public class collisionShape extends node{
         return false;
     }
 
+    public sweepInfo sweepTest(Vector2 distance,collisionShape other){
+
+        updateGlobalPosition();
+        boundingBox.pos.set(globalPosition);
+
+        return boundingBox.sweepAABB(other.getAABB(),distance) ;
+
+    }
+
+    public sweepInfo sweepTest(Vector2 distance,Array<collisionShape> others){
+
+
+        sweepInfo returnSweepInfo = null;
+        sweepInfo tempSweepInfo;
+        for (collisionShape other : others){
+            tempSweepInfo = sweepTest(distance,other);
+            if (tempSweepInfo != null && (returnSweepInfo == null || tempSweepInfo.time < returnSweepInfo.time) )
+                returnSweepInfo = tempSweepInfo;
+
+        }
+
+        return returnSweepInfo;
+    }
 
 
 
