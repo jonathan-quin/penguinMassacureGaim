@@ -67,7 +67,7 @@ public class player extends movementNode {
 
         float inverseDelta  = globals.inverse((float)delta);
 
-        vel.set ( moveAndSlide( vel.cpy().scl((float)delta) ) );
+        vel.set ( moveAndCollide( vel.cpy().scl((float)delta) ) );
         vel.scl(inverseDelta);
 
         globals.cameraOffset.set(position);

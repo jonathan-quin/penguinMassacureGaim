@@ -15,6 +15,10 @@ public class colliderObject extends node{
     }
 
     public sweepInfo sweepTest(){
+        Array<Vector2> finalPoses = new Array<Vector2>();
+
+        for (collisionShape shape : s)
+
         return null;
     }
 
