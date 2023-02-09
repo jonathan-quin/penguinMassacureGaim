@@ -15,7 +15,9 @@ public class movementNode extends colliderObject{
     private Vector2 tempPos = new Vector2(0,0);
 
     public Vector2 moveAndCollide(Vector2 distance){
-       return moveAndSlideBruteForce(distance);
+        System.out.println(getFirstCollision(distance));
+       position.add(distance);
+        return distance;
     }
 
 

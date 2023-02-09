@@ -14,16 +14,41 @@ public class colliderObject extends node{
         return overlaps(myRoot.colliders);
     }
 
+    public Vector2 getFirstCollision(Vector2 distance){
+
+        sweepInfo currentInfo = sweepTest(distance,myRoot.colliders);
+
+        if (currentInfo == null) return new Vector2(position.x + distance.x,position.y + distance.y);
+
+        return currentInfo.pos;
+
+    }
+
     public sweepInfo sweepTest(Vector2 distance,colliderObject other){
+
+        if (other == this) return null;
+
         sweepInfo returnSweepInfo = null;
         sweepInfo tempSweepInfo;
         for (collisionShape myShape : shapes){
-            tempSweepInfo = sweepTest(distance,other);
+            tempSweepInfo = myShape.sweepTest(distance,other.getShapes());
             if (tempSweepInfo != null && (returnSweepInfo == null || tempSweepInfo.time < returnSweepInfo.time) )
                 returnSweepInfo = tempSweepInfo;
 
         }
         return returnSweepInfo;  
+    }
+
+    public sweepInfo sweepTest(Vector2 distance,Array<colliderObject> others){
+        sweepInfo returnSweepInfo = null;
+        sweepInfo tempSweepInfo;
+        for (colliderObject other : others){
+            tempSweepInfo = sweepTest(distance,other);
+            if (tempSweepInfo != null && (returnSweepInfo == null || tempSweepInfo.time < returnSweepInfo.time) )
+                returnSweepInfo = tempSweepInfo;
+
+        }
+        return returnSweepInfo;
     }
 
     public boolean overlaps(colliderObject other){

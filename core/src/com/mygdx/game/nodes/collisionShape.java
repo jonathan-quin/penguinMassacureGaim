@@ -49,6 +49,7 @@ public class collisionShape extends node{
     public sweepInfo sweepTest(Vector2 distance,collisionShape other){
 
         updateGlobalPosition();
+
         boundingBox.pos.set(globalPosition);
 
         return boundingBox.sweepAABB(other.getAABB(),distance) ;
@@ -62,8 +63,11 @@ public class collisionShape extends node{
         sweepInfo tempSweepInfo;
         for (collisionShape other : others){
             tempSweepInfo = sweepTest(distance,other);
-            if (tempSweepInfo != null && (returnSweepInfo == null || tempSweepInfo.time < returnSweepInfo.time) )
+            if (tempSweepInfo != null && (returnSweepInfo == null || tempSweepInfo.time < returnSweepInfo.time) ){
                 returnSweepInfo = tempSweepInfo;
+                System.out.println("hey");
+            }
+
 
         }
 
