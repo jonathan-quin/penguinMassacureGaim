@@ -63,7 +63,8 @@ public class collisionShape extends node{
         sweepInfo tempSweepInfo;
         for (collisionShape other : others){
             tempSweepInfo = sweepTest(distance,other);
-            if (tempSweepInfo != null && (returnSweepInfo == null || tempSweepInfo.time < returnSweepInfo.time) ){
+            if (tempSweepInfo.hit != null && (returnSweepInfo == null || tempSweepInfo.time < returnSweepInfo.time) ){
+                //System.out.println(tempSweepInfo.time);
                 returnSweepInfo = tempSweepInfo;
                 System.out.println("hey");
             }
