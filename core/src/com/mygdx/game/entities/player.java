@@ -73,8 +73,6 @@ public class player extends movementNode {
         globals.cameraOffset.set(position);
 
         System.out.println(position);
-
-
     }
 
     private float lerp(float a, float b, float f){

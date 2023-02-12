@@ -132,6 +132,7 @@ public class AABB {
             sweep.pos.y = box.pos.y;
             sweep.hit = this.intersectAABB(box);
             sweep.time = (sweep.hit != null) ? (sweep.hit.time = 0) : 1;
+            sweep.firstImpact.set(pos);
             return sweep;
         }
 
@@ -140,7 +141,7 @@ public class AABB {
             sweep.time = clamp(sweep.hit.time - Math.ulp(sweep.hit.time) /*0.0000001f*/, 0, 1);
             sweep.pos.x = box.pos.x + offset.x * sweep.time;
             sweep.pos.y = box.pos.y + offset.y * sweep.time;
-      Vector2 direction = offset.cpy();
+            Vector2 direction = offset.cpy();
             direction.nor();
             sweep.hit.pos.x = clamp(
                     sweep.hit.pos.x + direction.x * box.half.x,
@@ -148,10 +149,16 @@ public class AABB {
             sweep.hit.pos.y = clamp(
                     sweep.hit.pos.y + direction.y * box.half.y,
                     this.pos.y - this.half.y, this.pos.y + this.half.y);
+            sweep.firstImpact.set(sweep.hit.pos);
         } else {
             sweep.pos.x = box.pos.x + offset.x;
             sweep.pos.y = box.pos.y + offset.y;
             sweep.time = 1;
+
+            sweep.firstImpact.set(pos.x + offset.x, pos.y + offset.y);
+            System.out.println("pos " + pos);
+            System.out.println("sweep " + sweep.firstImpact);
+
         }
         return sweep;
     }

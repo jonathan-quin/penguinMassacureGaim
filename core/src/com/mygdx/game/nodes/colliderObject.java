@@ -18,11 +18,7 @@ public class colliderObject extends node{
 
         sweepInfo currentInfo = sweepTest(distance,myRoot.colliders);
 
-        if (currentInfo == null) {
-            System.out.println("heyo");
-            return new Vector2(position.x + distance.x, position.y + distance.y);
-
-        }
+        System.out.println("first impact " + currentInfo.firstImpact);
 
         return currentInfo.pos;
 
@@ -36,7 +32,7 @@ public class colliderObject extends node{
         sweepInfo tempSweepInfo;
         for (collisionShape myShape : shapes){
             tempSweepInfo = myShape.sweepTest(distance,other.getShapes());
-            if (tempSweepInfo != null && tempSweepInfo.hit != null && (returnSweepInfo == null || tempSweepInfo.time < returnSweepInfo.time) )
+            if (returnSweepInfo == null || tempSweepInfo.time < returnSweepInfo.time )
                 returnSweepInfo = tempSweepInfo;
 
         }
@@ -48,7 +44,7 @@ public class colliderObject extends node{
         sweepInfo tempSweepInfo;
         for (colliderObject other : others){
             tempSweepInfo = sweepTest(distance,other);
-            if (tempSweepInfo != null && tempSweepInfo.hit != null && (returnSweepInfo == null || tempSweepInfo.time < returnSweepInfo.time) )
+            if ( (returnSweepInfo == null || tempSweepInfo.time < returnSweepInfo.time) )
                 returnSweepInfo = tempSweepInfo;
 
         }
@@ -127,8 +123,5 @@ public class colliderObject extends node{
         }
         myRoot.colliders.removeIndex(myRoot.colliders.indexOf(this,true));
     }
-
-
-
 
 }

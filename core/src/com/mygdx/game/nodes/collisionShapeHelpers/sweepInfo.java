@@ -9,10 +9,13 @@ public class sweepInfo {
         public Vector2 pos;
         public float time;
 
+        public Vector2 firstImpact;
+
         public sweepInfo() {
             this.hit = null;
             this.pos = new Vector2();
             this.time = 1;
+            this.firstImpact = new Vector2();
         }
 
     
