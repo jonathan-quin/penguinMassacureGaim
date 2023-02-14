@@ -20,7 +20,7 @@ public class colliderObject extends node{
 
         System.out.println("first impact " + currentInfo.firstImpact);
 
-        return currentInfo.pos;
+        return currentInfo.firstImpact;
 
     }
 
@@ -48,6 +48,9 @@ public class colliderObject extends node{
                 returnSweepInfo = tempSweepInfo;
 
         }
+
+        System.out.println("colliderobjecct array " + returnSweepInfo.firstImpact);
+
         return returnSweepInfo;
     }
 
@@ -70,6 +73,7 @@ public class colliderObject extends node{
         for (colliderObject other : others){
             if (overlaps(other)) return true;
         }
+
         return false;
     }
 

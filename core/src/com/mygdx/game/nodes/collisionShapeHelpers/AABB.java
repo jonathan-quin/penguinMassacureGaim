@@ -137,8 +137,9 @@ public class AABB {
         }
 
         sweep.hit = this.intersectSegment(box.pos, offset, box.half.x, box.half.y);
+        //sweep.hit = box.intersectSegment(pos, offset, half.x, half.y);
         if (sweep.hit != null) {
-            sweep.time = clamp(sweep.hit.time - Math.ulp(sweep.hit.time) /*0.0000001f*/, 0, 1);
+            sweep.time = clamp(sweep.hit.time /*- Math.ulp(sweep.hit.time)*/ -0.0000001f, 0, 1);
             sweep.pos.x = box.pos.x + offset.x * sweep.time;
             sweep.pos.y = box.pos.y + offset.y * sweep.time;
             Vector2 direction = offset.cpy();
@@ -149,17 +150,23 @@ public class AABB {
             sweep.hit.pos.y = clamp(
                     sweep.hit.pos.y + direction.y * box.half.y,
                     this.pos.y - this.half.y, this.pos.y + this.half.y);
-            sweep.firstImpact.set(sweep.hit.pos);
+            sweep.firstImpact.set(sweep.pos);
+
+            System.out.println("NOOOOOOOOOOOOOOOOOOOOOOOOOOOOT HHHHHEEEEEEEEEEYYYYYYYY" + sweep.time);
+
         } else {
             sweep.pos.x = box.pos.x + offset.x;
             sweep.pos.y = box.pos.y + offset.y;
             sweep.time = 1;
 
-            sweep.firstImpact.set(pos.x + offset.x, pos.y + offset.y);
+           sweep.firstImpact.set(pos.x + offset.x, pos.y + offset.y);
+            System.out.println("HHHHHEEEEEEEEEEYYYYYYYY");
             System.out.println("pos " + pos);
             System.out.println("sweep " + sweep.firstImpact);
 
         }
+
+
         return sweep;
     }
 
