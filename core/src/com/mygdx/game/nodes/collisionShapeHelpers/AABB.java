@@ -17,157 +17,62 @@ public class AABB {
         this.half.set(half);
     }
 
-    public hitInfo intersectPoint(Vector2 point) {
-        float dx = point.x - this.pos.x;
-        float px = this.half.x - abs(dx);
-            if (px <= 0) {
-                return null;
-            }
 
-        float dy = point.y - this.pos.y;
-        float py = this.half.y - abs(dy);
-            if (py <= 0) {
-                return null;
-            }
-
-        hitInfo hit = new hitInfo(this);
-            if (px < py) {
-                float sx = sign(dx);
-                hit.delta.x = px * sx;
-                hit.normal.x = sx;
-                hit.pos.x = this.pos.x + (this.half.x * sx);
-                hit.pos.y = point.y;
-            } else {
-                float sy = sign(dy);
-                hit.delta.y = py * sy;
-                hit.normal.y = sy;
-                hit.pos.x = point.x;
-                hit.pos.y = this.pos.y + (this.half.y * sy);
-            }
-            return hit;
-    }
 
     public int sign(float value) {
+
+
         return value < 0 ? -1 : 1;
     }
 
-    public hitInfo intersectSegment(Vector2 pos, Vector2 offset, float paddingX, float paddingY) {
+    public Vector2 intersectSegment(Vector2 position, Vector2 offset, float paddingX, float paddingY) {
 
-        float scaleX = 1.0f / offset.x;
-        float scaleY = 1.0f / offset.y;
-        float signX = sign(scaleX);
-        float signY = sign(scaleY);
-        float nearTimeX = (this.pos.x - signX * (this.half.x + paddingX) - pos.x) * scaleX;
-        float nearTimeY = (this.pos.y - signY * (this.half.y + paddingY) - pos.y) * scaleY;
-        float farTimeX = (this.pos.x + signX * (this.half.x + paddingX) - pos.x) * scaleX;
-        float farTimeY = (this.pos.y + signY * (this.half.y + paddingY) - pos.y) * scaleY;
+        float slope = 0;
+        if (offset.x != 0) slope = offset.y/offset.x;
+        float yInt = slope * position.x + position.y;
 
-        if (nearTimeX > farTimeY || nearTimeY > farTimeX) {
-            return null;
+        float len = position.dst(offset);
+
+        float leftBound = pos.x - (half.x + paddingX);
+        float rightBound = pos.x - (half.x + paddingX);
+        float upperBound = (pos.y + half.y + paddingY) - yInt;
+        float lowerBound = (pos.y - (half.y + paddingY)) - yInt;
+
+        if (slope != 0){
+            leftBound = slope * (pos.x - (half.x + paddingX));
+            rightBound = slope * (pos.x - (half.x + paddingX));
+
+            upperBound = ((pos.y + half.y + paddingY) - yInt  )/slope;
+            lowerBound = ((pos.y - (half.y + paddingY)) - yInt  )/slope;
+
         }
 
-        float nearTime = Math.max(nearTimeX, nearTimeY);
-        float farTime = Math.min(farTimeX, farTimeY);
+        if (Math.abs(leftBound - position.x) > Math.abs(offset.x) &&
+                Math.abs(rightBound - position.x) > Math.abs(offset.x) &&
 
-        if (nearTime >= 1 || farTime <= 0) {
-            return null;
-        }
+                Math.abs(upperBound - position.y) > Math.abs(offset.y) &&
+                Math.abs(lowerBound - position.y) > Math.abs(offset.y)
+        ) return null;
 
-        hitInfo hit = new hitInfo(this);
-        hit.time = clamp(nearTime, 0, 1);
-        if (nearTimeX > nearTimeY) {
-            hit.normal.x = -signX;
-            hit.normal.y = 0;
-        } else {
-            hit.normal.x = 0;
-            hit.normal.y = -signY;
-        }
-        hit.delta.x = (1.0f - hit.time) * -offset.x;
-        hit.delta.y = (1.0f - hit.time) * -offset.y;
-        hit.pos.x = pos.x + offset.x * hit.time;
-        hit.pos.y = pos.y + offset.y * hit.time;
-        return hit;
+        Vector2 returnVector = new Vector2();
+        
+        if ()
+
+
+        return Vector2.Zero;
+
     }
 
-    public hitInfo intersectAABB(AABB box) {
-
-        float dx = box.pos.x - this.pos.x;
-        float px = (box.half.x + this.half.x) - abs(dx);
-            if (px <= 0) {
-                //System.out.println("HEY");
-                return null;
-            }
-
-        float dy = box.pos.y - this.pos.y;
-        float py = (box.half.y + this.half.y) - abs(dy);
-            if (py <= 0) {
-                //System.out.println("HEY2");
-                return null;
-            }
-
-        hitInfo hit = new hitInfo(this);
-            if (px < py) {
-                float sx = sign(dx);
-                hit.delta.x = px * sx;
-                hit.normal.x = sx;
-                hit.pos.x = this.pos.x + (this.half.x * sx);
-                hit.pos.y = box.pos.y;
-            } else {
-                float sy = sign(dy);
-                hit.delta.y = py * sy;
-                hit.normal.y = sy;
-                hit.pos.x = box.pos.x;
-                hit.pos.y = this.pos.y + (this.half.y * sy);
-            }
-            //System.out.println("not hey");
-            return hit;
-
+    public boolean intersectAABB(AABB box) {
+        if (pos.x + half.x < box.pos.x - box.half.x) return false;
+        if (pos.x - half.x > box.pos.x + box.half.x) return false;
+        if (pos.y + half.y < box.pos.y - box.half.y) return false;
+        if (pos.y - half.y > box.pos.y + box.half.y) return false;
+        return true;
     }
 
     public sweepInfo sweepAABB(AABB box,Vector2 offset) {
-        sweepInfo sweep = new sweepInfo();
 
-        if (offset.x == 0 && offset.y == 0) {
-            sweep.pos.x = box.pos.x;
-            sweep.pos.y = box.pos.y;
-            sweep.hit = this.intersectAABB(box);
-            sweep.time = (sweep.hit != null) ? (sweep.hit.time = 0) : 1;
-            sweep.firstImpact.set(pos);
-            return sweep;
-        }
-
-        sweep.hit = this.intersectSegment(box.pos, offset, box.half.x, box.half.y);
-        //sweep.hit = box.intersectSegment(pos, offset, half.x, half.y);
-        if (sweep.hit != null) {
-            sweep.time = clamp(sweep.hit.time /*- Math.ulp(sweep.hit.time)*/ -0.0000001f, 0, 1);
-            sweep.pos.x = box.pos.x + offset.x * sweep.time;
-            sweep.pos.y = box.pos.y + offset.y * sweep.time;
-            Vector2 direction = offset.cpy();
-            direction.nor();
-            sweep.hit.pos.x = clamp(
-                    sweep.hit.pos.x + direction.x * box.half.x,
-                    this.pos.x - this.half.x, this.pos.x + this.half.x);
-            sweep.hit.pos.y = clamp(
-                    sweep.hit.pos.y + direction.y * box.half.y,
-                    this.pos.y - this.half.y, this.pos.y + this.half.y);
-            sweep.firstImpact.set(sweep.pos);
-
-            System.out.println("NOOOOOOOOOOOOOOOOOOOOOOOOOOOOT HHHHHEEEEEEEEEEYYYYYYYY" + sweep.time);
-
-        } else {
-            sweep.pos.x = box.pos.x + offset.x;
-            sweep.pos.y = box.pos.y + offset.y;
-            sweep.time = 1;
-
-           sweep.firstImpact.set(pos.x + offset.x, pos.y + offset.y);
-            System.out.println("HHHHHEEEEEEEEEEYYYYYYYY");
-            System.out.println("pos " + pos);
-            System.out.println("sweep " + sweep.firstImpact);
-
-        }
-
-
-        return sweep;
     }
 
 

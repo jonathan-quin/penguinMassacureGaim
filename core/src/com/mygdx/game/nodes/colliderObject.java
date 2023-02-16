@@ -1,7 +1,12 @@
 package com.mygdx.game.nodes;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.globals;
 import com.mygdx.game.nodes.collisionShapeHelpers.sweepInfo;
 
 public class colliderObject extends node{
@@ -19,6 +24,26 @@ public class colliderObject extends node{
         sweepInfo currentInfo = sweepTest(distance,myRoot.colliders);
 
         System.out.println("first impact " + currentInfo.firstImpact);
+
+        if (globals.showCollision){
+
+
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+            globals.globalShape.begin(ShapeRenderer.ShapeType.Filled);
+            globals.globalShape.setColor(new Color(0, 1, 0, 1f));
+
+            globals.globalShape.circle( (globalPosition.x )-globals.cameraOffset.x + 512,
+                    (globalPosition.y )-globals.cameraOffset.y + 300,5);
+            globals.globalShape.circle( ( currentInfo.firstImpact.x)-globals.cameraOffset.x + 512,
+                    (currentInfo.firstImpact.y )-globals.cameraOffset.y + 300,5);
+
+            if (currentInfo.hit != null) globals.globalShape.circle( (globalPosition.x + currentInfo.hit.delta.x)-globals.cameraOffset.x + 512,
+                    ( globalPosition.y + currentInfo.hit.delta.y )-globals.cameraOffset.y + 300,5);
+
+            globals.globalShape.end();
+            Gdx.gl.glDisable(GL20.GL_BLEND);
+        }
 
         return currentInfo.firstImpact;
 
