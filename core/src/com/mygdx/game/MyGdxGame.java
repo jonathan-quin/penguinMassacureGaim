@@ -26,7 +26,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	@Override
 	public void render () {
 
-		ScreenUtils.clear(1, 0, 0, 1);
+		ScreenUtils.clear(0.921f, 0.55f, 0.96f, 1);
 
 		scene1.update();
 

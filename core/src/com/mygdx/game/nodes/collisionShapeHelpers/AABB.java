@@ -31,7 +31,7 @@ public class AABB {
         if (offset.x != 0) slope = offset.y/offset.x;
         float yInt = slope * lineStart.x + lineStart.y;
 
-        float len = lineStart.dst(offset);
+       // float len = lineStart.dst(offset);
 
         float leftIntYpos = lineStart.y;
         float rightIntYpos = lineStart.y;
@@ -65,15 +65,16 @@ public class AABB {
         boolean intercepts = false;
 
         if (offset.y != 0){
-            if (topIntXpos > pos.x - half.x && topIntXpos < pos.x + half.x) {
+            if (topIntXpos > pos.x - (half.x + paddingX) && topIntXpos < pos.x + (half.x + paddingX)) {
                 intercepts = true;
-                returnVector.set(topIntXpos, pos.y + half.y);
+                returnVector.set(topIntXpos, pos.y + (half.y + paddingY));
             }
-            if (bottomIntXpos > pos.x - half.x && bottomIntXpos < pos.x + half.x) {
+            if (bottomIntXpos > pos.x - (half.x + paddingX) && bottomIntXpos < pos.x + (half.x + paddingX)) {
                 intercepts = true;
                 float tempX = bottomIntXpos;
-                float tempY = pos.y - half.y;
+                float tempY = pos.y - (half.y + paddingY);
                 if (!intercepts || lineStart.dst2(tempX, tempY) < lineStart.dst2(returnVector)) {
+                    System.out.println("CASE ONE HAPPENED");
                     returnVector.set(tempX, tempY);
                 }
             }
@@ -81,19 +82,21 @@ public class AABB {
 
 
         if (offset.x != 0) {
-            if (leftIntYpos > pos.y - half.y && leftIntYpos < pos.y + half.y) {
+            if (leftIntYpos > pos.y - (half.y + paddingY) && leftIntYpos < pos.y + (half.y + paddingY)) {
                 intercepts = true;
-                float tempX = pos.x - half.x;
+                float tempX = pos.x - (half.x + paddingX);
                 float tempY = leftIntYpos;
                 if (!intercepts || lineStart.dst2(tempX, tempY) < lineStart.dst2(returnVector)) {
+                    System.out.println("CASE TWO HAPPENED");
                     returnVector.set(tempX, tempY);
                 }
             }
-            if (rightIntYpos > pos.y - half.y && rightIntYpos < pos.y + half.y) {
+            if (rightIntYpos > pos.y - (half.y + paddingY) && rightIntYpos < pos.y + (half.y + paddingY)) {
                 intercepts = true;
-                float tempX = pos.x + half.x;
+                float tempX = pos.x + (half.x + paddingX);
                 float tempY = rightIntYpos;
                 if (!intercepts || lineStart.dst2(tempX, tempY) < lineStart.dst2(returnVector)) {
+                    System.out.println("CASE THREE HAPPENED");
                     returnVector.set(tempX, tempY);
                 }
             }
@@ -113,8 +116,41 @@ public class AABB {
         return true;
     }
 
-    public sweepInfo sweepAABB(AABB box,Vector2 offset) {
+    public sweepInfo sweepAABB(AABB otherBox,Vector2 offset) {
 
+        sweepInfo info = new sweepInfo();
+
+        info.length = offset.len();
+
+        if (info.length == 0){
+            info.firstImpact = new Vector2(pos);
+            info.offset = new Vector2(0,0);
+            info.time = 1;
+            return info;
+        }
+
+        Vector2 intersectPoint = otherBox.intersectSegment(pos,offset,half.x,half.y);
+        info.firstImpact = otherBox.intersectSegment(pos,offset,half.x,half.y);
+
+        info.collides = true;
+        if (info.firstImpact == null){
+            info.collides = false;
+            info.firstImpact = new Vector2(pos.x + offset.x,pos.y + offset.y);
+        }
+
+        //System.out.println(info.collides);
+        System.out.println(otherBox.intersectSegment(pos,offset.cpy().scl(100),half.x,half.y) != null);
+
+        info.offset = new Vector2(info.firstImpact.x - pos.x,info.firstImpact.y-pos.y);
+
+
+
+        info.time = (info.offset.len())/info.length;
+       // System.out.println(offset + " " + info.offset + " time: " + info.time);
+
+       // if (info.time < 0.99) System.out.println("gfnejsnbojgesbkjbtehgewbjh lre");
+
+        return info;
     }
 
 

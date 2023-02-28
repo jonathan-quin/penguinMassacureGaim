@@ -36,7 +36,7 @@ public class collisionShape extends node{
     public boolean overlaps(collisionShape other){
         updateGlobalPosition();
         boundingBox.pos.set(globalPosition);
-        return (boundingBox.intersectAABB(other.getAABB()) != null);
+        return (boundingBox.intersectAABB(other.getAABB()));
     }
 
     public boolean overlaps(Array<collisionShape> shapes){
@@ -52,11 +52,11 @@ public class collisionShape extends node{
 
         boundingBox.pos.set(globalPosition);
 
-        return other.getAABB().sweepAABB(boundingBox,distance) ;
+        return boundingBox.sweepAABB(other.getAABB(),distance) ;
 
     }
 
-    public sweepInfo sweepTest(Vector2 distance,Array<collisionShape> others){
+    public sweepInfo sweepTestArray(Vector2 distance,Array<collisionShape> others){
 
 
         sweepInfo returnSweepInfo = null;

@@ -67,12 +67,16 @@ public class player extends movementNode {
 
         float inverseDelta  = globals.inverse((float)delta);
 
-        vel.set ( moveAndCollide( vel.cpy().scl((float)delta) ) );
-        vel.scl(inverseDelta);
+        moveAndCollide( vel.cpy().scl((float)delta));
+
+       // vel.set (  ) );
+       // vel.scl(inverseDelta);
+
+        if (Math.abs(vel.x) < 0.1) vel.x = 0;
 
         globals.cameraOffset.set(position);
 
-        System.out.println(position);
+        //System.out.println(position);
     }
 
     private float lerp(float a, float b, float f){

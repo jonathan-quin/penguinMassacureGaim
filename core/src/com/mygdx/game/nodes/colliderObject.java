@@ -21,9 +21,9 @@ public class colliderObject extends node{
 
     public Vector2 getFirstCollision(Vector2 distance){
 
-        sweepInfo currentInfo = sweepTest(distance,myRoot.colliders);
+        sweepInfo currentInfo = sweepTestArray(distance,myRoot.colliders);
 
-        System.out.println("first impact " + currentInfo.firstImpact);
+       // System.out.println("first impact " + currentInfo.firstImpact);
 
         if (globals.showCollision){
 
@@ -35,17 +35,19 @@ public class colliderObject extends node{
 
             globals.globalShape.circle( (globalPosition.x )-globals.cameraOffset.x + 512,
                     (globalPosition.y )-globals.cameraOffset.y + 300,5);
+
+            globals.globalShape.setColor(new Color(0, 1, 1, 1f));
             globals.globalShape.circle( ( currentInfo.firstImpact.x)-globals.cameraOffset.x + 512,
                     (currentInfo.firstImpact.y )-globals.cameraOffset.y + 300,5);
 
-            if (currentInfo.hit != null) globals.globalShape.circle( (globalPosition.x + currentInfo.hit.delta.x)-globals.cameraOffset.x + 512,
-                    ( globalPosition.y + currentInfo.hit.delta.y )-globals.cameraOffset.y + 300,5);
+           // if (currentInfo.hit != null) globals.globalShape.circle( (globalPosition.x + currentInfo.hit.delta.x)-globals.cameraOffset.x + 512,
+            //        ( globalPosition.y + currentInfo.hit.delta.y )-globals.cameraOffset.y + 300,5);
 
             globals.globalShape.end();
             Gdx.gl.glDisable(GL20.GL_BLEND);
-        }
+        } //debugging nonsense
 
-        return currentInfo.firstImpact;
+        return new Vector2(position.x + currentInfo.offset.x,position.y + currentInfo.offset.y);
 
     }
 
@@ -56,7 +58,7 @@ public class colliderObject extends node{
         sweepInfo returnSweepInfo = null;
         sweepInfo tempSweepInfo;
         for (collisionShape myShape : shapes){
-            tempSweepInfo = myShape.sweepTest(distance,other.getShapes());
+            tempSweepInfo = myShape.sweepTestArray(distance,other.getShapes());
             if (returnSweepInfo == null || tempSweepInfo.time < returnSweepInfo.time )
                 returnSweepInfo = tempSweepInfo;
 
@@ -64,7 +66,7 @@ public class colliderObject extends node{
         return returnSweepInfo;  
     }
 
-    public sweepInfo sweepTest(Vector2 distance,Array<colliderObject> others){
+    public sweepInfo sweepTestArray(Vector2 distance,Array<colliderObject> others){
         sweepInfo returnSweepInfo = null;
         sweepInfo tempSweepInfo;
         for (colliderObject other : others){
@@ -74,7 +76,7 @@ public class colliderObject extends node{
 
         }
 
-        System.out.println("colliderobjecct array " + returnSweepInfo.firstImpact);
+        //System.out.println("colliderobjecct array " + returnSweepInfo.firstImpact);
 
         return returnSweepInfo;
     }
