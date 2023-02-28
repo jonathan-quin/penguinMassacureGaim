@@ -25,41 +25,83 @@ public class AABB {
         return value < 0 ? -1 : 1;
     }
 
-    public Vector2 intersectSegment(Vector2 position, Vector2 offset, float paddingX, float paddingY) {
+    public Vector2 intersectSegment(Vector2 lineStart, Vector2 offset, float paddingX, float paddingY) {
 
         float slope = 0;
         if (offset.x != 0) slope = offset.y/offset.x;
-        float yInt = slope * position.x + position.y;
+        float yInt = slope * lineStart.x + lineStart.y;
 
-        float len = position.dst(offset);
+        float len = lineStart.dst(offset);
 
-        float leftBound = pos.x - (half.x + paddingX);
-        float rightBound = pos.x - (half.x + paddingX);
-        float upperBound = (pos.y + half.y + paddingY) - yInt;
-        float lowerBound = (pos.y - (half.y + paddingY)) - yInt;
+        float leftIntYpos = lineStart.y;
+        float rightIntYpos = lineStart.y;
+        float topIntXpos = lineStart.x;
+        float bottomIntXpos = lineStart.x;
 
         if (slope != 0){
-            leftBound = slope * (pos.x - (half.x + paddingX));
-            rightBound = slope * (pos.x - (half.x + paddingX));
 
-            upperBound = ((pos.y + half.y + paddingY) - yInt  )/slope;
-            lowerBound = ((pos.y - (half.y + paddingY)) - yInt  )/slope;
+            leftIntYpos = slope * (pos.x - (half.x + paddingX));
+            rightIntYpos = slope * (pos.x - (half.x + paddingX));
+
+            topIntXpos = ((pos.y + half.y + paddingY) - yInt  )/slope;
+            bottomIntXpos = ((pos.y - (half.y + paddingY)) - yInt  )/slope;
 
         }
 
-        if (Math.abs(leftBound - position.x) > Math.abs(offset.x) &&
-                Math.abs(rightBound - position.x) > Math.abs(offset.x) &&
 
-                Math.abs(upperBound - position.y) > Math.abs(offset.y) &&
-                Math.abs(lowerBound - position.y) > Math.abs(offset.y)
+/*
+        if (Math.abs(leftIntYpos - lineStart.x) > Math.abs(offset.x) &&
+                Math.abs(rightIntYpos - lineStart.x) > Math.abs(offset.x) &&
+
+                Math.abs(topIntXpos - lineStart.y) > Math.abs(offset.y) &&
+                Math.abs(bottomIntXpos - lineStart.y) > Math.abs(offset.y)
         ) return null;
+*/
 
-        Vector2 returnVector = new Vector2();
-        
-        if ()
+        Vector2 returnVector = new Vector2(lineStart.x + offset.x, lineStart.y + offset.y);
+
+        //check if each intercept is within bounds and then set the vector there if it is, also make sure that it's the closest
+
+        boolean intercepts = false;
+
+        if (offset.y != 0){
+            if (topIntXpos > pos.x - half.x && topIntXpos < pos.x + half.x) {
+                intercepts = true;
+                returnVector.set(topIntXpos, pos.y + half.y);
+            }
+            if (bottomIntXpos > pos.x - half.x && bottomIntXpos < pos.x + half.x) {
+                intercepts = true;
+                float tempX = bottomIntXpos;
+                float tempY = pos.y - half.y;
+                if (!intercepts || lineStart.dst2(tempX, tempY) < lineStart.dst2(returnVector)) {
+                    returnVector.set(tempX, tempY);
+                }
+            }
+        }
 
 
-        return Vector2.Zero;
+        if (offset.x != 0) {
+            if (leftIntYpos > pos.y - half.y && leftIntYpos < pos.y + half.y) {
+                intercepts = true;
+                float tempX = pos.x - half.x;
+                float tempY = leftIntYpos;
+                if (!intercepts || lineStart.dst2(tempX, tempY) < lineStart.dst2(returnVector)) {
+                    returnVector.set(tempX, tempY);
+                }
+            }
+            if (rightIntYpos > pos.y - half.y && rightIntYpos < pos.y + half.y) {
+                intercepts = true;
+                float tempX = pos.x + half.x;
+                float tempY = rightIntYpos;
+                if (!intercepts || lineStart.dst2(tempX, tempY) < lineStart.dst2(returnVector)) {
+                    returnVector.set(tempX, tempY);
+                }
+            }
+        }
+
+        if (!intercepts) return null;
+
+        return returnVector;
 
     }
 
