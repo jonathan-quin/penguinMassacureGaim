@@ -47,7 +47,7 @@ public class colliderObject extends node{
             Gdx.gl.glDisable(GL20.GL_BLEND);
         } //debugging nonsense
 
-        return new Vector2(position.x + currentInfo.offset.x,position.y + currentInfo.offset.y);
+        return new Vector2(position.x + currentInfo.offset.x * 0.9f,position.y + currentInfo.offset.y * 0.9f);
 
     }
 

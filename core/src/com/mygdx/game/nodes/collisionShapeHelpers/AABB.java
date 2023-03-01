@@ -49,14 +49,8 @@ public class AABB {
         }
 
 
-/*
-        if (Math.abs(leftIntYpos - lineStart.x) > Math.abs(offset.x) &&
-                Math.abs(rightIntYpos - lineStart.x) > Math.abs(offset.x) &&
-
-                Math.abs(topIntXpos - lineStart.y) > Math.abs(offset.y) &&
-                Math.abs(bottomIntXpos - lineStart.y) > Math.abs(offset.y)
-        ) return null;
-*/
+        if ( sign(lineStart.x - pos.x + (half.x + paddingX)) != sign(lineStart.x + offset.x - pos.x + (half.x + paddingX)) )
+            System.out.println("hey");
 
         Vector2 returnVector = new Vector2(lineStart.x + offset.x, lineStart.y + offset.y);
 
