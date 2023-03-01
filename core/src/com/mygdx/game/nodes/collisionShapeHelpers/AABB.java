@@ -1,6 +1,11 @@
 package com.mygdx.game.nodes.collisionShapeHelpers;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.globals;
 
 import static com.badlogic.gdx.math.MathUtils.clamp;
 
@@ -17,7 +22,7 @@ public class AABB {
         this.half.set(half);
     }
 
-
+    static int count = 0;
 
     public int sign(float value) {
 
@@ -49,8 +54,11 @@ public class AABB {
         }
 
 
-        if ( sign(lineStart.x - pos.x + (half.x + paddingX)) != sign(lineStart.x + offset.x - pos.x + (half.x + paddingX)) )
-            System.out.println("hey");
+        if (containsPoint(lineStart,paddingX,paddingY,0.1f) ){
+            System.out.println("HEY " + count);
+            count++;
+            return null;
+        }
 
         Vector2 returnVector = new Vector2(lineStart.x + offset.x, lineStart.y + offset.y);
 
@@ -68,7 +76,7 @@ public class AABB {
                 float tempX = bottomIntXpos;
                 float tempY = pos.y - (half.y + paddingY);
                 if (!intercepts || lineStart.dst2(tempX, tempY) < lineStart.dst2(returnVector)) {
-                    System.out.println("CASE ONE HAPPENED");
+                    //System.out.println("CASE ONE HAPPENED");
                     returnVector.set(tempX, tempY);
                 }
             }
@@ -81,7 +89,7 @@ public class AABB {
                 float tempX = pos.x - (half.x + paddingX);
                 float tempY = leftIntYpos;
                 if (!intercepts || lineStart.dst2(tempX, tempY) < lineStart.dst2(returnVector)) {
-                    System.out.println("CASE TWO HAPPENED");
+                    //System.out.println("CASE TWO HAPPENED");
                     returnVector.set(tempX, tempY);
                 }
             }
@@ -90,7 +98,7 @@ public class AABB {
                 float tempX = pos.x + (half.x + paddingX);
                 float tempY = rightIntYpos;
                 if (!intercepts || lineStart.dst2(tempX, tempY) < lineStart.dst2(returnVector)) {
-                    System.out.println("CASE THREE HAPPENED");
+                    //System.out.println("CASE THREE HAPPENED");
                     returnVector.set(tempX, tempY);
                 }
             }
@@ -98,8 +106,34 @@ public class AABB {
 
         if (!intercepts) return null;
 
+
+        if (globals.showCollision){
+
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+            globals.globalShape.begin(ShapeRenderer.ShapeType.Filled);
+            globals.globalShape.setColor(new Color(1, 1, 1, 1f));
+
+            globals.globalShape.circle( (returnVector.x )-globals.cameraOffset.x + 512,
+                    (returnVector.y )-globals.cameraOffset.y + 300,4);
+
+            globals.globalShape.end();
+            Gdx.gl.glDisable(GL20.GL_BLEND);
+        } //debugging nonsense
+
+
         return returnVector;
 
+    }
+
+    public boolean containsPoint(Vector2 point,float paddingX, float paddingY, float tolerance){
+
+        if (point.x > pos.x + paddingX + half.x + tolerance) return false;
+        if (point.x < pos.x - paddingX - half.x - tolerance) return false;
+        if (point.y > pos.y + paddingY + half.y + tolerance) return false;
+        if (point.y < pos.y - paddingY - half.y - tolerance) return false;
+
+        return true;
     }
 
     public boolean intersectAABB(AABB box) {
@@ -133,7 +167,7 @@ public class AABB {
         }
 
         //System.out.println(info.collides);
-        System.out.println(otherBox.intersectSegment(pos,offset.cpy().scl(100),half.x,half.y) != null);
+        //System.out.println(otherBox.intersectSegment(pos,offset.cpy().scl(1000),half.x,half.y) != null);
 
         info.offset = new Vector2(info.firstImpact.x - pos.x,info.firstImpact.y-pos.y);
 
