@@ -32,6 +32,37 @@ public class AABB {
 
     public Vector2 intersectSegment(Vector2 lineStart, Vector2 offset, float paddingX, float paddingY) {
 
+        if (containsPoint(lineStart,paddingX,paddingY,0.01f) && containsPoint(new Vector2(lineStart).add(offset),paddingX,paddingY,0.01f) ){
+
+            Vector2 endPoint = lineStart.cpy().add(offset);
+
+            float yResolution = 0;
+            float xResolution = 0;
+
+            if (endPoint.y > pos.y){
+                yResolution = (float )( (pos.y + half.y + paddingY) - endPoint.y );
+            }
+            else {
+                yResolution = (float )( (pos.y - half.y - paddingY) - endPoint.y );
+            }
+
+            if (endPoint.x > pos.x){
+                xResolution = (float )( (pos.x + half.x + paddingX) - endPoint.x );
+            }
+            else {
+                xResolution = (float )( (pos.x - half.x - paddingX) - endPoint.x );
+            }
+
+            if (abs(xResolution) > abs(yResolution)){
+                xResolution = 0;
+            }
+            else{
+                yResolution = 0;
+            }
+
+            return lineStart.add(xResolution,yResolution);
+        }
+
         float slope = 0;
         if (offset.x != 0) slope = offset.y/offset.x;
         float yInt = slope * lineStart.x + lineStart.y;
@@ -54,11 +85,7 @@ public class AABB {
         }
 
 
-        if (containsPoint(lineStart,paddingX,paddingY,0.1f) ){
-            System.out.println("HEY " + count);
-            count++;
-            return null;
-        }
+
 
         Vector2 returnVector = new Vector2(lineStart.x + offset.x, lineStart.y + offset.y);
 
@@ -150,17 +177,18 @@ public class AABB {
 
         info.length = offset.len();
 
-        if (info.length == 0){
+        /*if (info.length == 0){
             info.firstImpact = new Vector2(pos);
             info.offset = new Vector2(0,0);
             info.time = 1;
             return info;
-        }
+        }*/
 
         Vector2 intersectPoint = otherBox.intersectSegment(pos,offset,half.x,half.y);
         info.firstImpact = otherBox.intersectSegment(pos,offset,half.x,half.y);
 
         info.collides = true;
+
         if (info.firstImpact == null){
             info.collides = false;
             info.firstImpact = new Vector2(pos.x + offset.x,pos.y + offset.y);
@@ -173,10 +201,12 @@ public class AABB {
 
 
 
-        info.time = (info.offset.len())/info.length;
+        info.time = 1; //(info.offset.len())/info.length;
        // System.out.println(offset + " " + info.offset + " time: " + info.time);
 
        // if (info.time < 0.99) System.out.println("gfnejsnbojgesbkjbtehgewbjh lre");
+
+        System.out.println("AABB first" + info.firstImpact);
 
         return info;
     }
