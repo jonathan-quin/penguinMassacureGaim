@@ -14,18 +14,19 @@ public class testScene extends root {
        // penguinTX = new Texture("badlogic.jpg");
        // rootNode.addChild(new textureEntity(penguinTX,0,0,64,64));
 
-        rootNode.addChild( new player(this,280,220) );
+        rootNode.addChild( new player(this,220,400) );
 
         //rootNode.addChild(new simpleIcePlatform(this,100,100));
 
 
         rootNode.addChild(new simpleIcePlatform(this,148,90));
-       /* rootNode.addChild(new simpleIcePlatform(this,100-96,100));
+
+        rootNode.addChild(new simpleIcePlatform(this,100-96,100));
         rootNode.addChild(new simpleIcePlatform(this,100-96-96,100));
         rootNode.addChild(new simpleIcePlatform(this,100-96-96-96,100));
         rootNode.addChild(new simpleIcePlatform(this,100-96-96-96-96,100));
 
-        rootNode.addChild(new simpleIcePlatform(this,100+96+18,100+32));*/
+        rootNode.addChild(new simpleIcePlatform(this,100+96+18,100+32));
 
 
     }

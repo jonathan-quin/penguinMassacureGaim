@@ -49,8 +49,10 @@ public class colliderObject extends node{
 
         Vector2 output = new Vector2(position.x + currentInfo.offset.x,position.y + currentInfo.offset.y);
 
-        System.out.println("output" + output);
+        //System.out.println("output" + output);
         System.out.println("first" + currentInfo.firstImpact);
+
+
 
         return currentInfo.firstImpact;
 

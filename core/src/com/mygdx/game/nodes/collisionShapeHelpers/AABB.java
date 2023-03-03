@@ -30,11 +30,19 @@ public class AABB {
         return value < 0 ? -1 : 1;
     }
 
-    public Vector2 intersectSegment(Vector2 lineStart, Vector2 offset, float paddingX, float paddingY) {
+    public AABBIntersectSegmentInfo intersectSegment(Vector2 lineStart, Vector2 offset, float paddingX, float paddingY) {
 
-        if (containsPoint(lineStart,paddingX,paddingY,0.01f) && containsPoint(new Vector2(lineStart).add(offset),paddingX,paddingY,0.01f) ){
+        AABBIntersectSegmentInfo returnInfo = new AABBIntersectSegmentInfo(false,false,0,0);
+
+        if (containsPoint(lineStart,paddingX,paddingY,-1f) && containsPoint(new Vector2(lineStart).add(offset),paddingX,paddingY,0.0f) ){
+
+            System.out.println("well that's an issue");
+
 
             Vector2 endPoint = lineStart.cpy().add(offset);
+
+            System.out.println("You're at: " + lineStart.y);
+            System.out.println("difference" + (float )( (pos.y + half.y + paddingY) - endPoint.y));
 
             float yResolution = 0;
             float xResolution = 0;
@@ -54,13 +62,20 @@ public class AABB {
             }
 
             if (abs(xResolution) > abs(yResolution)){
-                xResolution = 0;
+                returnInfo.x = lineStart.x;
+                returnInfo.y = lineStart.y + yResolution;
             }
             else{
-                yResolution = 0;
+                returnInfo.x = lineStart.x + xResolution;
+                returnInfo.y = lineStart.y;
             }
 
-            return lineStart.add(xResolution,yResolution);
+            returnInfo.collides = false;
+            returnInfo.resolves = true;
+
+            System.out.println("goto" + returnInfo.y);
+
+            return returnInfo;
         }
 
         float slope = 0;
@@ -95,15 +110,23 @@ public class AABB {
 
         if (offset.y != 0){
             if (topIntXpos > pos.x - (half.x + paddingX) && topIntXpos < pos.x + (half.x + paddingX)) {
-                intercepts = true;
-                returnVector.set(topIntXpos, pos.y + (half.y + paddingY));
+
+
+                float tempX = topIntXpos;
+                float tempY = pos.y + (half.y + paddingY);
+
+                if (sign(lineStart.x - tempX) == sign(lineStart.x - returnVector.x ) && sign(lineStart.y - tempY) == sign(lineStart.y - returnVector.y )){
+                    intercepts = true;
+                    returnVector.set(tempX,tempY);
+                }
+
             }
             if (bottomIntXpos > pos.x - (half.x + paddingX) && bottomIntXpos < pos.x + (half.x + paddingX)) {
-                intercepts = true;
+
                 float tempX = bottomIntXpos;
                 float tempY = pos.y - (half.y + paddingY);
-                if (!intercepts || lineStart.dst2(tempX, tempY) < lineStart.dst2(returnVector)) {
-                    //System.out.println("CASE ONE HAPPENED");
+                if (lineStart.dst2(tempX, tempY) < lineStart.dst2(returnVector) && sign(lineStart.x - tempX) == sign(lineStart.x - returnVector.x ) && sign(lineStart.y - tempY) == sign(lineStart.y - returnVector.y ) ) {
+                    intercepts = true;
                     returnVector.set(tempX, tempY);
                 }
             }
@@ -112,26 +135,26 @@ public class AABB {
 
         if (offset.x != 0) {
             if (leftIntYpos > pos.y - (half.y + paddingY) && leftIntYpos < pos.y + (half.y + paddingY)) {
-                intercepts = true;
+
                 float tempX = pos.x - (half.x + paddingX);
                 float tempY = leftIntYpos;
-                if (!intercepts || lineStart.dst2(tempX, tempY) < lineStart.dst2(returnVector)) {
-                    //System.out.println("CASE TWO HAPPENED");
+                if (lineStart.dst2(tempX, tempY) < lineStart.dst2(returnVector) && sign(lineStart.x - tempX) == sign(lineStart.x - returnVector.x ) && sign(lineStart.y - tempY) == sign(lineStart.y - returnVector.y )) {
+                    intercepts = true;
                     returnVector.set(tempX, tempY);
                 }
             }
             if (rightIntYpos > pos.y - (half.y + paddingY) && rightIntYpos < pos.y + (half.y + paddingY)) {
-                intercepts = true;
+
                 float tempX = pos.x + (half.x + paddingX);
                 float tempY = rightIntYpos;
-                if (!intercepts || lineStart.dst2(tempX, tempY) < lineStart.dst2(returnVector)) {
-                    //System.out.println("CASE THREE HAPPENED");
+                if (lineStart.dst2(tempX, tempY) < lineStart.dst2(returnVector) && sign(lineStart.x - tempX) == sign(lineStart.x - returnVector.x ) && sign(lineStart.y - tempY) == sign(lineStart.y - returnVector.y )) {
+                    intercepts = true;
                     returnVector.set(tempX, tempY);
                 }
             }
         }
 
-        if (!intercepts) return null;
+        //if (!intercepts) return null;
 
 
         if (globals.showCollision){
@@ -149,7 +172,12 @@ public class AABB {
         } //debugging nonsense
 
 
-        return returnVector;
+        returnInfo.x = returnVector.x;
+        returnInfo.y = returnVector.y;
+        returnInfo.collides = intercepts;
+        returnInfo.resolves = false;
+
+        return returnInfo;
 
     }
 
@@ -177,36 +205,32 @@ public class AABB {
 
         info.length = offset.len();
 
-        /*if (info.length == 0){
-            info.firstImpact = new Vector2(pos);
-            info.offset = new Vector2(0,0);
-            info.time = 1;
-            return info;
-        }*/
 
-        Vector2 intersectPoint = otherBox.intersectSegment(pos,offset,half.x,half.y);
-        info.firstImpact = otherBox.intersectSegment(pos,offset,half.x,half.y);
+        AABBIntersectSegmentInfo segmentInfo = otherBox.intersectSegment(pos,offset,half.x,half.y);
 
-        info.collides = true;
+        info.collides = segmentInfo.collides || segmentInfo.resolves;
 
-        if (info.firstImpact == null){
+        if (!segmentInfo.collides && !segmentInfo.resolves){
             info.collides = false;
             info.firstImpact = new Vector2(pos.x + offset.x,pos.y + offset.y);
+            info.offset = new Vector2(info.firstImpact.x - pos.x,info.firstImpact.y-pos.y);
+            info.time = 1;
+            return info;
         }
 
-        //System.out.println(info.collides);
-        //System.out.println(otherBox.intersectSegment(pos,offset.cpy().scl(1000),half.x,half.y) != null);
-
+        info.firstImpact = new Vector2(segmentInfo.x,segmentInfo.y);
         info.offset = new Vector2(info.firstImpact.x - pos.x,info.firstImpact.y-pos.y);
-
-
-
         info.time = 1; //(info.offset.len())/info.length;
-       // System.out.println(offset + " " + info.offset + " time: " + info.time);
 
-       // if (info.time < 0.99) System.out.println("gfnejsnbojgesbkjbtehgewbjh lre");
+        if (segmentInfo.collides){
+            info.time = (info.offset.len())/info.length;
+        }
+        if (segmentInfo.resolves){
+            info.time = 0;
+            System.out.println("it resolves!: " + info.firstImpact.y);
+        }
 
-        System.out.println("AABB first" + info.firstImpact);
+        //System.out.println("AABB first" + info.firstImpact);
 
         return info;
     }

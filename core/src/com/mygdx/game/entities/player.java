@@ -14,7 +14,7 @@ public class player extends movementNode {
     private float speed = 5;
     private Vector2 vel = new Vector2(0,0);
 
-    private float JUMPFORCE = 400;
+    private float JUMPFORCE = 100; //400;
 
     private float GRAVITY = 2000;
 
@@ -34,6 +34,10 @@ public class player extends movementNode {
         Texture penguinTX = new Texture("penguinForNow.png");
         addChild(new textureEntity(penguinTX,0,2,32,32));
         addChild(new collisionShape(8,12));
+
+        updateGlobalPosition();
+        updateParentPos();
+
         //addChild(new collisionShape(16,16,25,8));
 
     }
@@ -42,24 +46,19 @@ public class player extends movementNode {
 
     public void update(double delta){
 
-
-
         targetSpeed.set(0.0f,0.0f);
-
-
-
 
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) targetSpeed.x -= MAXSPEED;
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) targetSpeed.x += MAXSPEED;
 
-        if(Gdx.input.isKeyPressed(Input.Keys.UP)) vel.y = MAXSPEED;
-        else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) vel.y = -MAXSPEED;
-        else vel.y = 0;
+        //if(Gdx.input.isKeyPressed(Input.Keys.UP)) vel.y = MAXSPEED;
+        //else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) vel.y = -MAXSPEED;
+        //else vel.y = 0;
 
 
         vel.x  = lerp(vel.x,targetSpeed.x, ACCEL * (float)delta);
 
-       // vel.y -= GRAVITY * delta;
+        vel.y -= GRAVITY/5 * delta;
 
         if(Gdx.input.isKeyPressed(Input.Keys.UP) && testMove(0,-3)) vel.y = (float) JUMPFORCE;
 
@@ -67,7 +66,7 @@ public class player extends movementNode {
 
         float inverseDelta  = globals.inverse((float)delta);
 
-        moveAndCollide( vel.cpy().scl((float)delta));
+        moveAndCollideNewName( vel.cpy().scl((float)delta));
 
        // vel.set (  ) );
        // vel.scl(inverseDelta);
@@ -77,6 +76,7 @@ public class player extends movementNode {
         globals.cameraOffset.set(position);
 
         //System.out.println(position);
+
     }
 
     private float lerp(float a, float b, float f){
