@@ -34,7 +34,7 @@ public class AABB {
 
         AABBIntersectSegmentInfo returnInfo = new AABBIntersectSegmentInfo(false,false,0,0);
 
-        if (containsPoint(lineStart,paddingX,paddingY,-1f) && containsPoint(new Vector2(lineStart).add(offset),paddingX,paddingY,0.0f) ){
+        if (containsPoint(lineStart,paddingX,paddingY,-0.1f) && containsPoint(new Vector2(lineStart).add(offset),paddingX,paddingY,0.0f) ){
 
             System.out.println("well that's an issue");
 
@@ -44,31 +44,33 @@ public class AABB {
             System.out.println("You're at: " + lineStart.y);
             System.out.println("difference" + (float )( (pos.y + half.y + paddingY) - endPoint.y));
 
-            float yResolution = 0;
-            float xResolution = 0;
+            float yResolution = endPoint.y;
+            float xResolution = endPoint.x;
 
             if (endPoint.y > pos.y){
-                yResolution = (float )( (pos.y + half.y + paddingY) - endPoint.y );
+                yResolution = (float )( (pos.y + half.y + paddingY) );
             }
             else {
-                yResolution = (float )( (pos.y - half.y - paddingY) - endPoint.y );
+                yResolution = (float )( (pos.y - half.y - paddingY) );
             }
 
             if (endPoint.x > pos.x){
-                xResolution = (float )( (pos.x + half.x + paddingX) - endPoint.x );
+                xResolution = (float )( (pos.x + half.x + paddingX) );
             }
             else {
-                xResolution = (float )( (pos.x - half.x - paddingX) - endPoint.x );
+                xResolution = (float )( (pos.x - half.x - paddingX)  );
             }
 
-            if (abs(xResolution) > abs(yResolution)){
-                returnInfo.x = lineStart.x;
-                returnInfo.y = lineStart.y + yResolution;
+            if (abs(xResolution - endPoint.x) > abs(yResolution - endPoint.y)){
+                returnInfo.x = endPoint.x;
+                returnInfo.y = yResolution;
             }
             else{
-                returnInfo.x = lineStart.x + xResolution;
-                returnInfo.y = lineStart.y;
+                returnInfo.x = xResolution;
+                returnInfo.y = endPoint.y;
             }
+
+
 
             returnInfo.collides = false;
             returnInfo.resolves = true;
@@ -108,7 +110,7 @@ public class AABB {
 
         boolean intercepts = false;
 
-        if (offset.y != 0){
+        if (offset.y != 0 || true){
             if (topIntXpos > pos.x - (half.x + paddingX) && topIntXpos < pos.x + (half.x + paddingX)) {
 
 
@@ -133,7 +135,7 @@ public class AABB {
         }
 
 
-        if (offset.x != 0) {
+        if (offset.x != 0 || true) {
             if (leftIntYpos > pos.y - (half.y + paddingY) && leftIntYpos < pos.y + (half.y + paddingY)) {
 
                 float tempX = pos.x - (half.x + paddingX);
@@ -229,6 +231,8 @@ public class AABB {
             info.time = 0;
             System.out.println("it resolves!: " + info.firstImpact.y);
         }
+
+        if (info.time > 1) System.out.println("oh fuck oh shit " + info.time);
 
         //System.out.println("AABB first" + info.firstImpact);
 

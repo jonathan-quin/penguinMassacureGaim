@@ -20,7 +20,7 @@ public class movementNode extends colliderObject{
         position.set(getFirstCollision(distance));
 
 
-        position.add(distance);
+       // position.add(distance);
 
         //getFirstCollision(distance.cpy());
 
