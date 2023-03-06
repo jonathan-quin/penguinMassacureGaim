@@ -24,6 +24,7 @@ public class testScene extends root {
         rootNode.addChild(new simpleIcePlatform(this,100-96,100));
         rootNode.addChild(new simpleIcePlatform(this,100-96-96,100));
         rootNode.addChild(new simpleIcePlatform(this,100-96-96-96,100));
+        rootNode.addChild(new simpleIcePlatform(this,100-96-96-82,120));
         rootNode.addChild(new simpleIcePlatform(this,100-96-96-96-96,100));
 
         rootNode.addChild(new simpleIcePlatform(this,100+96+18,100+32));

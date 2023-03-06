@@ -14,17 +14,16 @@ public class movementNode extends colliderObject{
 
     private Vector2 tempPos = new Vector2(0,0);
 
-    public Vector2 moveAndCollideNewName(Vector2 distance){
-       // System.out.println();
+    public Vector2 moveAndCollide(Vector2 distance){
+
+        Vector2 difference = new Vector2(position);
 
         position.set(getFirstCollision(distance));
 
+        difference.set(difference.x - position.x,difference.y - position.y);
 
-       // position.add(distance);
 
-        //getFirstCollision(distance.cpy());
-
-        return distance;
+        return difference;
     }
 
 

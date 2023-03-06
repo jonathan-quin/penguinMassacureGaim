@@ -63,15 +63,22 @@ public class player extends movementNode {
         //if(Gdx.input.isKeyPressed(Input.Keys.UP) && testMove(0,-3)) vel.y = (float) JUMPFORCE;
 
         //System.out.println(position + " delta: " + delta);
+        System.out.println(vel);
 
         float inverseDelta  = globals.inverse((float)delta);
 
-        moveAndCollideNewName( vel.cpy().scl((float)delta));
+        //System.out.println("vel before:" + vel);
 
-       // vel.set (  ) );
-       // vel.scl(inverseDelta);
+        Vector2 tempVector = moveAndCollide( vel.cpy().scl((float)delta)) ;
 
-        if (Math.abs(vel.x) < 0.1) vel.x = 0;
+        vel.set(tempVector);
+
+
+        vel.scl(-inverseDelta);
+
+        System.out.println(vel);
+
+        //if (Math.abs(vel.x) < 0.1) vel.x = 0;
 
         globals.cameraOffset.set(position);
 
