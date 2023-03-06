@@ -1,6 +1,7 @@
 package com.mygdx.game.nodes;
 
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.globals;
 
 public class movementNode extends colliderObject{
 
@@ -14,16 +15,25 @@ public class movementNode extends colliderObject{
 
     private Vector2 tempPos = new Vector2(0,0);
 
-    public Vector2 moveAndCollide(Vector2 distance){
+    public Vector2 moveAndCollide(Vector2 distance,float delta){
 
-        Vector2 difference = new Vector2(position);
+        Vector2 prevPos = new Vector2(position);
 
-        position.set(getFirstCollision(distance));
+        position.set(getFirstCollision(distance.scl(delta)));
 
-        difference.set(difference.x - position.x,difference.y - position.y);
+        Vector2 difference = new Vector2();
 
+        difference.set(position.x - prevPos.x, position.y - prevPos.y);
 
-        return difference;
+        if (Math.signum(difference.y) != Math.signum(distance.y)) {
+
+            System.out.println("heyo");
+            System.out.println(difference);
+            System.out.println(prevPos);
+            System.out.println(position);
+        }
+
+        return difference.scl(globals.inverse(delta));
     }
 
 
@@ -132,7 +142,8 @@ public class movementNode extends colliderObject{
         return testMove(distance.x, distance.y);
     }
 
-    public boolean testMove(float x, float y){
+/*    public boolean testMove(float x, float y){
+        updateGlobalPosition();
         position.add(x,y);
         updateParentPos();
 
@@ -142,6 +153,13 @@ public class movementNode extends colliderObject{
 
 
         return returnValue;
+    }*/
+
+    public boolean testMove(float x, float y){
+        updateGlobalPosition();
+        updateParentPos();
+
+        return sweepTestArray(new Vector2(x,y),myRoot.colliders).collides;
     }
 
     public Vector2 move(Vector2 distance){

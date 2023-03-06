@@ -14,7 +14,7 @@ public class player extends movementNode {
     private float speed = 5;
     private Vector2 vel = new Vector2(0,0);
 
-    private float JUMPFORCE = 100; //400;
+    private float JUMPFORCE = 400;
 
     private float GRAVITY = 2000;
 
@@ -51,32 +51,29 @@ public class player extends movementNode {
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) targetSpeed.x -= MAXSPEED;
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) targetSpeed.x += MAXSPEED;
 
-        if(Gdx.input.isKeyPressed(Input.Keys.UP)) vel.y = MAXSPEED;
-        else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) vel.y = -MAXSPEED;
-        else vel.y = 0;
+        if(Gdx.input.isKeyPressed(Input.Keys.UP) && testMove(0,-10)) vel.y = MAXSPEED;
+//        else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) vel.y = -MAXSPEED;
+//        else vel.y = 0;
 
 
         vel.x  = lerp(vel.x,targetSpeed.x, ACCEL * (float)delta);
 
-        //vel.y -= GRAVITY/5 * delta;
+        vel.y -= GRAVITY/5 * delta;
 
-        //if(Gdx.input.isKeyPressed(Input.Keys.UP) && testMove(0,-3)) vel.y = (float) JUMPFORCE;
+       // if(Gdx.input.isKeyPressed(Input.Keys.UP) && testMove(0,-10)) vel.y = (float) JUMPFORCE;
 
         //System.out.println(position + " delta: " + delta);
-        System.out.println(vel);
-
-        float inverseDelta  = globals.inverse((float)delta);
+        System.out.println("before: " + vel);
 
         //System.out.println("vel before:" + vel);
 
-        Vector2 tempVector = moveAndCollide( vel.cpy().scl((float)delta)) ;
+        Vector2 tempVector = moveAndCollide( vel,(float) delta) ;
 
         vel.set(tempVector);
 
 
-        vel.scl(-inverseDelta);
 
-        System.out.println(vel);
+        System.out.println("after: " + vel);
 
         //if (Math.abs(vel.x) < 0.1) vel.x = 0;
 

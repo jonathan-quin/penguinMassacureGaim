@@ -107,7 +107,7 @@ public class AABB {
             }
 
 
-            else if (!containsPoint(endPoint, paddingX, paddingY, -0.001f)) {
+            else if (!containsPoint(endPoint, paddingX, paddingY, -0.00f)) {
 
                 returnInfo.collides = false;
                 returnInfo.resolves = false;
@@ -118,7 +118,7 @@ public class AABB {
                 return returnInfo;
 
             }
-            else if (containsPoint(lineStart,paddingX,paddingY,-0.001f)){
+            else if (containsPoint(lineStart,paddingX,paddingY,-0.00f)){
 
                 float yResolution = endPoint.y;
                 float xResolution = endPoint.x;
@@ -269,6 +269,8 @@ public class AABB {
         returnInfo.y = returnVector.y;
         returnInfo.collides = intercepts;
         returnInfo.resolves = false;
+
+        if (containsPoint(returnVector,paddingX,paddingY,-0.1f)) System.out.println("WELL THAT'S A PROBLEM " + intercepts);
 
         return returnInfo;
 
