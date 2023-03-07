@@ -245,7 +245,7 @@ public class AABB {
         //if (!intercepts) return null;
 
 
-        if (globals.showCollision){
+        if (globals.showCollision ){
 
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
