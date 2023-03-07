@@ -242,6 +242,8 @@ public class AABB {
             }
         }
 
+
+
         //if (!intercepts) return null;
 
 
@@ -268,6 +270,7 @@ public class AABB {
         returnInfo.x = returnVector.x;
         returnInfo.y = returnVector.y;
         returnInfo.collides = intercepts;
+        if (intercepts) System.out.println("intercepts: " + intercepts);
         returnInfo.resolves = false;
 
         if (containsPoint(returnVector,paddingX,paddingY,-0.1f)) System.out.println("WELL THAT'S A PROBLEM " + intercepts);
