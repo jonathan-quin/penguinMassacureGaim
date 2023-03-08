@@ -96,7 +96,7 @@ public class AABB {
 
             }*/
 
-            if (edgeContainsPoint(endPoint,paddingX,paddingY)){
+            if (edgeContainsPoint(endPoint,paddingX,paddingY) || !containsPoint(endPoint, paddingX, paddingY, -0.00f)){
                 returnInfo.collides = false;
                 returnInfo.resolves = false;
 
@@ -105,18 +105,14 @@ public class AABB {
 
                 return returnInfo;
             }
-
-
-            else if (!containsPoint(endPoint, paddingX, paddingY, -0.00f)) {
-
-                returnInfo.collides = false;
+            else if (edgeContainsPoint(lineStart,paddingX,paddingY)){
+                returnInfo.collides = true;
                 returnInfo.resolves = false;
 
-                returnInfo.x = lineStart.x + offset.x;
-                returnInfo.y = lineStart.y + offset.y;
+                returnInfo.x = lineStart.x;
+                returnInfo.y = lineStart.y;
 
                 return returnInfo;
-
             }
             else if (containsPoint(lineStart,paddingX,paddingY,-0.00f)){
 
@@ -168,7 +164,7 @@ public class AABB {
 
         float slope = 0;
         if (offset.x != 0) slope = offset.y/offset.x;
-        float yInt = slope * lineStart.x + lineStart.y;
+        float yInt = -slope * lineStart.x + lineStart.y;
 
        // float len = lineStart.dst(offset);
 
@@ -197,6 +193,7 @@ public class AABB {
         boolean intercepts = false;
 
         if (offset.y != 0){
+
             if (topIntXpos > pos.x - (half.x + paddingX) && topIntXpos < pos.x + (half.x + paddingX)) {
 
 
@@ -218,10 +215,12 @@ public class AABB {
                     returnVector.set(tempX, tempY);
                 }
             }
+
         }
 
 
         if (offset.x != 0) {
+
             if (leftIntYpos > pos.y - (half.y + paddingY) && leftIntYpos < pos.y + (half.y + paddingY)) {
 
                 float tempX = pos.x - (half.x + paddingX);
@@ -240,6 +239,7 @@ public class AABB {
                     returnVector.set(tempX, tempY);
                 }
             }
+
         }
 
 
@@ -247,7 +247,7 @@ public class AABB {
         //if (!intercepts) return null;
 
 
-        if (globals.showCollision ){
+        if (globals.showCollision && intercepts ){
 
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -273,7 +273,16 @@ public class AABB {
         if (intercepts) System.out.println("intercepts: " + intercepts);
         returnInfo.resolves = false;
 
-        if (containsPoint(returnVector,paddingX,paddingY,-0.1f)) System.out.println("WELL THAT'S A PROBLEM " + intercepts);
+        if (containsPoint(returnVector,paddingX,paddingY,0)){
+            System.out.println("WELL THAT'S A PROBLEM " + intercepts + " is it on the edge: " + edgeContainsPoint(lineStart,paddingX,paddingY));
+            System.out.println("started at: " + lineStart);
+            System.out.println("end is on edge? " + edgeContainsPoint(lineStart,paddingX,paddingY) );
+        }
+
+        if (intercepts){
+            System.out.println("intercepted!");
+            System.out.println(returnVector);
+        }
 
         return returnInfo;
 

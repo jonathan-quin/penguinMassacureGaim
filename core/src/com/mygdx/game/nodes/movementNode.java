@@ -25,7 +25,7 @@ public class movementNode extends colliderObject{
 
         difference.set(position.x - prevPos.x, position.y - prevPos.y);
 
-        if (Math.signum(difference.y) != Math.signum(distance.y)) {
+        if (false && Math.signum(difference.y) != Math.signum(distance.y)) {
 
             System.out.println("heyo");
             System.out.println(difference);

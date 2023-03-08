@@ -63,7 +63,7 @@ public class player extends movementNode {
        // if(Gdx.input.isKeyPressed(Input.Keys.UP) && testMove(0,-10)) vel.y = (float) JUMPFORCE;
 
         //System.out.println(position + " delta: " + delta);
-        System.out.println("before: " + vel);
+        //System.out.println("before: " + vel);
 
         //System.out.println("vel before:" + vel);
 
@@ -73,7 +73,7 @@ public class player extends movementNode {
 
 
 
-        System.out.println("after: " + vel);
+        //System.out.println("after: " + vel);
 
         //if (Math.abs(vel.x) < 0.1) vel.x = 0;
 
