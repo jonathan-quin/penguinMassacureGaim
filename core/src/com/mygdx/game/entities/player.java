@@ -35,9 +35,9 @@ public class player extends movementNode {
         addChild(new textureEntity(penguinTX,0,2,32,32));
         addChild(new collisionShape(8,12,0,0));
 
-       // addChild(new collisionShape(16,16,25,8));
+        //addChild(new collisionShape(16,16,25,8));
 
-        updateGlobalPosition();
+
         updateParentPos();
 
 

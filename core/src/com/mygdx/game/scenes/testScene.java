@@ -16,10 +16,11 @@ public class testScene extends root {
 
         rootNode.addChild( new player(this,220,400) );
 
+
         //rootNode.addChild(new simpleIcePlatform(this,100,100));
 
 
-        rootNode.addChild(new simpleIcePlatform(this,148,90));
+        //rootNode.addChild();
 
         rootNode.addChild(new simpleIcePlatform(this,100-96,100));
         rootNode.addChild(new simpleIcePlatform(this,100-96-96,100));
