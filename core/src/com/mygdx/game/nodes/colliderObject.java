@@ -25,7 +25,7 @@ public class colliderObject extends node{
 
        // System.out.println("first impact " + currentInfo.firstImpact);
 
-        if (globals.showCollision){
+        if (false && globals.showCollision){
 
 
             Gdx.gl.glEnable(GL20.GL_BLEND);
@@ -56,7 +56,7 @@ public class colliderObject extends node{
 
 
 
-        return currentInfo.firstImpact;
+        return output;//currentInfo.firstImpact;
 
     }
 

@@ -14,6 +14,8 @@ public class simpleIcePlatform extends staticNode {
         addChild(new textureEntity(penguinTX,0,0,96,48));
 
         addChild(new collisionShape(96/2,16/2,0,0));
+        //addChild(new collisionShape(96/2,16/2,8,4));
+        //addChild(new collisionShape(96/2,160/2,-80,4));
 
     }
 

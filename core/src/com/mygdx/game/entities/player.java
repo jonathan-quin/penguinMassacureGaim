@@ -33,12 +33,14 @@ public class player extends movementNode {
 
         Texture penguinTX = new Texture("penguinForNow.png");
         addChild(new textureEntity(penguinTX,0,2,32,32));
-        addChild(new collisionShape(8,12));
+        addChild(new collisionShape(8,12,0,0));
+
+       // addChild(new collisionShape(16,16,25,8));
 
         updateGlobalPosition();
         updateParentPos();
 
-        //addChild(new collisionShape(16,16,25,8));
+
 
     }
 
@@ -51,7 +53,7 @@ public class player extends movementNode {
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) targetSpeed.x -= MAXSPEED;
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) targetSpeed.x += MAXSPEED;
 
-        if(Gdx.input.isKeyPressed(Input.Keys.UP) && testMove(0,-10)) vel.y = MAXSPEED;
+        if(Gdx.input.isKeyPressed(Input.Keys.UP) && testMove(0,-1)) vel.y = MAXSPEED;
 //        else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) vel.y = -MAXSPEED;
 //        else vel.y = 0;
 
@@ -67,7 +69,8 @@ public class player extends movementNode {
 
         //System.out.println("vel before:" + vel);
 
-        Vector2 tempVector = moveAndCollide( vel,(float) delta) ;
+        Vector2 tempVector = moveAndSlide( vel,(float) delta) ;
+
 
         vel.set(tempVector);
 

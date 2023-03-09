@@ -15,20 +15,35 @@ public class movementNode extends colliderObject{
 
     private Vector2 tempPos = new Vector2(0,0);
 
-    public Vector2 moveAndCollide(Vector2 distance,float delta){
+    public Vector2 moveAndSlide(Vector2 distance,float delta){
 
         Vector2 prevPos = new Vector2(position);
 
-        position.set(getFirstCollision(distance.scl(delta)));
+        Vector2 scaledDistance = distance.cpy().scl(delta);
+
+        position.set(getFirstCollision(scaledDistance));
 
         Vector2 difference = new Vector2();
 
         difference.set(position.x - prevPos.x, position.y - prevPos.y);
 
-        if (false && Math.signum(difference.y) != Math.signum(distance.y)) {
 
+        if ( !difference.epsilonEquals(scaledDistance,0.1f) ){
+
+            updateParentPos();
+
+            position.set(getFirstCollision(new Vector2(scaledDistance.x - difference.x, 0)));
+            updateParentPos();
+
+            position.set(getFirstCollision(new Vector2(0, scaledDistance.y - difference.y)));
+        }
+
+        difference.set(position.x - prevPos.x, position.y - prevPos.y);
+
+        if (Math.signum(difference.x) != Math.signum(distance.x) && !isZeroApprox(distance.x) && !isZeroApprox(difference.x)) {
             System.out.println("heyo");
             System.out.println(difference);
+            System.out.println(distance);
             System.out.println(prevPos);
             System.out.println(position);
         }

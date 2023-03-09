@@ -107,7 +107,7 @@ public class AABB {
             }
             else if (edgeContainsPoint(lineStart,paddingX,paddingY)){
                 returnInfo.collides = true;
-                returnInfo.resolves = false;
+                returnInfo.resolves = true;
 
                 returnInfo.x = lineStart.x;
                 returnInfo.y = lineStart.y;
@@ -150,6 +150,7 @@ public class AABB {
 
             }
             else{
+                System.out.println("forth case for collisions actually god called wth");
                 returnInfo.collides = true;
                 returnInfo.resolves = false;
 
@@ -175,8 +176,8 @@ public class AABB {
 
         if (slope != 0){
 
-            leftIntYpos = slope * (pos.x - (half.x + paddingX));
-            rightIntYpos = slope * (pos.x - (half.x + paddingX));
+            leftIntYpos = slope * (pos.x - (half.x + paddingX)) + yInt;
+            rightIntYpos = slope * (pos.x + (half.x + paddingX)) + yInt;
 
             topIntXpos = ((pos.y + half.y + paddingY) - yInt  )/slope;
             bottomIntXpos = ((pos.y - (half.y + paddingY)) - yInt  )/slope;
@@ -225,18 +226,23 @@ public class AABB {
 
                 float tempX = pos.x - (half.x + paddingX);
                 float tempY = leftIntYpos;
-                if (lineStart.dst2(tempX, tempY) < lineStart.dst2(returnVector) && sign(lineStart.x - tempX) == sign(lineStart.x - returnVector.x ) && sign(lineStart.y - tempY) == sign(lineStart.y - returnVector.y )) {
+                if (lineStart.dst2(tempX, tempY) < lineStart.dst2(returnVector) && sign(lineStart.x - tempX) == sign(lineStart.x - returnVector.x ) /*&& sign(lineStart.y - tempY) == sign(lineStart.y - returnVector.y )*/) {
                     intercepts = true;
                     returnVector.set(tempX, tempY);
+
+
                 }
             }
+
             if (rightIntYpos > pos.y - (half.y + paddingY) && rightIntYpos < pos.y + (half.y + paddingY)) {
 
                 float tempX = pos.x + (half.x + paddingX);
                 float tempY = rightIntYpos;
-                if (lineStart.dst2(tempX, tempY) < lineStart.dst2(returnVector) && sign(lineStart.x - tempX) == sign(lineStart.x - returnVector.x ) && sign(lineStart.y - tempY) == sign(lineStart.y - returnVector.y )) {
+                if (lineStart.dst2(tempX, tempY) < lineStart.dst2(returnVector) && sign(lineStart.x - tempX) == sign(lineStart.x - returnVector.x )/* && sign(lineStart.y - tempY) == sign(lineStart.y - returnVector.y )*/) {
                     intercepts = true;
                     returnVector.set(tempX, tempY);
+
+
                 }
             }
 
@@ -247,7 +253,7 @@ public class AABB {
         //if (!intercepts) return null;
 
 
-        if (globals.showCollision && intercepts ){
+        if (false && globals.showCollision && intercepts ){
 
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -270,19 +276,24 @@ public class AABB {
         returnInfo.x = returnVector.x;
         returnInfo.y = returnVector.y;
         returnInfo.collides = intercepts;
-        if (intercepts) System.out.println("intercepts: " + intercepts);
+        //if (intercepts) System.out.println("intercepts: " + intercepts);
         returnInfo.resolves = false;
 
-        if (containsPoint(returnVector,paddingX,paddingY,0)){
-            System.out.println("WELL THAT'S A PROBLEM " + intercepts + " is it on the edge: " + edgeContainsPoint(lineStart,paddingX,paddingY));
+        if (containsPoint(returnVector,paddingX,paddingY,0) && !edgeContainsPoint(returnVector,paddingX,paddingY)){
+            System.out.println("WELL THAT'S A PROBLEM " + intercepts);
             System.out.println("started at: " + lineStart);
-            System.out.println("end is on edge? " + edgeContainsPoint(lineStart,paddingX,paddingY) );
+            System.out.println("ended at: " + returnVector);
+            System.out.println("tried to go: " + offset);
+            System.out.println("start is on edge? " + edgeContainsPoint(lineStart,paddingX,paddingY) );
+            System.out.println("count: " + count);
         }
+//
+//        if (intercepts){
+//            System.out.println("intercepted!");
+//            System.out.println(returnVector);
+//        }
 
-        if (intercepts){
-            System.out.println("intercepted!");
-            System.out.println(returnVector);
-        }
+        count++;
 
         return returnInfo;
 
@@ -299,18 +310,25 @@ public class AABB {
     }
 
     public boolean edgeContainsPoint(Vector2 point,float paddingX, float paddingY){
+        return edgeContainsPoint(point,paddingX,paddingY,0.00f);
+    }
+    public boolean edgeContainsPoint(Vector2 point,float paddingX, float paddingY,float tolerance){
 
         if (point.x > pos.x + paddingX + half.x) return false;
         if (point.x < pos.x - paddingX - half.x) return false;
         if (point.y > pos.y + paddingY + half.y) return false;
         if (point.y < pos.y - paddingY - half.y) return false;
 
-        if (point.x == pos.x + paddingX + half.x) return true;
-        if (point.x == pos.x - paddingX - half.x) return true;
-        if (point.y == pos.y + paddingY + half.y) return true;
-        if (point.y == pos.y - paddingY - half.y) return true;
+        if (isEqualApprox(point.x , pos.x + paddingX + half.x,tolerance )) return true;
+        if (isEqualApprox(point.x, pos.x - paddingX - half.x, tolerance)) return true;
+        if (isEqualApprox(point.y , pos.y + paddingY + half.y,tolerance)) return true;
+        if (isEqualApprox(point.y , pos.y - paddingY - half.y,tolerance)) return true;
 
         return false;
+    }
+
+    public boolean isEqualApprox(float a, float b,float tolerance){
+        return (a + tolerance >= b && a - tolerance <= b);
     }
 
     public boolean intersectAABB(AABB box) {
