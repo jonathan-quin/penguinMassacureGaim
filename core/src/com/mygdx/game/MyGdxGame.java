@@ -4,20 +4,21 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.game.helpers.Globals;
 import com.mygdx.game.nodes.*;
-import com.mygdx.game.scenes.testScene;
+import com.mygdx.game.scenes.TestScene;
 
 public class MyGdxGame extends ApplicationAdapter {
 	SpriteBatch batch;
 	private OrthographicCamera camera;
 
 
-	root scene1;// = new testScene();
+	Root scene1;// = new testScene();
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		scene1 = new testScene();
+		scene1 = new TestScene();
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1024, 600);
@@ -31,7 +32,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		scene1.update();
 
 
-		camera.position.set(globals.cameraOffset,camera.position.z);
+		camera.position.set(Globals.cameraOffset,camera.position.z);
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 

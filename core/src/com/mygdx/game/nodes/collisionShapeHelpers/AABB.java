@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.globals;
+import com.mygdx.game.helpers.Globals;
 
 import static com.badlogic.gdx.math.MathUtils.clamp;
 
@@ -253,22 +253,22 @@ public class AABB {
         //if (!intercepts) return null;
 
 
-        if (false && globals.showCollision && intercepts ){
+        if (false && Globals.showCollision && intercepts ){
 
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-            globals.globalShape.begin(ShapeRenderer.ShapeType.Filled);
-            globals.globalShape.setColor(new Color(1, 1, 1, 1f));
+            Globals.globalShape.begin(ShapeRenderer.ShapeType.Filled);
+            Globals.globalShape.setColor(new Color(1, 1, 1, 1f));
 
-            globals.globalShape.circle( (returnVector.x )-globals.cameraOffset.x + 512,
-                    (returnVector.y )-globals.cameraOffset.y + 300,4);
+            Globals.globalShape.circle( (returnVector.x )- Globals.cameraOffset.x + 512,
+                    (returnVector.y )- Globals.cameraOffset.y + 300,4);
 
-            globals.globalShape.line( (returnVector.x )-globals.cameraOffset.x + 512,
-                    (returnVector.y )-globals.cameraOffset.y + 300,
-                    (pos.x )-globals.cameraOffset.x + 512,
-                    (pos.y )-globals.cameraOffset.y + 300);
+            Globals.globalShape.line( (returnVector.x )- Globals.cameraOffset.x + 512,
+                    (returnVector.y )- Globals.cameraOffset.y + 300,
+                    (pos.x )- Globals.cameraOffset.x + 512,
+                    (pos.y )- Globals.cameraOffset.y + 300);
 
-            globals.globalShape.end();
+            Globals.globalShape.end();
             Gdx.gl.glDisable(GL20.GL_BLEND);
         } //debugging nonsense
 
@@ -339,9 +339,9 @@ public class AABB {
         return true;
     }
 
-    public sweepInfo sweepAABB(AABB otherBox,Vector2 offset) {
+    public SweepInfo sweepAABB(AABB otherBox, Vector2 offset) {
 
-        sweepInfo info = new sweepInfo();
+        SweepInfo info = new SweepInfo();
 
         info.length = offset.len();
 

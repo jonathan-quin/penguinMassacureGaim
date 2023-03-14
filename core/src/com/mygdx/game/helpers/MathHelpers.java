@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.helpers;
 
 public class MathHelpers {
     public static double moveTowardsZero(double num, double amount){

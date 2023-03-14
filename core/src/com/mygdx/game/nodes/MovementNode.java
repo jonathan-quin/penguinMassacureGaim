@@ -1,16 +1,16 @@
 package com.mygdx.game.nodes;
 
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.globals;
+import com.mygdx.game.helpers.Globals;
 
-public class movementNode extends colliderObject{
+public class MovementNode extends ColliderObject {
 
-    public movementNode(root myRoot){
+    public MovementNode(Root myRoot){
 
         this(myRoot,0,0,new int[]{0},new int[]{0});
     }
 
-    public movementNode(root myRoot,float x, float y,int[] mask,int[] layers){
+    public MovementNode(Root myRoot, float x, float y, int[] mask, int[] layers){
         super(myRoot,x,y,mask,layers);
     }
 
@@ -49,7 +49,7 @@ public class movementNode extends colliderObject{
             System.out.println(position);
         }
 
-        return difference.scl(globals.inverse(delta));
+        return difference.scl(Globals.inverse(delta));
     }
 
 

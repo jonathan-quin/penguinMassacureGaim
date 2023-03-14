@@ -1,38 +1,35 @@
 package com.mygdx.game.nodes;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-
-import com.badlogic.gdx.math.Rectangle;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
-public class node {
-    public Array<node> children = new Array<node>();
+public class Node {
+    public Array<Node> children = new Array<Node>();
     public Vector2 position;
     public Vector2 globalPosition = new Vector2(0,0);
     public Vector2 parentPosition;
 
     public String name = "";
 
-    node parent = this;
+    Node parent = this;
 
-    public node(){
+    public Node(){
 
         position = new Vector2(0,0);
         parentPosition = new Vector2(0,0);
         updateGlobalPosition();
 
     }
-    public node(float x, float y){
+    public Node(float x, float y){
         position = new Vector2(x,y);
         parentPosition = new Vector2(0,0);
         updateGlobalPosition();
     }
 
-    public node getParent(){
+    public Node getParent(){
         return parent;
     }
 
@@ -43,7 +40,7 @@ public class node {
         update(Math.min(1/6f, Gdx.graphics.getDeltaTime()));
 
         updateParentPos();
-        for (node child: children){
+        for (Node child: children){
             child.updateCascade();
         }
 
@@ -55,7 +52,7 @@ public class node {
 
     public void updateParentPos(){
         updateGlobalPosition();
-        for (node child:children) {
+        for (Node child:children) {
             child.parentPosition.set(globalPosition);
             child.parent = this;
         }
@@ -63,7 +60,7 @@ public class node {
 
     public void renderCascade(SpriteBatch batch){
         render(batch);
-        for (node child: children){
+        for (Node child: children){
             child.renderCascade(batch);
         }
     }
@@ -74,7 +71,7 @@ public class node {
 
     public void debugCascade(){
         debug();
-        for (node child: children){
+        for (Node child: children){
             child.debugCascade();
         }
     }
@@ -83,13 +80,13 @@ public class node {
 
     }
 
-    public void addChild(node child){
+    public void addChild(Node child){
         children.add(child);
     }
 
 
     //returns true if the child was found
-    public boolean removeChild(node child){
+    public boolean removeChild(Node child){
 
         if (children.contains(child,true)){
             children.removeIndex(children.indexOf(child,true));
@@ -102,7 +99,7 @@ public class node {
 
     public void free(){
         getParent().removeChild(this);
-        for (node child : children){
+        for (Node child : children){
             child.free();
         }
     }
@@ -113,12 +110,12 @@ public class node {
 
     }
 
-    public node getNewestChild(){
+    public Node getNewestChild(){
         return children.get(children.size - 1);
     }
 
-    public node getChild(String name){
-        for (node child : children){
+    public Node getChild(String name){
+        for (Node child : children){
             if (child.name == name) return child;
         }
         return null;

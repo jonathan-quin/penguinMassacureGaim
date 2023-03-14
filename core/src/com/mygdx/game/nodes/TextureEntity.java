@@ -4,17 +4,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 
-import com.badlogic.gdx.math.Rectangle;
-
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-public class textureEntity extends node {
+public class TextureEntity extends Node {
 
    // Texture sprite;
 
     Sprite sprite;
     Vector2 size;
 
-    public textureEntity(Texture image,int posX, int posY,int width,int height){
+    public TextureEntity(Texture image, int posX, int posY, int width, int height){
         sprite = new Sprite(image);
         position = new Vector2(posX,posY);
         size = new Vector2(width,height);

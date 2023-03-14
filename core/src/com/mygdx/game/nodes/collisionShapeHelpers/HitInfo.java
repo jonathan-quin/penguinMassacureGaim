@@ -1,9 +1,8 @@
 package com.mygdx.game.nodes.collisionShapeHelpers;
 
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.nodes.node;
 
-public class hitInfo {
+public class HitInfo {
 
 
     public AABB collider;
@@ -12,7 +11,7 @@ public class hitInfo {
     public Vector2 normal;
     public float time;
 
-    public hitInfo(AABB collider) {
+    public HitInfo(AABB collider) {
         this.collider = collider;
         this.pos = new Vector2();
         this.delta = new Vector2();

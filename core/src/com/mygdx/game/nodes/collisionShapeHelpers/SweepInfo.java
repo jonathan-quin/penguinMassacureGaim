@@ -2,7 +2,7 @@ package com.mygdx.game.nodes.collisionShapeHelpers;
 
 import com.badlogic.gdx.math.Vector2;
 
-public class sweepInfo {
+public class SweepInfo {
 
         public float time;
 
@@ -13,7 +13,7 @@ public class sweepInfo {
 
         public boolean collides = false;
 
-        public sweepInfo() {
+        public SweepInfo() {
             this.time = 1;
         }
 

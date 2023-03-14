@@ -3,19 +3,19 @@ package com.mygdx.game.nodes;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
-public class root {
+public class Root {
 
-    public Array<colliderObject> colliders = new Array<colliderObject>();
+    public Array<ColliderObject> colliders = new Array<ColliderObject>();
 
-    public node rootNode;
+    public Node rootNode;
 
-    public root(){
+    public Root(){
 
     }
 
-    public Array<colliderObject> getCollidersInLayers(int[] mask){
-        Array<colliderObject> returnArray = new Array<>();
-        for (colliderObject obj : colliders){
+    public Array<ColliderObject> getCollidersInLayers(int[] mask){
+        Array<ColliderObject> returnArray = new Array<>();
+        for (ColliderObject obj : colliders){
             for (int n : obj.layers){
                 boolean added = false;
                 for (int o : mask){
