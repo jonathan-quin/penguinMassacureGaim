@@ -15,13 +15,16 @@ public class colliderObject extends node{
     Array<collisionShape> shapes = new Array<collisionShape>();
     root myRoot;
 
+    int[] mask;
+    int[] layers;
+
     public boolean isColliding(){
         return overlaps(myRoot.colliders);
     }
 
     public Vector2 getFirstCollision(Vector2 distance){
 
-        sweepInfo currentInfo = sweepTestArray(distance,myRoot.colliders);
+        sweepInfo currentInfo = sweepTestArray(distance,myRoot.getCollidersInLayers(mask));
 
        // System.out.println("first impact " + currentInfo.firstImpact);
 
@@ -47,15 +50,17 @@ public class colliderObject extends node{
             Gdx.gl.glDisable(GL20.GL_BLEND);
         } //debugging nonsense
 
-        Vector2 output = new Vector2(position.x + currentInfo.offset.x,position.y + currentInfo.offset.y);
+        Vector2 output = new Vector2(position.x + distance.x,position.y + distance.y);
+
+        if (currentInfo != null){
+            output.set(position.x + currentInfo.offset.x,position.y + currentInfo.offset.y);
+        }
+
 
         //System.out.println("output" + output);
        // System.out.println("first" + currentInfo.firstImpact + " resolves: " + currentInfo.collides);
 
        // System.out.println(currentInfo.time);
-
-
-
         return output;//currentInfo.firstImpact;
 
     }
@@ -118,14 +123,22 @@ public class colliderObject extends node{
     }
 
     public colliderObject(root myRoot){
-        super();
-        this.myRoot = myRoot;
-        this.myRoot.colliders.add(this);
+        this(myRoot,0,0,new int[]{0},new int[]{0});
     }
-    public colliderObject(root myRoot,float x, float y ){
+    public colliderObject(root myRoot,float x, float y, int[] mask,int[] layers ){
         super(x,y);
         this.myRoot = myRoot;
         this.myRoot.colliders.add(this);
+
+        this.mask = new int[mask.length];
+        for (int i = 0; i < mask.length; i++){
+            this.mask[i] = mask[i];
+        }
+        this.layers = new int[layers.length];
+        for (int i = 0; i < layers.length; i++){
+            this.layers[i] = layers[i];
+        }
+
     }
 
     public void addChild(node child){

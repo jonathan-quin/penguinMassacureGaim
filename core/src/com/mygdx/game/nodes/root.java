@@ -13,6 +13,24 @@ public class root {
 
     }
 
+    public Array<colliderObject> getCollidersInLayers(int[] mask){
+        Array<colliderObject> returnArray = new Array<>();
+        for (colliderObject obj : colliders){
+            for (int n : obj.layers){
+                boolean added = false;
+                for (int o : mask){
+                    if (n == o){
+                        returnArray.add(obj);
+                        added = true;
+                        break;
+                    }
+                }
+                if (added) break;
+            }
+        }
+        return returnArray;
+    }
+
     public void update(){
         rootNode.updateCascade();
     }

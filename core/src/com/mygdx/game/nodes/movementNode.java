@@ -6,11 +6,12 @@ import com.mygdx.game.globals;
 public class movementNode extends colliderObject{
 
     public movementNode(root myRoot){
-        super(myRoot);
+
+        this(myRoot,0,0,new int[]{0},new int[]{0});
     }
 
-    public movementNode(root myRoot,float x, float y){
-        super(myRoot,x,y);
+    public movementNode(root myRoot,float x, float y,int[] mask,int[] layers){
+        super(myRoot,x,y,mask,layers);
     }
 
     private Vector2 tempPos = new Vector2(0,0);
@@ -147,7 +148,7 @@ public class movementNode extends colliderObject{
 
     }
 
-    public int moveTowardsZero(int num, int amount){
+    private int moveTowardsZero(int num, int amount){
         if (num > 0) return Math.max(num-amount,0);
         if (num < 0) return Math.min(num+amount,0);
         return 0;

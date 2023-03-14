@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.MathHelpers;
 import com.mygdx.game.globals;
 import com.mygdx.game.nodes.*;
 
@@ -20,6 +21,8 @@ public class player extends movementNode {
 
     private float ACCEL = 6;
 
+    double rotation = 0;
+
     //private double
 
 
@@ -29,18 +32,17 @@ public class player extends movementNode {
 
     public player(root myRoot, float x, float y) {
 
-        super(myRoot, x, y);
+        super(myRoot, x, y, new int[]{0},new int[]{0});
 
         Texture penguinTX = new Texture("penguinForNow.png");
         addChild(new textureEntity(penguinTX,0,2,32,32));
+        getNewestChild().name = "sprite";
         addChild(new collisionShape(8,12,0,0));
 
         //addChild(new collisionShape(16,16,25,8));
 
 
         updateParentPos();
-
-
 
     }
 
@@ -50,24 +52,39 @@ public class player extends movementNode {
 
         targetSpeed.set(0.0f,0.0f);
 
+        boolean onFloor = testMove(0,-1);
+
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) targetSpeed.x -= MAXSPEED;
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) targetSpeed.x += MAXSPEED;
 
-        if(Gdx.input.isKeyPressed(Input.Keys.UP) && testMove(0,-1)) vel.y = MAXSPEED;
-//        else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) vel.y = -MAXSPEED;
-//        else vel.y = 0;
-
+        if(Gdx.input.isKeyPressed(Input.Keys.UP) && onFloor) vel.y = MAXSPEED;
 
         vel.x  = lerp(vel.x,targetSpeed.x, ACCEL * (float)delta);
 
+        if (vel.x != 0){
+            ((textureEntity) getChild("sprite")).setFlip(vel.x < 0,false);
+        }
+
+        if (!onFloor){
+            //rotation = rotation % 360;
+            rotation += 4 + Math.max(10,rotation * 0.01);
+            System.out.println(rotation);
+        }
+        else{
+            rotation = rotation % 360;
+            rotation += MathHelpers.differenceBetweenAngles(Math.toRadians(rotation),0) * 30;
+            rotation = MathHelpers.moveTowardsZero(rotation,0.1);
+
+        }
+        if (((textureEntity) getChild("sprite")).getFlipX()){
+            ((textureEntity) getChild("sprite")).setRotation(rotation);
+        }else{
+            ((textureEntity) getChild("sprite")).setRotation(-rotation);
+        }
+
         vel.y -= GRAVITY/5 * delta;
 
-       // if(Gdx.input.isKeyPressed(Input.Keys.UP) && testMove(0,-10)) vel.y = (float) JUMPFORCE;
 
-        //System.out.println(position + " delta: " + delta);
-        //System.out.println("before: " + vel);
-
-        //System.out.println("vel before:" + vel);
 
         Vector2 tempVector = moveAndSlide( vel,(float) delta) ;
 
@@ -76,13 +93,7 @@ public class player extends movementNode {
 
 
 
-        //System.out.println("after: " + vel);
-
-        //if (Math.abs(vel.x) < 0.1) vel.x = 0;
-
         globals.cameraOffset.set(position);
-
-        //System.out.println(position);
 
     }
 

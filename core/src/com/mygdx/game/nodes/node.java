@@ -15,6 +15,8 @@ public class node {
     public Vector2 globalPosition = new Vector2(0,0);
     public Vector2 parentPosition;
 
+    public String name = "";
+
     node parent = this;
 
     public node(){
@@ -110,5 +112,21 @@ public class node {
         this.globalPosition.set( parentPosition.x + position.x,parentPosition.y+position.y  );
 
     }
+
+    public node getNewestChild(){
+        return children.get(children.size - 1);
+    }
+
+    public node getChild(String name){
+        for (node child : children){
+            if (child.name == name) return child;
+        }
+        return null;
+    }
+
+
+
+
+
 
 }
