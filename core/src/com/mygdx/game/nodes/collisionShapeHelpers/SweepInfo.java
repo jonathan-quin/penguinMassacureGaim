@@ -11,10 +11,17 @@ public class SweepInfo {
 
         public Vector2 offset;
 
-        public boolean collides = false;
+        public boolean collides;
 
         public SweepInfo() {
             this.time = 1;
+        }
+
+        public SweepInfo init(){
+                time = 0;
+                length = 0;
+                collides = false;
+                return this;
         }
 
     

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.helpers.Globals;
+import com.mygdx.game.helpers.ObjectPool;
 import com.mygdx.game.nodes.*;
 import com.mygdx.game.scenes.TestScene;
 
@@ -27,6 +28,9 @@ public class MyGdxGame extends ApplicationAdapter {
 	@Override
 	public void render () {
 
+		System.out.println("before");
+		ObjectPool.printTotal();
+
 		ScreenUtils.clear(0.921f, 0.55f, 0.96f, 1);
 
 		scene1.update();
@@ -44,6 +48,11 @@ public class MyGdxGame extends ApplicationAdapter {
 		batch.end();
 
 		//scene1.debug();
+
+		ObjectPool.takeOutTrash();
+
+		System.out.println("after");
+		ObjectPool.printTotal();
 
 	}
 	

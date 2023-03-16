@@ -15,4 +15,19 @@ public class AABBIntersectSegmentInfo {
 
     }
 
+    public AABBIntersectSegmentInfo(){
+        collides = false;
+        resolves = false;
+        x = 0;
+        y = 0;
+    }
+
+    public AABBIntersectSegmentInfo init(boolean collides,boolean resolves,float x, float y){
+        this.collides = collides;
+        this.resolves = resolves;
+        this.x = x;
+        this.y = y;
+        return this;
+    }
+
 }

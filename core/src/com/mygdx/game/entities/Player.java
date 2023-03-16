@@ -68,7 +68,7 @@ public class Player extends MovementNode {
         if (!onFloor){
             //rotation = rotation % 360;
             rotation += 4 + Math.min(10,rotation * 0.01);
-            System.out.println(rotation);
+
         }
         else{
             rotation = rotation % 360;

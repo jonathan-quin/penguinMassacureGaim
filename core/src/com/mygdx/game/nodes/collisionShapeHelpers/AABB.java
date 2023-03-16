@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.helpers.Globals;
+import com.mygdx.game.helpers.ObjectPool;
 
 import static com.badlogic.gdx.math.MathUtils.clamp;
 
@@ -14,12 +15,17 @@ import static java.lang.Math.abs;
 public class AABB {
 
 
-    public Vector2 pos = new Vector2();
-    public Vector2 half = new Vector2();
+    public Vector2 pos;
+    public Vector2 half;
 
     public AABB (Vector2 pos,Vector2 half){
-        this.pos.set(pos);
-        this.half.set(half);
+        this.pos = ((Vector2) ObjectPool.get(Vector2.class)).set(pos.x,pos.y);
+        this.half = ((Vector2) ObjectPool.get(Vector2.class)).set(half.x,half.y);
+    }
+
+    public AABB (){
+        this( ((Vector2) ObjectPool.getGarbage(Vector2.class)).set(0,0), ((Vector2) ObjectPool.getGarbage(Vector2.class)).set(0,0)  );
+
     }
 
     static int count = 0;
@@ -32,69 +38,13 @@ public class AABB {
 
     public AABBIntersectSegmentInfo intersectSegment(Vector2 lineStart, Vector2 offset, float paddingX, float paddingY) {
 
-        AABBIntersectSegmentInfo returnInfo = new AABBIntersectSegmentInfo(false,false,0,0);
+        AABBIntersectSegmentInfo returnInfo = ((AABBIntersectSegmentInfo) ObjectPool.getGarbage(AABBIntersectSegmentInfo.class)).init(false,false,0,0);
 
         if (containsPoint(lineStart,paddingX,paddingY,0f) ){
 
-            Vector2 endPoint = lineStart.cpy().add(offset);
-
-           /* if (edgeContainsPoint(endPoint,paddingX,paddingY)){
-                returnInfo.collides = false;
-                returnInfo.resolves = false;
-
-                returnInfo.x = lineStart.x + offset.x;
-                returnInfo.y = lineStart.y + offset.y;
-
-                return returnInfo;
-            }
+            Vector2 endPoint = ((Vector2) ObjectPool.getGarbage(Vector2.class)).set(lineStart).add(offset);
 
 
-           else if (!containsPoint(endPoint, paddingX, paddingY, -0.001f)) {
-
-               returnInfo.collides = false;
-               returnInfo.resolves = false;
-
-               returnInfo.x = lineStart.x + offset.x;
-               returnInfo.y = lineStart.y + offset.y;
-
-               return returnInfo;
-
-            }
-            else{
-
-               float yResolution = endPoint.y;
-               float xResolution = endPoint.x;
-
-               if (endPoint.y > pos.y) {
-                   yResolution = (float) ((pos.y + half.y + paddingY));
-               } else {
-                   yResolution = (float) ((pos.y - half.y - paddingY));
-               }
-
-               if (endPoint.x > pos.x) {
-                   xResolution = (float) ((pos.x + half.x + paddingX));
-               } else {
-                   xResolution = (float) ((pos.x - half.x - paddingX));
-               }
-
-               if (abs(xResolution - endPoint.x) > abs(yResolution - endPoint.y)) {
-                   returnInfo.x = endPoint.x;
-                   returnInfo.y = yResolution;
-               } else {
-                   returnInfo.x = xResolution;
-                   returnInfo.y = endPoint.y;
-               }
-
-
-               returnInfo.collides = true;
-               returnInfo.resolves = false;
-               //returnInfo.resolves = containsPoint(lineStart,paddingX,paddingY,-0.001f);
-
-               System.out.println("goto" + returnInfo.x);
-
-               return returnInfo;
-
-            }*/
 
             if (edgeContainsPoint(endPoint,paddingX,paddingY) || !containsPoint(endPoint, paddingX, paddingY, -0.00f)){
                 returnInfo.collides = false;
@@ -150,7 +100,7 @@ public class AABB {
 
             }
             else{
-                System.out.println("forth case for collisions actually god called wth");
+                System.out.println("forth case for collisions actually got called wth");
                 returnInfo.collides = true;
                 returnInfo.resolves = false;
 
@@ -187,7 +137,7 @@ public class AABB {
 
 
 
-        Vector2 returnVector = new Vector2(lineStart.x + offset.x, lineStart.y + offset.y);
+        Vector2 returnVector = ((Vector2) ObjectPool.getGarbage(Vector2.class)).set(lineStart.x + offset.x, lineStart.y + offset.y);
 
         //check if each intercept is within bounds and then set the vector there if it is, also make sure that it's the closest
 
@@ -341,7 +291,7 @@ public class AABB {
 
     public SweepInfo sweepAABB(AABB otherBox, Vector2 offset) {
 
-        SweepInfo info = new SweepInfo();
+        SweepInfo info = ((SweepInfo) ObjectPool.getGarbage(SweepInfo.class));
 
         info.length = offset.len();
 
@@ -352,14 +302,14 @@ public class AABB {
 
         if (!segmentInfo.collides && !segmentInfo.resolves){
             info.collides = false;
-            info.firstImpact = new Vector2(pos.x + offset.x,pos.y + offset.y);
-            info.offset = new Vector2(info.firstImpact.x - pos.x,info.firstImpact.y-pos.y);
+            info.firstImpact =((Vector2) ObjectPool.getGarbage(Vector2.class)).set(pos.x + offset.x,pos.y + offset.y);
+            info.offset = ((Vector2) ObjectPool.getGarbage(Vector2.class)).set(info.firstImpact.x - pos.x,info.firstImpact.y-pos.y);
             info.time = 1;
             return info;
         }
 
-        info.firstImpact = new Vector2(segmentInfo.x,segmentInfo.y);
-        info.offset = new Vector2(info.firstImpact.x - pos.x,info.firstImpact.y-pos.y);
+        info.firstImpact = ((Vector2) ObjectPool.getGarbage(Vector2.class)).set(segmentInfo.x,segmentInfo.y);
+        info.offset =((Vector2) ObjectPool.getGarbage(Vector2.class)).set(info.firstImpact.x - pos.x,info.firstImpact.y-pos.y);
         info.time = 1; //(info.offset.len())/info.length;
 
         if (segmentInfo.resolves){
