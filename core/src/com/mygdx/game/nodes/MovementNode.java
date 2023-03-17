@@ -12,6 +12,7 @@ public class MovementNode extends ColliderObject {
     }
 
     public MovementNode(Root myRoot, float x, float y, int[] mask, int[] layers){
+
         super(myRoot,x,y,mask,layers);
     }
 

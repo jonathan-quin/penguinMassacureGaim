@@ -1,8 +1,12 @@
 package com.mygdx.game.entities;
 
-public class Bullet {
+import com.mygdx.game.nodes.MovementNode;
 
+public class Bullet extends MovementNode {
 
+    public Bullet(){
+        super();
+    }
 
 
 
