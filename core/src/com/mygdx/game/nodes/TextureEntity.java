@@ -52,6 +52,11 @@ public class TextureEntity extends Node {
         //super.render(batch);
     }
 
+    public void free(){
+
+
+    }
+
 
 
 

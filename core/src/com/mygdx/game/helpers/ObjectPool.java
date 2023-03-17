@@ -26,18 +26,23 @@ public class ObjectPool {
 
         return returnObj;
     }
+
+
     public static Object getGarbage(Class type){
         Object returnObj = null;
 
-        printTotal();
+
 
         for (Object obj : objectsStored){
             if (type.isInstance(obj)){
                 returnObj = obj;
                 objectsStored.remove(returnObj);
 
-                garbageObjectInUse.remove(returnObj);
+                //garbageObjectInUse.remove(returnObj); //You can't remove it from the list because it uses ".equals" not " == "
                 garbageObjectInUse.add(returnObj);
+
+
+
                 return returnObj;
             }
         }
@@ -46,12 +51,11 @@ public class ObjectPool {
             returnObj =  type.getDeclaredConstructor().newInstance();
         } catch (Exception ex) {        }
 
-        //System.out.println("created new object! " + count + returnObj.getClass());
-        count++;
+//        System.out.println("created new object! " + count + returnObj.getClass());
+//        count++;
 
         garbageObjectInUse.add(returnObj);
 
-        //printTotal();
 
         return returnObj;
     }

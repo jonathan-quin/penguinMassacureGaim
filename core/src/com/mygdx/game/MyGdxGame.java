@@ -28,8 +28,8 @@ public class MyGdxGame extends ApplicationAdapter {
 	@Override
 	public void render () {
 
-		System.out.println("before");
-		ObjectPool.printTotal();
+//		System.out.println("before");
+//		ObjectPool.printTotal();
 
 		ScreenUtils.clear(0.921f, 0.55f, 0.96f, 1);
 
@@ -51,8 +51,8 @@ public class MyGdxGame extends ApplicationAdapter {
 
 		ObjectPool.takeOutTrash();
 
-		System.out.println("after");
-		ObjectPool.printTotal();
+		//System.out.println("after");
+		//ObjectPool.printTotal();
 
 	}
 	
