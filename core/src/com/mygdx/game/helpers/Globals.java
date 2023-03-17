@@ -1,11 +1,14 @@
 package com.mygdx.game.helpers;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 
 public class Globals {
 
     public static int gamespeed = 1;
+    public static OrthographicCamera camera;
+
     public static boolean showCollision = true;
 
     public static ShapeRenderer globalShape= new ShapeRenderer();

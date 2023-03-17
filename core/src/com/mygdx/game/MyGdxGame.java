@@ -23,6 +23,8 @@ public class MyGdxGame extends ApplicationAdapter {
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1024, 600);
+
+		Globals.camera = camera;
 	}
 
 	@Override
@@ -52,7 +54,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		ObjectPool.takeOutTrash();
 
 		//System.out.println("after");
-		//ObjectPool.printTotal();
+		ObjectPool.printTotal();
 
 	}
 	

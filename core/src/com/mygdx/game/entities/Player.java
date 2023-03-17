@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.helpers.MathHelpers;
 import com.mygdx.game.helpers.Globals;
+import com.mygdx.game.helpers.TextureHolder;
 import com.mygdx.game.nodes.*;
 
 public class Player extends MovementNode {
@@ -34,7 +35,7 @@ public class Player extends MovementNode {
 
         super(myRoot, x, y, new int[]{0},new int[]{0});
 
-        Texture penguinTX = new Texture("penguinForNow.png");
+        Texture penguinTX = TextureHolder.penguinTexture;
         addChild(new TextureEntity(penguinTX,0,2,32,32));
         getNewestChild().name = "sprite";
         addChild(new CollisionShape(8,12,0,0));

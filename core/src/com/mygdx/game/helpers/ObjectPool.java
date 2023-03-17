@@ -54,8 +54,7 @@ public class ObjectPool {
             returnObj =  type.getDeclaredConstructor().newInstance();
         } catch (Exception ex) {        }
 
-        System.out.println("created new object! " + count + returnObj.getClass());
-        count++;
+
 
         garbageObjectInUse.add(returnObj);
 
