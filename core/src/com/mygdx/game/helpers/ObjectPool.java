@@ -13,8 +13,10 @@ public class ObjectPool {
         for (Object obj : objectsStored){
             if (type.isInstance(obj)){
                 returnObj = obj;
-                objectsStored.remove(obj);
-                objectsInUse.remove(obj);
+
+                removeFromList(objectsStored,returnObj);
+                //removeFromList(objectsInUse,returnObj); //safe but inefficient
+
                 objectsInUse.add(obj);
                 return returnObj;
             }        }
@@ -36,8 +38,9 @@ public class ObjectPool {
         for (Object obj : objectsStored){
             if (type.isInstance(obj)){
                 returnObj = obj;
-                objectsStored.remove(returnObj);
 
+                removeFromList(objectsStored,returnObj);
+                //removeFromList(garbageObjectInUse,returnObj); //safe but inefficient
                 //garbageObjectInUse.remove(returnObj); //You can't remove it from the list because it uses ".equals" not " == "
                 garbageObjectInUse.add(returnObj);
 
@@ -51,8 +54,8 @@ public class ObjectPool {
             returnObj =  type.getDeclaredConstructor().newInstance();
         } catch (Exception ex) {        }
 
-//        System.out.println("created new object! " + count + returnObj.getClass());
-//        count++;
+        System.out.println("created new object! " + count + returnObj.getClass());
+        count++;
 
         garbageObjectInUse.add(returnObj);
 
@@ -62,31 +65,47 @@ public class ObjectPool {
     public static void remove(Object obj){
          //System.out.println("In use: " + objectsInUse.size() + "  Stored: " + objectsStored.size() + " Garbage in use: " + garbageObjectInUse.size());
 
-         objectsStored.remove(obj);
-         objectsInUse.remove(obj);
+
+         removeFromList(objectsStored,obj);
+         //removeFromList(objectsInUse,obj); //safe but inefficient
          objectsStored.add(obj);
     }
+
+    public static boolean removeFromList(ArrayList<Object> list, Object o){
+
+        if (o == null) {
+            for (int index = 0; index < list.size(); index++)
+                if (list.get(index) == null) {
+                    list.remove(index);
+                    return true;
+                }
+        } else {
+            for (int index = 0; index < list.size(); index++)
+                if (o == (list.get(index))) {
+                    list.remove(index);
+                    return true;
+                }
+        }
+
+        return false;
+    }
+
     public static void keep(Object obj){
 
-        if (garbageObjectInUse.contains(obj))  {
-            objectsInUse.add(garbageObjectInUse.get(garbageObjectInUse.indexOf(obj)));
-            garbageObjectInUse.remove(obj);
+        if (removeFromList(garbageObjectInUse,obj))  {
+            objectsInUse.add(obj);
         }
 
     }
+
     public static void takeOutTrash(){
 
-        //System.out.println("total before: " + (garbageObjectInUse.size() + objectsInUse.size() + objectsStored.size()) );
 
         for (int i = garbageObjectInUse.size() -1; i >= 0; i--){
             objectsStored.add(garbageObjectInUse.get(i));
             garbageObjectInUse.remove(i);
         }
 
-        //System.out.println("trash collect, " + "Garbage in use: " + garbageObjectInUse.size() + "  Stored: " + objectsStored.size());
-        //System.out.println("Otherwise in use: " + objectsInUse.size());
-
-        //System.out.println("total after: " + (garbageObjectInUse.size() + objectsInUse.size() + objectsStored.size()) );
 
         }
 
