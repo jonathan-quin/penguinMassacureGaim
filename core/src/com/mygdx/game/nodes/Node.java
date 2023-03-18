@@ -5,11 +5,15 @@ import com.badlogic.gdx.math.Vector2;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.helpers.ObjectPool;
+import java.util.ArrayList;
 
 public class Node {
-    public Array<Node> children = new Array<Node>();
+    public Array<Node> children;
+
+
     public Vector2 position;
-    public Vector2 globalPosition = new Vector2(0,0);
+    public Vector2 globalPosition;
     public Vector2 parentPosition;
 
     public String name = "";
@@ -18,14 +22,14 @@ public class Node {
 
     public Node(){
 
-        position = new Vector2(0,0);
-        parentPosition = new Vector2(0,0);
-        updateGlobalPosition();
+        this(0,0);
 
     }
     public Node(float x, float y){
-        position = new Vector2(x,y);
-        parentPosition = new Vector2(0,0);
+        position = ((Vector2) ObjectPool.get(Vector2.class)).set(x,y);
+        parentPosition = ((Vector2) ObjectPool.get(Vector2.class)).set(0,0);
+        globalPosition = ((Vector2) ObjectPool.get(Vector2.class)).set(0,0);
+        children = ( (Array<Node>) ObjectPool.get( Array.class ) );
         updateGlobalPosition();
     }
 
@@ -98,6 +102,9 @@ public class Node {
     }
 
     public void free(){
+
+
+
         getParent().removeChild(this);
         for (Node child : children){
             child.free();

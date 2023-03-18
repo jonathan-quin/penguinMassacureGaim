@@ -6,9 +6,12 @@ import com.mygdx.game.helpers.ObjectPool;
 
 public class MovementNode extends ColliderObject {
 
+
+
     public MovementNode(Root myRoot){
 
         this(myRoot,0,0,new int[]{0},new int[]{0});
+
     }
 
     public MovementNode(Root myRoot, float x, float y, int[] mask, int[] layers){

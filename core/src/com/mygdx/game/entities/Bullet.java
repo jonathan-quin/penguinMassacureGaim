@@ -5,7 +5,8 @@ import com.mygdx.game.nodes.MovementNode;
 public class Bullet extends MovementNode {
 
     public Bullet(){
-        super();
+
+        super(null);
     }
 
 

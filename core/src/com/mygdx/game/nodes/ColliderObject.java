@@ -122,11 +122,25 @@ public class ColliderObject extends Node {
         return shapes;
     }
 
+    public ColliderObject init(Root myRoot, float x, float y, int[] mask, int[] layers){
+
+
+        return this;
+    }
+    public ColliderObject(){
+
+        this(null);
+
+    }
+
     public ColliderObject(Root myRoot){
+
         this(myRoot,0,0,new int[]{0},new int[]{0});
     }
     public ColliderObject(Root myRoot, float x, float y, int[] mask, int[] layers ){
+
         super(x,y);
+
         this.myRoot = myRoot;
         this.myRoot.colliders.add(this);
 
@@ -134,6 +148,7 @@ public class ColliderObject extends Node {
         for (int i = 0; i < mask.length; i++){
             this.mask[i] = mask[i];
         }
+
         this.layers = new int[layers.length];
         for (int i = 0; i < layers.length; i++){
             this.layers[i] = layers[i];
