@@ -3,6 +3,8 @@ package com.mygdx.game.nodes;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
+import java.util.ArrayList;
+
 public class Root {
 
     public Array<ColliderObject> colliders = new Array<ColliderObject>();
@@ -13,7 +15,7 @@ public class Root {
 
     }
 
-    public Array<ColliderObject> getCollidersInLayers(int[] mask){
+    public Array<ColliderObject> getCollidersInLayers(ArrayList<Integer> mask){
         Array<ColliderObject> returnArray = new Array<>();
         for (ColliderObject obj : colliders){
             for (int n : obj.layers){

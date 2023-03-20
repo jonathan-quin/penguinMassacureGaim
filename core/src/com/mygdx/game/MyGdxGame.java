@@ -25,6 +25,9 @@ public class MyGdxGame extends ApplicationAdapter {
 		camera.setToOrtho(false, 1024, 600);
 
 		Globals.camera = camera;
+
+
+
 	}
 
 	@Override

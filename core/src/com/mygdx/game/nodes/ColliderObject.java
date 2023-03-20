@@ -7,16 +7,19 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.helpers.Globals;
+import com.mygdx.game.helpers.ObjectPool;
 import com.mygdx.game.nodes.collisionShapeHelpers.SweepInfo;
+
+import java.util.ArrayList;
 
 public class ColliderObject extends Node {
 
 
-    Array<CollisionShape> shapes = new Array<CollisionShape>();
+    Array<CollisionShape> shapes = ( (Array<CollisionShape>) ObjectPool.get( Array.class ) );
     Root myRoot;
 
-    int[] mask;
-    int[] layers;
+    ArrayList<Integer> mask;
+    ArrayList<Integer> layers;
 
     public boolean isColliding(){
         return overlaps(myRoot.colliders);
@@ -134,9 +137,11 @@ public class ColliderObject extends Node {
     }
 
     public ColliderObject(Root myRoot){
+        this(myRoot,0,0, new int[]{0} ,new int[]{0});
 
-        this(myRoot,0,0,new int[]{0},new int[]{0});
+
     }
+
     public ColliderObject(Root myRoot, float x, float y, int[] mask, int[] layers ){
 
         super(x,y);
@@ -144,16 +149,15 @@ public class ColliderObject extends Node {
         this.myRoot = myRoot;
         this.myRoot.colliders.add(this);
 
-        this.mask = new int[mask.length];
-        for (int i = 0; i < mask.length; i++){
-            this.mask[i] = mask[i];
+        this.mask = ( (ArrayList<Integer>) ObjectPool.get( ArrayList.class ) );
+        for (int i = 0; i < mask.size(); i++){
+            this.mask.set(i,mask.get(i));
         }
 
-        this.layers = new int[layers.length];
-        for (int i = 0; i < layers.length; i++){
-            this.layers[i] = layers[i];
+        this.layers = ( (ArrayList<Integer>) ObjectPool.get( ArrayList.class ) );
+        for (int i = 0; i < layers.size(); i++){
+            this.layers.set(i,layers.get(i));
         }
-
     }
 
     public void addChild(Node child){
@@ -167,15 +171,15 @@ public class ColliderObject extends Node {
 
     public boolean removeChild(Node child){
 
-        if (children.contains(child,true)){
+        if (children.contains(child)){
 
-            children.removeIndex(children.indexOf(child,true));
+            children.remove(children.indexOf(child));
 
         }
 
         if (child instanceof CollisionShape){
             if (shapes.contains((CollisionShape) child,true)){
-                shapes.removeIndex(children.indexOf(child,true));
+                shapes.removeIndex(children.indexOf(child));
                 return true;
             }
         }

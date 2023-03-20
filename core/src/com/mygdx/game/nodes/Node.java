@@ -9,13 +9,12 @@ import com.mygdx.game.helpers.ObjectPool;
 import java.util.ArrayList;
 
 public class Node {
-    public Array<Node> children;
+    public ArrayList<Node> children;
 
 
     public Vector2 position;
     public Vector2 globalPosition;
     public Vector2 parentPosition;
-
     public String name = "";
 
     Node parent = this;
@@ -29,7 +28,7 @@ public class Node {
         position = ((Vector2) ObjectPool.get(Vector2.class)).set(x,y);
         parentPosition = ((Vector2) ObjectPool.get(Vector2.class)).set(0,0);
         globalPosition = ((Vector2) ObjectPool.get(Vector2.class)).set(0,0);
-        children = ( (Array<Node>) ObjectPool.get( Array.class ) );
+        children = ( (ArrayList<Node>) ObjectPool.get( ArrayList.class ) );
         updateGlobalPosition();
     }
 
@@ -92,8 +91,8 @@ public class Node {
     //returns true if the child was found
     public boolean removeChild(Node child){
 
-        if (children.contains(child,true)){
-            children.removeIndex(children.indexOf(child,true));
+        if (children.contains(child)){
+            children.remove(children.indexOf(child));
             return true;
         }
 
@@ -118,7 +117,7 @@ public class Node {
     }
 
     public Node getNewestChild(){
-        return children.get(children.size - 1);
+        return children.get(children.size() - 1);
     }
 
     public Node getChild(String name){
