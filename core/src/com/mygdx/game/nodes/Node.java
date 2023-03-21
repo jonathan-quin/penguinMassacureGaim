@@ -1,10 +1,12 @@
 package com.mygdx.game.nodes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.entities.Player;
 import com.mygdx.game.helpers.ObjectPool;
 import java.util.ArrayList;
 
@@ -55,6 +57,9 @@ public class Node {
 
     public void updateParentPos(){
         updateGlobalPosition();
+        if (Gdx.input.isKeyPressed(Input.Keys.X) && this.getClass() == Player.class && children.size() == 3){
+            System.out.println("");
+        }
         for (Node child:children) {
             child.parentPosition.set(globalPosition);
             child.parent = this;
