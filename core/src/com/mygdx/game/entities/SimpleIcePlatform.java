@@ -9,7 +9,7 @@ public class SimpleIcePlatform extends StaticNode {
 
     public SimpleIcePlatform(Root myRoot, float x, float y) {
 
-        super(myRoot, x, y, new int[]{0}, new int[]{0});
+        super(myRoot, x, y, getMaskLayers(0), getMaskLayers(0));
 
         Texture iceTexture = TextureHolder.iceTexture;
         addChild(new TextureEntity(iceTexture,0,0,96,48));

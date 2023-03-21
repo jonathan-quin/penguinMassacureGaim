@@ -33,7 +33,7 @@ public class Player extends MovementNode {
 
     public Player(Root myRoot, float x, float y) {
 
-        super(myRoot, x, y, new int[]{0},new int[]{0});
+        super(myRoot, x, y, getMaskLayers(0),getMaskLayers(0));
 
         Texture penguinTX = TextureHolder.penguinTexture;
         addChild(new TextureEntity(penguinTX,0,2,32,32));
@@ -92,6 +92,11 @@ public class Player extends MovementNode {
 
         vel.set(tempVector);
 
+
+        if (Gdx.input.isKeyPressed(Input.Keys.X)){
+            addChild(new Bullet().init(0,0,vel.x*10,vel.y*10));
+            ((ColliderObject) getNewestChild()).myRoot = myRoot;
+        }
 
 
         Globals.cameraOffset.set(position);

@@ -4,22 +4,32 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.helpers.Globals;
 import com.mygdx.game.helpers.ObjectPool;
 
+import java.util.ArrayList;
+
 public class MovementNode extends ColliderObject {
 
 
 
     public MovementNode(Root myRoot){
 
-        this(myRoot,0,0,new int[]{0},new int[]{0});
+        this(myRoot,0,0, getMaskLayers(0),getMaskLayers(0));
 
     }
 
-    public MovementNode(Root myRoot, float x, float y, int[] mask, int[] layers){
+    public MovementNode(Root myRoot, float x, float y, ArrayList<Integer> mask, ArrayList<Integer> layers){
 
         super(myRoot,x,y,mask,layers);
     }
 
     private Vector2 tempPos = new Vector2(0,0);
+
+    public Vector2 moveAndSlide(float x, float y, float delta){
+        return moveAndSlide(((Vector2) ObjectPool.getGarbage(Vector2.class)).set(x,y),delta);
+    }
+
+    public Vector2 moveAndSlide(Vector2 distance, double delta){
+        return moveAndSlide(distance,(float)delta);
+    }
 
     public Vector2 moveAndSlide(Vector2 distance,float delta){
 

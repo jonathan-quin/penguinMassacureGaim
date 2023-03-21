@@ -16,7 +16,7 @@ public class ColliderObject extends Node {
 
 
     Array<CollisionShape> shapes = ( (Array<CollisionShape>) ObjectPool.get( Array.class ) );
-    Root myRoot;
+    public Root myRoot;
 
     ArrayList<Integer> mask;
     ArrayList<Integer> layers;
@@ -137,26 +137,54 @@ public class ColliderObject extends Node {
     }
 
     public ColliderObject(Root myRoot){
-        this(myRoot,0,0, new int[]{0} ,new int[]{0});
+        this(myRoot,0,0, getMaskLayers(0) , getMaskLayers(0));
 
 
     }
 
-    public ColliderObject(Root myRoot, float x, float y, int[] mask, int[] layers ){
+    public static ArrayList<Integer> getMaskLayers(int...newArr){
+
+        ArrayList<Integer> arr = (ArrayList<Integer>) ObjectPool.getGarbage(ArrayList.class);
+
+        arr.clear();
+
+        for (int i = 0; i < newArr.length; i++){
+            arr.add(newArr[i]);
+        }
+
+        return arr;
+    }
+
+    public void setMaskLayers(ArrayList<Integer> mask, ArrayList<Integer> layers){
+        this.mask.clear();
+        for (int i = 0; i < mask.size(); i++){
+            this.mask.add(i,mask.get(i));
+        }
+
+        this.layers.clear();
+        for (int i = 0; i < layers.size(); i++){
+            this.layers.add(i,layers.get(i));
+        }
+    }
+
+    public ColliderObject(Root myRoot, float x, float y, ArrayList<Integer> mask, ArrayList<Integer> layers ){
 
         super(x,y);
 
         this.myRoot = myRoot;
-        this.myRoot.colliders.add(this);
+
+        if (myRoot != null) this.myRoot.colliders.add(this);
 
         this.mask = ( (ArrayList<Integer>) ObjectPool.get( ArrayList.class ) );
+        this.mask.clear();
         for (int i = 0; i < mask.size(); i++){
-            this.mask.set(i,mask.get(i));
+            this.mask.add(i,mask.get(i));
         }
 
         this.layers = ( (ArrayList<Integer>) ObjectPool.get( ArrayList.class ) );
+        this.layers.clear();
         for (int i = 0; i < layers.size(); i++){
-            this.layers.set(i,layers.get(i));
+            this.layers.add(i,layers.get(i));
         }
     }
 
