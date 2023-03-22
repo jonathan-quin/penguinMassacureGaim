@@ -1,8 +1,10 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.helpers.Globals;
 import com.mygdx.game.helpers.ObjectPool;
@@ -25,6 +27,8 @@ public class MyGdxGame extends ApplicationAdapter {
 		camera.setToOrtho(false, 1024, 600);
 
 		Globals.camera = camera;
+
+		Globals.globalShape.setColor(new Color(0, 0, 1, 0.5f));
 
 
 
@@ -52,7 +56,10 @@ public class MyGdxGame extends ApplicationAdapter {
 
 		batch.end();
 
-		//scene1.debug();
+		Globals.globalShape.begin(ShapeRenderer.ShapeType.Filled);
+		scene1.debug();
+		Globals.globalShape.end();
+
 
 		ObjectPool.takeOutTrash();
 

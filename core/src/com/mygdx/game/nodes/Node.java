@@ -31,6 +31,7 @@ public class Node {
         parentPosition = ((Vector2) ObjectPool.get(Vector2.class)).set(0,0);
         globalPosition = ((Vector2) ObjectPool.get(Vector2.class)).set(0,0);
         children = ( (ArrayList<Node>) ObjectPool.get( ArrayList.class ) );
+        children.clear();
         updateGlobalPosition();
     }
 
@@ -57,13 +58,18 @@ public class Node {
 
     public void updateParentPos(){
         updateGlobalPosition();
-        if (Gdx.input.isKeyPressed(Input.Keys.X) && this.getClass() == Player.class && children.size() == 3){
-            System.out.println("");
+
+        try {
+            for (Node child : children) {
+                child.parentPosition.set(globalPosition);
+                child.parent = this;
+            }
+        }catch (Exception ex){
+            System.out.println("I have a bad child");
         }
-        for (Node child:children) {
-            child.parentPosition.set(globalPosition);
-            child.parent = this;
-        }
+
+
+
     }
 
     public void renderCascade(SpriteBatch batch){

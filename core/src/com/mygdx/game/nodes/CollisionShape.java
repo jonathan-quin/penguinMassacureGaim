@@ -87,17 +87,17 @@ public class CollisionShape extends Node {
 
         if (Globals.showCollision){
 
-            //globals.globalShape.setProjectionMatrix(camera.combined);
+
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-            Globals.globalShape.begin(ShapeRenderer.ShapeType.Filled); //I'm using the Filled ShapeType, but remember you have three of them
-            Globals.globalShape.setColor(new Color(0, 0, 1, 0.5f));
-            Globals.globalShape.rect( (globalPosition.x - boundingBox.half.x)- Globals.cameraOffset.x + 512,  (globalPosition.y - boundingBox.half.y)- Globals.cameraOffset.y + 300,boundingBox.half.x * 2,boundingBox.half.y * 2);//globalPosition.y-rect.height/2,rect.width,rect.height); //assuming you have created those x, y, width and height variables
-            Globals.globalShape.end();
-            Gdx.gl.glDisable(GL20.GL_BLEND);
-            //System.out.print(globalPosition );
-            //System.out.print(" ");
-            //System.out.println((globalPosition.x - rect.width/2)-(globals.cameraOffset.x));
+             //I'm using the Filled ShapeType, but remember you have three of them
+
+            Globals.globalShape.rect( (globalPosition.x - boundingBox.half.x)- Globals.cameraOffset.x + 512,  (globalPosition.y - boundingBox.half.y)- Globals.cameraOffset.y + 300,boundingBox.half.x * 2,boundingBox.half.y * 2); //assuming you have created those x, y, width and height variables
+
+
+
+
+            //Gdx.gl.glDisable(GL20.GL_BLEND); //this breaks transparency apparently?
         }
 
 

@@ -95,7 +95,7 @@ public class Player extends MovementNode {
 
         if (Gdx.input.isKeyPressed(Input.Keys.X)){
             addChild(new Bullet().init(0,0,vel.x*2,vel.y*2));
-            ((ColliderObject) getNewestChild()).myRoot = myRoot;
+            ((ColliderObject) getNewestChild()).setMyRoot(myRoot);
             getNewestChild().updateParentPos();
             System.out.println("hey");
         }

@@ -203,24 +203,7 @@ public class AABB {
         //if (!intercepts) return null;
 
 
-        if (false && Globals.showCollision && intercepts ){
 
-            Gdx.gl.glEnable(GL20.GL_BLEND);
-            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-            Globals.globalShape.begin(ShapeRenderer.ShapeType.Filled);
-            Globals.globalShape.setColor(new Color(1, 1, 1, 1f));
-
-            Globals.globalShape.circle( (returnVector.x )- Globals.cameraOffset.x + 512,
-                    (returnVector.y )- Globals.cameraOffset.y + 300,4);
-
-            Globals.globalShape.line( (returnVector.x )- Globals.cameraOffset.x + 512,
-                    (returnVector.y )- Globals.cameraOffset.y + 300,
-                    (pos.x )- Globals.cameraOffset.x + 512,
-                    (pos.y )- Globals.cameraOffset.y + 300);
-
-            Globals.globalShape.end();
-            Gdx.gl.glDisable(GL20.GL_BLEND);
-        } //debugging nonsense
 
 
         returnInfo.x = returnVector.x;

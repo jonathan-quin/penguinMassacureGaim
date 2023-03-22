@@ -17,7 +17,6 @@ public class ColliderObject extends Node {
 
     Array<CollisionShape> shapes = ( (Array<CollisionShape>) ObjectPool.get( Array.class ) );
     public Root myRoot;
-
     ArrayList<Integer> mask;
     ArrayList<Integer> layers;
 
@@ -31,27 +30,6 @@ public class ColliderObject extends Node {
 
        // System.out.println("first impact " + currentInfo.firstImpact);
 
-        if (false && Globals.showCollision){
-
-
-            Gdx.gl.glEnable(GL20.GL_BLEND);
-            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-            Globals.globalShape.begin(ShapeRenderer.ShapeType.Filled);
-            Globals.globalShape.setColor(new Color(0, 1, 0, 1f));
-
-            Globals.globalShape.circle( (globalPosition.x )- Globals.cameraOffset.x + 512,
-                    (globalPosition.y )- Globals.cameraOffset.y + 300,5);
-
-            Globals.globalShape.setColor(new Color(0, 1, 1, 1f));
-            Globals.globalShape.circle( ( currentInfo.firstImpact.x)- Globals.cameraOffset.x + 512,
-                    (currentInfo.firstImpact.y )- Globals.cameraOffset.y + 300,5);
-
-           // if (currentInfo.hit != null) globals.globalShape.circle( (globalPosition.x + currentInfo.hit.delta.x)-globals.cameraOffset.x + 512,
-            //        ( globalPosition.y + currentInfo.hit.delta.y )-globals.cameraOffset.y + 300,5);
-
-            Globals.globalShape.end();
-            Gdx.gl.glDisable(GL20.GL_BLEND);
-        } //debugging nonsense
 
         Vector2 output = new Vector2(position.x + distance.x,position.y + distance.y);
 
@@ -88,7 +66,8 @@ public class ColliderObject extends Node {
         SweepInfo tempSweepInfo;
         for (ColliderObject other : others){
             tempSweepInfo = sweepTest(distance,other);
-            if ( (returnSweepInfo == null || tempSweepInfo.time < returnSweepInfo.time) )
+
+            if (tempSweepInfo != null && (returnSweepInfo == null || tempSweepInfo.time < returnSweepInfo.time) )
                 returnSweepInfo = tempSweepInfo;
 
         }
@@ -186,6 +165,11 @@ public class ColliderObject extends Node {
         for (int i = 0; i < layers.size(); i++){
             this.layers.add(i,layers.get(i));
         }
+    }
+
+    public void setMyRoot(Root newRoot){
+        this.myRoot = newRoot;
+        if (myRoot != null) this.myRoot.colliders.add(this);
     }
 
     public void addChild(Node child){
