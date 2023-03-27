@@ -19,8 +19,8 @@ public class AABB {
     public Vector2 half;
 
     public AABB (Vector2 pos,Vector2 half){
-        this.pos = ((Vector2) ObjectPool.get(Vector2.class)).set(pos.x,pos.y);
-        this.half = ((Vector2) ObjectPool.get(Vector2.class)).set(half.x,half.y);
+        this.pos = (new Vector2()).set(pos.x,pos.y);
+        this.half = (new Vector2()).set(half.x,half.y);
     }
 
     public AABB (){

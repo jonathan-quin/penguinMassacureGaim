@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.helpers.ObjectPool;
-import com.mygdx.game.helpers.poolableSprite;
+import com.mygdx.game.helpers.PoolableSprite;
 
 
 public class TextureEntity extends Node {
@@ -14,28 +14,37 @@ public class TextureEntity extends Node {
    // Texture sprite;
 
     Sprite sprite;
-    Vector2 size;
+
+    Vector2 offset;
+
 
     public TextureEntity(){
-        this(null,0,0,0,0);
+        this(null,0,0);
     }
 
-    public TextureEntity(Texture image, int posX, int posY, int width, int height){
+    public TextureEntity(Texture image, float posX, float posY){
+        this(image,posX,posY,0,0);
+    }
+
+    public TextureEntity(Texture image, float posX, float posY,float offsetX,float offsetY){
         super(posX,posY);
-        sprite = ((poolableSprite) ObjectPool.get(poolableSprite.class)).init(image);
+        if (image != null)
+        sprite = (new PoolableSprite()).init(image);
+        this.offset = new Vector2(offsetX,offsetY);
+    }
 
-//        if (image != null){
-//            float srcWidth = image.getWidth();
-//            float srcHeight = image.getHeight();
-//            sprite.setTexture(image);
-//            sprite.setRegion(0, 0, srcWidth, srcHeight);
-//            sprite.setColor(1, 1, 1, 1);
-//            sprite.setSize(Math.abs(srcWidth), Math.abs(srcHeight));
-//            sprite.setOrigin(sprite.getWidth() / 2,  sprite.getHeight() / 2);
-//        }
+    public TextureEntity init(Texture image, float posX, float posY,float offsetX,float offsetY){
+        super.init(posX,posY);
 
-        //sprite = new Sprite(image);
-        size = ((Vector2) ObjectPool.get(Vector2.class)).set(width,height);
+        if (sprite == null) {
+            sprite = (new PoolableSprite()).init(image);
+        }
+        else{
+            ((PoolableSprite)sprite).init(image);
+        }
+
+        this.offset.set(offsetX,offsetY);
+        return this;
     }
 
 
@@ -62,24 +71,30 @@ public class TextureEntity extends Node {
         setRotation((float)degrees);
     }
 
+    public double getRotation(){
+        return sprite.getRotation();
+    }
+
 
     public void render(SpriteBatch batch){
 
         updateGlobalPosition();
 
-        //batch.draw(sprite,globalPosition.x - size.x/2,globalPosition.y-size.y/2);
 
-        sprite.setPosition(globalPosition.x - size.x/2,globalPosition.y-size.y/2);
-        //sprite.setBounds(globalPosition.x - size.x/2,globalPosition.y-size.y/2,size.x,size.y);
+        sprite.setCenter(globalPosition.x + offset.x,globalPosition.y + offset.y);
+
+        sprite.setOrigin(sprite.getWidth()/2 - offset.x,sprite.getHeight()/2 - offset.y);
+
 
         sprite.draw(batch);
 
-        //super.render(batch);
+
     }
 
     public void free(){
+        super.free();
         ObjectPool.remove(sprite);
-        ObjectPool.remove(size);
+        ObjectPool.remove(offset);
 
     }
 

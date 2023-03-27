@@ -9,13 +9,13 @@ public class Utils {
     }
 
     public static boolean is_on_screen(float x, float y,float toleranceX,float toleranceY){
-        if (x > Globals.cameraOffset.x + Globals.camera.viewportWidth + toleranceX) return true;
-        if (x < Globals.cameraOffset.x - Globals.camera.viewportWidth - toleranceX) return true;
+        if (x > Globals.cameraOffset.x + Globals.camera.viewportWidth/2 + toleranceX) return false;
+        if (x < (Globals.cameraOffset.x - (Globals.camera.viewportWidth/2)) - toleranceX) return false;
 
-        if (y > Globals.cameraOffset.y + Globals.camera.viewportHeight + toleranceY) return true;
-        if (y < Globals.cameraOffset.y - Globals.camera.viewportHeight - toleranceY) return true;
+        if (y > Globals.cameraOffset.y + Globals.camera.viewportHeight/2 + toleranceY) return false;
+        if (y < (Globals.cameraOffset.y - (Globals.camera.viewportHeight/2)) - toleranceY) return false;
 
-        return false;
+        return true;
     }
 
 

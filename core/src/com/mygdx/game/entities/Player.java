@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.helpers.MathHelpers;
 import com.mygdx.game.helpers.Globals;
+import com.mygdx.game.helpers.ObjectPool;
 import com.mygdx.game.helpers.TextureHolder;
 import com.mygdx.game.nodes.*;
 
@@ -36,7 +37,7 @@ public class Player extends MovementNode {
         super(myRoot, x, y, getMaskLayers(0),getMaskLayers(0));
 
         Texture penguinTX = TextureHolder.penguinTexture;
-        addChild(new TextureEntity(penguinTX,0,2,32,32));
+        addChild(new TextureEntity(penguinTX,0,2));
         getNewestChild().name = "sprite";
         addChild(new CollisionShape(8,12,0,0));
 
@@ -93,15 +94,19 @@ public class Player extends MovementNode {
         vel.set(tempVector);
 
 
-        if (Gdx.input.isKeyPressed(Input.Keys.X)){
-            addChild(new Bullet().init(0,0,vel.x*2,vel.y*2));
+        if (Gdx.input.isKeyJustPressed(Input.Keys.X)){
+
+            addChild( ( (Bullet) ObjectPool.get( Bullet.class) ).init(0,0,vel.x*2,vel.y*2) );
+
             ((ColliderObject) getNewestChild()).setMyRoot(myRoot);
             getNewestChild().updateParentPos();
-            System.out.println("hey");
+            //System.out.println("hey");
         }
 
 
         Globals.cameraOffset.set(position);
+
+        //System.out.println(vel);
 
     }
 

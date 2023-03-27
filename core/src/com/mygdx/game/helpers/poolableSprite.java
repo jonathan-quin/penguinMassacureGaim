@@ -3,13 +3,13 @@ package com.mygdx.game.helpers;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-public class poolableSprite extends Sprite {
+public class PoolableSprite extends Sprite {
 
-    public poolableSprite(){
+    public PoolableSprite(){
         setColor(1,1,1,1);
     }
 
-    public poolableSprite init(Texture texture){
+    public PoolableSprite init(Texture texture){
         if (texture == null) throw new IllegalArgumentException("texture cannot be null.");
         this.setTexture(texture);
         setRegion(0, 0, texture.getWidth(),  texture.getHeight());

@@ -16,23 +16,38 @@ public class CollisionShape extends Node {
 
     AABB boundingBox;
 
+    public CollisionShape(){
+        this(0,0);
+    }
+
     public CollisionShape(int sizeX, int sizeY){
         this(sizeX,sizeY,0,0);
     }
 
     public CollisionShape(int sizeX, int sizeY, int posX, int posY){
 
-        position.set(posX,posY);
-        updateGlobalPosition();
+        super(posX,posY);
+
         boundingBox = new AABB(new Vector2(globalPosition.x,globalPosition.y),new Vector2(sizeX,sizeY));
 
 
+    }
+
+    public CollisionShape init(int sizeX, int sizeY, int posX, int posY){
+
+        position.set(posX,posY);
+        updateGlobalPosition();
+
+        boundingBox.pos.set(globalPosition);
+        boundingBox.half.set(sizeX,sizeY);
+        return this;
     }
 
 
     public boolean overlaps(CollisionShape other){
         updateGlobalPosition();
         boundingBox.pos.set(globalPosition);
+
         return (boundingBox.intersectAABB(other.getAABB()));
     }
 
@@ -49,7 +64,13 @@ public class CollisionShape extends Node {
 
         boundingBox.pos.set(globalPosition);
 
-        return boundingBox.sweepAABB(other.getAABB(),distance) ;
+        SweepInfo returnInfo =  boundingBox.sweepAABB(other.getAABB(),distance);
+
+        if (returnInfo.collides){
+            returnInfo.collider = other.getParent();
+        }
+
+        return returnInfo;
 
     }
 

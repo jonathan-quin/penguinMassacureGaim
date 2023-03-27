@@ -44,7 +44,10 @@ public class MovementNode extends ColliderObject {
         difference.set(position.x - prevPos.x, position.y - prevPos.y);
 
 
+
+
         if ( !difference.epsilonEquals(scaledDistance,0.1f) ){
+            Node tempCollider = lastCollider;
 
             updateParentPos();
 
@@ -52,6 +55,9 @@ public class MovementNode extends ColliderObject {
             updateParentPos();
 
             position.set(getFirstCollision( ((Vector2) ObjectPool.getGarbage(Vector2.class)).set(0, scaledDistance.y - difference.y)));
+
+            lastCollided = true;
+            lastCollider = tempCollider;
         }
 
         difference.set(position.x - prevPos.x, position.y - prevPos.y);
@@ -184,7 +190,7 @@ public class MovementNode extends ColliderObject {
         updateGlobalPosition();
         updateParentPos();
 
-        return sweepTestArray( ((Vector2) ObjectPool.getGarbage(Vector2.class)).set(x,y),myRoot.colliders).collides;
+        return sweepTestArray(((Vector2) ObjectPool.getGarbage(Vector2.class)).set(x,y),myRoot.getCollidersInLayers(mask)).collides;
     }
 
     public Vector2 move(Vector2 distance){
@@ -208,6 +214,8 @@ public class MovementNode extends ColliderObject {
         return (num < 0.01 && num > -0.01);
 
     }
+
+
 
 
 }

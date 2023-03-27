@@ -7,11 +7,14 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.entities.Player;
+import com.mygdx.game.helpers.GroupHandler;
 import com.mygdx.game.helpers.ObjectPool;
 import java.util.ArrayList;
 
 public class Node {
     public ArrayList<Node> children;
+
+    public ArrayList<String> groups;
 
 
     public Vector2 position;
@@ -27,12 +30,21 @@ public class Node {
 
     }
     public Node(float x, float y){
-        position = ((Vector2) ObjectPool.get(Vector2.class)).set(x,y);
-        parentPosition = ((Vector2) ObjectPool.get(Vector2.class)).set(0,0);
-        globalPosition = ((Vector2) ObjectPool.get(Vector2.class)).set(0,0);
-        children = ( (ArrayList<Node>) ObjectPool.get( ArrayList.class ) );
-        children.clear();
+        position = new Vector2(x,y);
+        parentPosition = new Vector2(0,0);
+        globalPosition = new Vector2(0,0);
+        children = new ArrayList<>();
+        groups = new ArrayList<>();
         updateGlobalPosition();
+    }
+
+    public Node init(float x, float y){
+        position.set(x,y);
+        children.clear();
+        groups.clear();
+        updateGlobalPosition();
+
+        return this;
     }
 
     public Node getParent(){
@@ -66,6 +78,10 @@ public class Node {
             }
         }catch (Exception ex){
             System.out.println("I have a bad child");
+            System.out.println(this);
+            for (Object child : children) {
+                System.out.println(child);
+            }
         }
 
 
@@ -103,7 +119,7 @@ public class Node {
     public boolean removeChild(Node child){
 
         if (children.contains(child)){
-            children.remove(children.indexOf(child));
+            children.remove(child);
             return true;
         }
 
@@ -111,14 +127,31 @@ public class Node {
 
     }
 
+    public boolean addToGroup(String group){
+        if (GroupHandler.isInGroup(group,this)) return false;
+        GroupHandler.addToGroup(group,this);
+        return true;
+    }
+    public void queueFree(){
+        addToGroup(GroupHandler.QUEUEFREE);
+    }
+
     public void free(){
 
+        for (String group : groups){
+            GroupHandler.removeFromGroup(group,this);
+        }
 
+        ObjectPool.remove(this);
 
         getParent().removeChild(this);
-        for (Node child : children){
-            child.free();
+
+        for (int i = children.size()-1;i>=0;i--){
+            children.get(i).free();
+            //children.remove(i);
         }
+        children.clear();
+
     }
 
     public void updateGlobalPosition() {
@@ -133,14 +166,23 @@ public class Node {
 
     public Node getChild(String name){
         for (Node child : children){
-            if (child.name == name) return child;
+            if (child.name.equals( name)) return child;
         }
         return null;
     }
 
 
+    public boolean isInGroup(String group) {
+        return GroupHandler.isInGroup(group,this);
+    }
 
+    public boolean removeFromGroup(String group){
 
+       boolean returnVal = GroupHandler.removeFromGroup(group,this);
 
+       groups.remove(group);
+
+       return returnVal;
+    }
 
 }

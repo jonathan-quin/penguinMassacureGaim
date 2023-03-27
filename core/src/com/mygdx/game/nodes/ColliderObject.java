@@ -14,8 +14,9 @@ import java.util.ArrayList;
 
 public class ColliderObject extends Node {
 
-
-    Array<CollisionShape> shapes = ( (Array<CollisionShape>) ObjectPool.get( Array.class ) );
+    public Node lastCollider;
+    public boolean lastCollided;
+    Array<CollisionShape> shapes;
     public Root myRoot;
     ArrayList<Integer> mask;
     ArrayList<Integer> layers;
@@ -28,21 +29,20 @@ public class ColliderObject extends Node {
 
         SweepInfo currentInfo = sweepTestArray(distance,myRoot.getCollidersInLayers(mask));
 
-       // System.out.println("first impact " + currentInfo.firstImpact);
 
-
-        Vector2 output = new Vector2(position.x + distance.x,position.y + distance.y);
+        Vector2 output =  ((Vector2) ObjectPool.getGarbage(Vector2.class) ).set(position.x + distance.x,position.y + distance.y);
 
         if (currentInfo != null){
             output.set(position.x + currentInfo.offset.x,position.y + currentInfo.offset.y);
         }
 
+        lastCollided = currentInfo.collides;
 
-        //System.out.println("output" + output);
-       // System.out.println("first" + currentInfo.firstImpact + " resolves: " + currentInfo.collides);
+        if (lastCollided){
+            lastCollider = currentInfo.collider;
+        }
 
-       // System.out.println(currentInfo.time);
-        return output;//currentInfo.firstImpact;
+        return output;
 
     }
 
@@ -154,17 +154,20 @@ public class ColliderObject extends Node {
 
         if (myRoot != null) this.myRoot.colliders.add(this);
 
-        this.mask = ( (ArrayList<Integer>) ObjectPool.get( ArrayList.class ) );
+        shapes = new Array<>();
+
+        this.mask = new ArrayList<>();
         this.mask.clear();
         for (int i = 0; i < mask.size(); i++){
             this.mask.add(i,mask.get(i));
         }
 
-        this.layers = ( (ArrayList<Integer>) ObjectPool.get( ArrayList.class ) );
+        this.layers = new ArrayList<>();
         this.layers.clear();
         for (int i = 0; i < layers.size(); i++){
             this.layers.add(i,layers.get(i));
         }
+
     }
 
     public void setMyRoot(Root newRoot){
@@ -191,7 +194,7 @@ public class ColliderObject extends Node {
 
         if (child instanceof CollisionShape){
             if (shapes.contains((CollisionShape) child,true)){
-                shapes.removeIndex(children.indexOf(child));
+                shapes.removeIndex(shapes.indexOf( (CollisionShape) child,true));
                 return true;
             }
         }
@@ -201,11 +204,9 @@ public class ColliderObject extends Node {
     }
 
     public void free(){
-        getParent().removeChild(this);
-        for (Node child : children){
-            child.free();
-        }
-        myRoot.colliders.removeIndex(myRoot.colliders.indexOf(this,true));
+        super.free();
+
+        if(myRoot.colliders.removeValue(this,true));// System.out.println("removed a collider");
     }
 
 }

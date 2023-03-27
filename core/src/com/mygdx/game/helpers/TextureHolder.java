@@ -8,6 +8,8 @@ public class TextureHolder {
 
     public static Texture iceTexture = new Texture("simplePlatform.png");
 
+    public static Texture bulletTexture = new Texture("bullet.png");
+
 
 
 

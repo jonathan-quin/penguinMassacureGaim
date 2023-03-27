@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.helpers.Globals;
+import com.mygdx.game.helpers.GroupHandler;
 import com.mygdx.game.helpers.ObjectPool;
 import com.mygdx.game.nodes.*;
 import com.mygdx.game.scenes.TestScene;
@@ -65,6 +66,12 @@ public class MyGdxGame extends ApplicationAdapter {
 
 		//System.out.println("after");
 		ObjectPool.printTotal();
+
+
+		for (Node n : GroupHandler.getNodesInGroup(GroupHandler.QUEUEFREE)){
+			n.free();
+		}
+		GroupHandler.clearGroup(GroupHandler.QUEUEFREE);
 
 	}
 	

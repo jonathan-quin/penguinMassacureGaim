@@ -65,12 +65,13 @@ public class ObjectPool {
          //System.out.println("In use: " + objectsInUse.size() + "  Stored: " + objectsStored.size() + " Garbage in use: " + garbageObjectInUse.size());
 
 
-         removeFromList(objectsStored,obj);
-         //removeFromList(objectsInUse,obj); //safe but inefficient
+         //removeFromList(objectsStored,obj); //safe but inefficient
+        if (removeFromList(objectsInUse,obj))
          objectsStored.add(obj);
+
     }
 
-    public static boolean removeFromList(ArrayList<Object> list, Object o){
+    private static boolean removeFromList(ArrayList<Object> list, Object o){
 
         if (o == null) {
             for (int index = 0; index < list.size(); index++)
@@ -110,7 +111,8 @@ public class ObjectPool {
 
 
         public static void printTotal(){
-            System.out.println("total: " + (garbageObjectInUse.size() + objectsInUse.size() + objectsStored.size()) );
+            System.out.print("total: " + (garbageObjectInUse.size() + objectsInUse.size() + objectsStored.size()) );
+            System.out.println(" inUse: " + objectsInUse.size());
         }
 
         public int total = 0;
