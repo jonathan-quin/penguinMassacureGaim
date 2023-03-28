@@ -1,34 +1,38 @@
 package com.mygdx.game.entities;
 
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.helpers.LayerNames;
 import com.mygdx.game.helpers.ObjectPool;
 import com.mygdx.game.helpers.TextureHolder;
 import com.mygdx.game.helpers.Utils;
 import com.mygdx.game.nodes.CollisionShape;
 import com.mygdx.game.nodes.MovementNode;
+import com.mygdx.game.nodes.Node;
 import com.mygdx.game.nodes.TextureEntity;
 
 public class Bullet extends MovementNode {
 
     Vector2 vel;
 
+
     TextureEntity sprite;
 
     public Bullet(){
 
-        super(null);
+        super();
         vel = new Vector2(0,0);
-        setMaskLayers( getMaskLayers(0,2),getMaskLayers(1,2));
+        setMaskLayers( getMaskLayers(LayerNames.DEFAULT),getMaskLayers());
 
+    }
 
-
-
+    public void ready(){
 
     }
 
     public Bullet init(float posX, float posY, float velX, float velY){
 
-        super.init(posX,posY);
+        super.init(posX,posY,layers,mask);
+
         vel.set(velX,velY);
         position.set(posX,posY);
 
@@ -38,6 +42,8 @@ public class Bullet extends MovementNode {
         addChild( ((CollisionShape) ObjectPool.get(CollisionShape.class)).init (10,10,0,0));
         getNewestChild().name = "shape";
 
+        setMaskLayers(getMaskLayers(LayerNames.DEFAULT),getMaskLayers());
+
 
         return this;
     }
@@ -45,12 +51,16 @@ public class Bullet extends MovementNode {
 
     public void update(double delta){
 
+
         moveAndSlide(vel,(float) delta);
 
         sprite.setRotation(vel.angleDeg());
 
         if (lastCollided){
-            if (lastCollider.isInGroup("icePlatform")) queueFree();
+            if (lastCollider.isInGroup("icePlatform")){
+                queueFree();
+
+            }
         }
 
         if (!Utils.is_on_screen(globalPosition,10,10)){

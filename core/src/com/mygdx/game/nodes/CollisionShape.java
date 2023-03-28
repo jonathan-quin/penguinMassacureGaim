@@ -66,9 +66,8 @@ public class CollisionShape extends Node {
 
         SweepInfo returnInfo =  boundingBox.sweepAABB(other.getAABB(),distance);
 
-        if (returnInfo.collides){
-            returnInfo.collider = other.getParent();
-        }
+        returnInfo.collider = other.getParent();
+
 
         return returnInfo;
 

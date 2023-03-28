@@ -65,13 +65,13 @@ public class MyGdxGame extends ApplicationAdapter {
 		ObjectPool.takeOutTrash();
 
 		//System.out.println("after");
-		ObjectPool.printTotal();
+		//ObjectPool.printTotal();
 
 
-		for (Node n : GroupHandler.getNodesInGroup(GroupHandler.QUEUEFREE)){
+		for (Node n : scene1.groups.getNodesInGroup(GroupHandler.QUEUEFREE)){
 			n.free();
 		}
-		GroupHandler.clearGroup(GroupHandler.QUEUEFREE);
+		scene1.groups.clearGroup(GroupHandler.QUEUEFREE);
 
 	}
 	

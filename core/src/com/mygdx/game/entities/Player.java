@@ -25,6 +25,8 @@ public class Player extends MovementNode {
 
     double rotation = 0;
 
+    private Node bulletHolder;
+
     //private double
 
 
@@ -34,7 +36,7 @@ public class Player extends MovementNode {
 
     public Player(Root myRoot, float x, float y) {
 
-        super(myRoot, x, y, getMaskLayers(0),getMaskLayers(0));
+        super(x, y, getMaskLayers(0),getMaskLayers(0));
 
         Texture penguinTX = TextureHolder.penguinTexture;
         addChild(new TextureEntity(penguinTX,0,2));
@@ -43,9 +45,12 @@ public class Player extends MovementNode {
 
         //addChild(new collisionShape(16,16,25,8));
 
-
         updateParentPos();
 
+    }
+
+    public void ready(){
+        bulletHolder = getRootNode().getChild("bulletHolder");
     }
 
     private final Vector2 targetSpeed = new Vector2();
@@ -96,11 +101,8 @@ public class Player extends MovementNode {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.X)){
 
-            addChild( ( (Bullet) ObjectPool.get( Bullet.class) ).init(0,0,vel.x*2,vel.y*2) );
+            bulletHolder.addChild( ( (Bullet) ObjectPool.get( Bullet.class) ).init(globalPosition.x,globalPosition.y,vel.x*2,vel.y*2) );
 
-            ((ColliderObject) getNewestChild()).setMyRoot(myRoot);
-            getNewestChild().updateParentPos();
-            //System.out.println("hey");
         }
 
 

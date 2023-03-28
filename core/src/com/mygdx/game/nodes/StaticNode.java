@@ -11,7 +11,7 @@ public class StaticNode extends ColliderObject {
     }
 
     public StaticNode(Root myRoot, float x, float y, ArrayList<Integer> mask, ArrayList<Integer> layers){
-        super(myRoot,x,y,mask,layers);
+        super(x,y,mask,layers);
     }
 
 

@@ -14,6 +14,9 @@ public class SimpleIcePlatform extends StaticNode {
 
         super(myRoot, x, y, getMaskLayers(0), getMaskLayers(0));
 
+    }
+
+    public void ready(){
         Texture iceTexture = TextureHolder.iceTexture;
 
 
@@ -23,10 +26,6 @@ public class SimpleIcePlatform extends StaticNode {
         addChild(new CollisionShape(96/2,16,0,0));
 
         addToGroup("icePlatform");
-
-        //addChild(new collisionShape(96/2,16/2,8,4));
-        //addChild(new collisionShape(96/2,160/2,-80,4));
-
     }
 
     @Override

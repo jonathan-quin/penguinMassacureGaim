@@ -9,16 +9,16 @@ import java.util.ArrayList;
 public class MovementNode extends ColliderObject {
 
 
+    public MovementNode(){
 
-    public MovementNode(Root myRoot){
-
-        this(myRoot,0,0, getMaskLayers(0),getMaskLayers(0));
+        this(0,0, getMaskLayers(0),getMaskLayers(0));
 
     }
 
-    public MovementNode(Root myRoot, float x, float y, ArrayList<Integer> mask, ArrayList<Integer> layers){
+    public MovementNode(float x, float y, ArrayList<Integer> mask, ArrayList<Integer> layers){
 
-        super(myRoot,x,y,mask,layers);
+        super(x,y,mask,layers);
+
     }
 
     private Vector2 tempPos = new Vector2(0,0);
@@ -69,8 +69,6 @@ public class MovementNode extends ColliderObject {
 
 
     public Vector2 moveAndSlideBruteForce(Vector2 distance){
-
-
 
         if ((int)distance.x == 0 && (int)distance.y == 0) return distance.cpy();
 
@@ -173,18 +171,6 @@ public class MovementNode extends ColliderObject {
         return testMove(distance.x, distance.y);
     }
 
-/*    public boolean testMove(float x, float y){
-        updateGlobalPosition();
-        position.add(x,y);
-        updateParentPos();
-
-        boolean returnValue = isColliding();
-        position.sub(x,y);
-
-
-
-        return returnValue;
-    }*/
 
     public boolean testMove(float x, float y){
         updateGlobalPosition();

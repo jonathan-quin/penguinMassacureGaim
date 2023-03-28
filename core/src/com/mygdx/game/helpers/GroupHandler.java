@@ -6,12 +6,16 @@ import java.util.ArrayList;
 
 public class GroupHandler {
 
+    public GroupHandler(){
+
+    }
+
     public static final String QUEUEFREE = "queueFree";
 
-    public static ArrayList<String> names = new ArrayList<>();
-    public static  ArrayList<ArrayList<Node>> nodes = new ArrayList<ArrayList<Node>>();
+    public ArrayList<String> names = new ArrayList<>();
+    public  ArrayList<ArrayList<Node>> nodes = new ArrayList<ArrayList<Node>>();
 
-    public static void addToGroup(String group, Node obj){
+    public void addToGroup(String group, Node obj){
         if (!names.contains(group)){
             names.add(group);
             nodes.add(new ArrayList<Node>());
@@ -20,7 +24,7 @@ public class GroupHandler {
         nodes.get(names.indexOf(group)).add(obj);
     }
 
-    public static boolean removeFromGroup(String group, Node obj) {
+    public boolean removeFromGroup(String group, Node obj) {
         int pos = names.indexOf(group);
         if (pos == -1){
             System.out.println("Group does not exist");
@@ -31,7 +35,7 @@ public class GroupHandler {
 
     }
 
-    public static boolean isInGroup(String group, Node obj){
+    public boolean isInGroup(String group, Node obj){
         int pos = names.indexOf(group);
 
         if (pos == -1){
@@ -41,7 +45,7 @@ public class GroupHandler {
         return nodes.get(pos).contains(obj);
     }
 
-    public static ArrayList<Node> getNodesInGroup(String group){
+    public ArrayList<Node> getNodesInGroup(String group){
 
         if (!names.contains(group)){
             names.add(group);
@@ -51,7 +55,7 @@ public class GroupHandler {
         return nodes.get(names.indexOf(group));
     }
 
-    public static void clearGroup(String group){
+    public void clearGroup(String group){
         int pos = names.indexOf(group);
 
         if (pos == -1){

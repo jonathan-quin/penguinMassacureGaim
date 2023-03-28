@@ -17,9 +17,8 @@ public class ColliderObject extends Node {
     public Node lastCollider;
     public boolean lastCollided;
     Array<CollisionShape> shapes;
-    public Root myRoot;
-    ArrayList<Integer> mask;
-    ArrayList<Integer> layers;
+    protected ArrayList<Integer> mask;
+    protected ArrayList<Integer> layers;
 
     public boolean isColliding(){
         return overlaps(myRoot.colliders);
@@ -34,13 +33,12 @@ public class ColliderObject extends Node {
 
         if (currentInfo != null){
             output.set(position.x + currentInfo.offset.x,position.y + currentInfo.offset.y);
+            lastCollided = currentInfo.collides;
+            if (lastCollided){
+                lastCollider = currentInfo.collider;
+            }
         }
 
-        lastCollided = currentInfo.collides;
-
-        if (lastCollided){
-            lastCollider = currentInfo.collider;
-        }
 
         return output;
 
@@ -104,20 +102,21 @@ public class ColliderObject extends Node {
         return shapes;
     }
 
-    public ColliderObject init(Root myRoot, float x, float y, int[] mask, int[] layers){
+    public ColliderObject init(float x, float y, ArrayList<Integer> mask, ArrayList<Integer> layers){
+        super.init(x,y);
 
+        shapes.clear();
+        lastCollider = null;
+        lastCollided = false;
+
+        setMaskLayers(mask,layers);
 
         return this;
     }
+
+
     public ColliderObject(){
-
-        this(null);
-
-    }
-
-    public ColliderObject(Root myRoot){
-        this(myRoot,0,0, getMaskLayers(0) , getMaskLayers(0));
-
+        this(0,0, getMaskLayers(0) , getMaskLayers(0));
 
     }
 
@@ -146,11 +145,12 @@ public class ColliderObject extends Node {
         }
     }
 
-    public ColliderObject(Root myRoot, float x, float y, ArrayList<Integer> mask, ArrayList<Integer> layers ){
+    public ColliderObject(float x, float y, ArrayList<Integer> mask, ArrayList<Integer> layers ){
 
         super(x,y);
 
-        this.myRoot = myRoot;
+        lastCollider = null;
+        lastCollided = false;
 
         if (myRoot != null) this.myRoot.colliders.add(this);
 
@@ -176,7 +176,7 @@ public class ColliderObject extends Node {
     }
 
     public void addChild(Node child){
-        children.add(child);
+        super.addChild(child);
 
         if (child instanceof CollisionShape){
             shapes.add( (CollisionShape) child);
