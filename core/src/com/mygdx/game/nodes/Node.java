@@ -167,8 +167,10 @@ public class Node {
             if (!child.ready){
                 child.parent = this;
                 child.setMyRoot(myRoot);
+                child.updateGlobalPosition();
                 child.ready();
                 child.ready = true;
+
             }
 
         }
@@ -227,8 +229,8 @@ public class Node {
         child.parentPosition.set(globalPosition);
         child.parent = this;
         child.setMyRoot(myRoot);
-
     }
+
 
 
     /**
@@ -352,6 +354,8 @@ public class Node {
 
     /**
      * Returns the root node of the node's parent tree.
+     * You cannot guarantee this will work until an update cascade begins, so you can't call this in init.
+     * Use ready or update instead.
      *
      * @return the root node of the tree
      */

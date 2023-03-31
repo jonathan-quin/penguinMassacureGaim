@@ -62,9 +62,11 @@ public class MovementNode extends ColliderObject {
 
         difference.set(position.x - prevPos.x, position.y - prevPos.y);
 
+        Vector2 output = difference.scl(Globals.inverse(delta));
 
+        if (output.len() > 100) System.out.println(difference);
 
-        return difference.scl(Globals.inverse(delta));
+        return output;
     }
 
 

@@ -8,11 +8,12 @@ public class ObjectPool {
     static ArrayList<Object> garbageObjectInUse = new ArrayList<Object>();
 
     public static int count = 0;
-    public static Object get(Class type){
-        Object returnObj = null;
+
+    public static <T> T get(Class<T> type){
+        T returnObj = null;
         for (Object obj : objectsStored){
             if (type.isInstance(obj)){
-                returnObj = obj;
+                returnObj = (T) obj;
 
                 removeFromList(objectsStored,returnObj);
                 //removeFromList(objectsInUse,returnObj); //safe but inefficient
@@ -30,14 +31,14 @@ public class ObjectPool {
     }
 
 
-    public static Object getGarbage(Class type){
-        Object returnObj = null;
+    public static <T> T getGarbage(Class<T> type){
+        T returnObj = null;
 
 
 
         for (Object obj : objectsStored){
             if (type.isInstance(obj)){
-                returnObj = obj;
+                returnObj = (T) obj;
 
                 removeFromList(objectsStored,returnObj);
                 //removeFromList(garbageObjectInUse,returnObj); //safe but inefficient

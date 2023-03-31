@@ -3,6 +3,7 @@ package com.mygdx.game.nodes;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.helpers.GroupHandler;
+import com.mygdx.game.helpers.ObjectPool;
 
 import java.util.ArrayList;
 
@@ -19,7 +20,7 @@ public class Root {
     public Node rootNode;
 
     /** The group handler. */
-    public GroupHandler groups;
+    public GroupHandler groups = new GroupHandler();
 
     /**
      * Creates a new Root object.
@@ -72,5 +73,43 @@ public class Root {
      * Calls the debugCascade method of the root node, which draws debug information for the entire scene tree.
      */
     public void debug(){rootNode.debugCascade();}
+
+
+    /**
+     * shorthand for rootNode.addChild()
+     * @param child
+     */
+    public void add(Object child){
+        rootNode.addChild( (Node) child );
+    }
+
+    /**
+     * shorthand for ObjectPool.get()
+     * @param type
+     * @return
+     * @param <T>
+     */
+    public <T> T poolGet(Class<T> type){
+        return ObjectPool.get(type);
+    }
+
+    public Node last(){
+        return rootNode.getNewestChild();
+    }
+
+
+    /**
+     * shuts down the scene
+     */
+    public void close(){
+        rootNode.queueFree();
+    }
+
+    /**
+     * overide to open the scene
+     */
+    public void open(){
+
+    }
 
 }

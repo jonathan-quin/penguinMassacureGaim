@@ -3,37 +3,39 @@ package com.mygdx.game.scenes;
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.entities.*;
 import com.mygdx.game.helpers.GroupHandler;
+import com.mygdx.game.helpers.ObjectPool;
 import com.mygdx.game.nodes.*;
 
 public class TestScene extends Root {
 
-    private Texture penguinTX;
-    public TestScene(){
-        rootNode = new Node();
+
+
+    public void open(){
+
+        rootNode = poolGet(Node.class);
         rootNode.myRoot = this;
-        groups = new GroupHandler();
 
 
-        rootNode.addChild( new Player(this,220,400) );
+        add(poolGet(Player.class).init(220,200));
 
-        rootNode.addChild(new Node());
+        add(ObjectPool.get(Node.class).init(0,0));
 
-        rootNode.getNewestChild().setName("bulletHolder");
+        last().setName("bulletHolder");
 
-        rootNode.addChild(new SimpleIcePlatform(this,110,100));
+        rootNode.addChild( ObjectPool.get(SimpleIcePlatform.class).init(110,100));
 
 
         //rootNode.addChild();
 
-        rootNode.addChild(new SimpleIcePlatform(this,100-96,100));
-        rootNode.addChild(new SimpleIcePlatform(this,100-96-96,100));
-        rootNode.addChild(new SimpleIcePlatform(this,100-96-96-96,100));
-        rootNode.addChild(new SimpleIcePlatform(this,100-96-96-82,120));
-        rootNode.addChild(new SimpleIcePlatform(this,100-96-96-96-96,100));
+        rootNode.addChild(ObjectPool.get(SimpleIcePlatform.class).init(100-96,100));
+        rootNode.addChild(ObjectPool.get(SimpleIcePlatform.class).init(100-96-96,120));
+        rootNode.addChild(ObjectPool.get(SimpleIcePlatform.class).init(100-96-96-96,120));
+        rootNode.addChild(ObjectPool.get(SimpleIcePlatform.class).init(100-96-96-82,130));
+        rootNode.addChild(ObjectPool.get(SimpleIcePlatform.class).init(100-96-96-96-96,140));
 
-        rootNode.addChild(new SimpleIcePlatform(this,100+96+18,100+32));
-
+        rootNode.addChild(ObjectPool.get(SimpleIcePlatform.class).init(100+96,100+32));
 
     }
+
 
 }

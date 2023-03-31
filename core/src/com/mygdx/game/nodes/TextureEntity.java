@@ -36,6 +36,8 @@ public class TextureEntity extends Node {
     public TextureEntity init(Texture image, float posX, float posY,float offsetX,float offsetY){
         super.init(posX,posY);
 
+
+
         if (sprite == null) {
             sprite = (new PoolableSprite()).init(image);
         }
@@ -44,6 +46,9 @@ public class TextureEntity extends Node {
         }
 
         this.offset.set(offsetX,offsetY);
+
+        setRotation(0);
+
         return this;
     }
 

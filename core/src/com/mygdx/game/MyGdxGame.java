@@ -9,11 +9,12 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.helpers.Globals;
 import com.mygdx.game.helpers.GroupHandler;
 import com.mygdx.game.helpers.ObjectPool;
+import com.mygdx.game.helpers.SceneHandler;
 import com.mygdx.game.nodes.*;
 import com.mygdx.game.scenes.TestScene;
 
 public class MyGdxGame extends ApplicationAdapter {
-	SpriteBatch batch;
+
 	private OrthographicCamera camera;
 
 
@@ -21,8 +22,6 @@ public class MyGdxGame extends ApplicationAdapter {
 	
 	@Override
 	public void create () {
-		batch = new SpriteBatch();
-		scene1 = new TestScene();
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1024, 600);
@@ -31,7 +30,9 @@ public class MyGdxGame extends ApplicationAdapter {
 
 		Globals.globalShape.setColor(new Color(0, 0, 1, 0.5f));
 
+		SceneHandler.ready();
 
+		SceneHandler.setCurrentScene("TestScene");
 
 	}
 
@@ -43,41 +44,13 @@ public class MyGdxGame extends ApplicationAdapter {
 
 		ScreenUtils.clear(0.921f, 0.55f, 0.96f, 1);
 
-		scene1.update();
-
-
-		camera.position.set(Globals.cameraOffset,camera.position.z);
-		camera.update();
-		batch.setProjectionMatrix(camera.combined);
-
-		batch.begin();
-
-		scene1.render(batch);
-
-
-		batch.end();
-
-		Globals.globalShape.begin(ShapeRenderer.ShapeType.Filled);
-		scene1.debug();
-		Globals.globalShape.end();
-
-
-		ObjectPool.takeOutTrash();
-
-		//System.out.println("after");
-		//ObjectPool.printTotal();
-
-
-		for (Node n : scene1.groups.getNodesInGroup(GroupHandler.QUEUEFREE)){
-			n.free();
-		}
-		scene1.groups.clearGroup(GroupHandler.QUEUEFREE);
+		SceneHandler.update();
 
 	}
 	
 	@Override
 	public void dispose () {
-		batch.dispose();
+
 
 	}
 }

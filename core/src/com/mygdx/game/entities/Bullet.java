@@ -31,19 +31,16 @@ public class Bullet extends MovementNode {
 
     public Bullet init(float posX, float posY, float velX, float velY){
 
-        super.init(posX,posY,layers,mask);
+        super.init(posX,posY,getMaskLayers(LayerNames.DEFAULT),getMaskLayers());
 
         vel.set(velX,velY);
         position.set(posX,posY);
 
-        addChild( ((TextureEntity) ObjectPool.get(TextureEntity.class) ).init(TextureHolder.bulletTexture,0,0,0,0));
+        addChild( ( ObjectPool.get(TextureEntity.class) ).init(TextureHolder.bulletTexture,0,0,0,0));
         sprite = (TextureEntity) getNewestChild();
 
-        addChild( ((CollisionShape) ObjectPool.get(CollisionShape.class)).init (10,10,0,0));
-        getNewestChild().name = "shape";
-
-        setMaskLayers(getMaskLayers(LayerNames.DEFAULT),getMaskLayers());
-
+        addChild( ( ObjectPool.get(CollisionShape.class)).init (10,10,0,0));
+        getNewestChild().setName("shape");
 
         return this;
     }

@@ -4,27 +4,40 @@ package com.mygdx.game.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
+import com.mygdx.game.helpers.LayerNames;
+import com.mygdx.game.helpers.ObjectPool;
 import com.mygdx.game.helpers.TextureHolder;
 import com.mygdx.game.helpers.Utils;
 import com.mygdx.game.nodes.*;
 
 public class SimpleIcePlatform extends StaticNode {
 
-    public SimpleIcePlatform(Root myRoot, float x, float y) {
+    public SimpleIcePlatform(){
+        this(0,0);
+    }
+    public SimpleIcePlatform( float x, float y) {
 
-        super(myRoot, x, y, getMaskLayers(0), getMaskLayers(0));
+        super( x, y, getMaskLayers(LayerNames.DEFAULT), getMaskLayers(LayerNames.DEFAULT));
 
     }
 
-    public void ready(){
+    public SimpleIcePlatform init(float x, float y){
+
+        super.init(x,y,getMaskLayers(LayerNames.DEFAULT),getMaskLayers(LayerNames.DEFAULT));
+
         Texture iceTexture = TextureHolder.iceTexture;
 
 
-        addChild(new TextureEntity(iceTexture,0,0));
-        getNewestChild().name = "sprite";
+        addChild( ObjectPool.get(TextureEntity.class).init(iceTexture,0,0,0,0));
+        getNewestChild().setName("sprite");
 
-        addChild(new CollisionShape(96/2,16,0,0));
+        addChild( ObjectPool.get(CollisionShape.class).init(96/2,16,0,0));
 
+
+        return this;
+    }
+
+    public void ready(){
         addToGroup("icePlatform");
     }
 
@@ -32,12 +45,7 @@ public class SimpleIcePlatform extends StaticNode {
     public void update(double delta) {
        super.update(delta);
 
-       if (Utils.is_on_screen(position,0,0)){
-           ((TextureEntity) getChild("sprite")).setRotation(0);
-       }
-       else{
-           ((TextureEntity) getChild("sprite")).setRotation(180);
-       }
+
     }
 
 

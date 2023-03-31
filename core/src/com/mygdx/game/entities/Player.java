@@ -4,10 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.helpers.MathHelpers;
-import com.mygdx.game.helpers.Globals;
-import com.mygdx.game.helpers.ObjectPool;
-import com.mygdx.game.helpers.TextureHolder;
+import com.mygdx.game.helpers.*;
 import com.mygdx.game.nodes.*;
 
 public class Player extends MovementNode {
@@ -15,9 +12,9 @@ public class Player extends MovementNode {
     private float MAXSPEED = 180;
 
     private float speed = 5;
-    private Vector2 vel = new Vector2(0,0);
+    private Vector2 vel;
 
-    private float JUMPFORCE = 400;
+    private float JUMPFORCE = 200;
 
     private float GRAVITY = 2000;
 
@@ -30,23 +27,34 @@ public class Player extends MovementNode {
     //private double
 
 
-    public Player(Root myRoot) {
-        this(myRoot,0f,0f);
+    public Player() {
+        this(0f,0f);
     }
 
-    public Player(Root myRoot, float x, float y) {
+    public Player( float x, float y) {
 
         super(x, y, getMaskLayers(0),getMaskLayers(0));
 
-        Texture penguinTX = TextureHolder.penguinTexture;
-        addChild(new TextureEntity(penguinTX,0,2));
-        getNewestChild().name = "sprite";
-        addChild(new CollisionShape(8,12,0,0));
+        vel = new Vector2(0,0);
 
-        //addChild(new collisionShape(16,16,25,8));
+        init(x,y);
 
-        updateParentPos();
+    }
 
+    public Player init(float x, float y){
+
+
+        super.init(x,y,getMaskLayers(0),getMaskLayers(0));
+
+        addChild(ObjectPool.get(TextureEntity.class).init(TextureHolder.penguinTexture,0f,2f,0,0));
+        getNewestChild().setName("sprite");
+        addChild(ObjectPool.get(CollisionShape.class).init(8,12,0,0));
+
+        rotation = 0;
+
+        vel.set(0,0);
+
+        return this;
     }
 
     public void ready(){
@@ -64,7 +72,7 @@ public class Player extends MovementNode {
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) targetSpeed.x -= MAXSPEED;
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) targetSpeed.x += MAXSPEED;
 
-        if(Gdx.input.isKeyPressed(Input.Keys.UP) && onFloor) vel.y = MAXSPEED;
+        if(Gdx.input.isKeyPressed(Input.Keys.UP) && onFloor) vel.y = JUMPFORCE;
 
         vel.x  = lerp(vel.x,targetSpeed.x, ACCEL * (float)delta);
 
@@ -83,15 +91,20 @@ public class Player extends MovementNode {
             rotation = MathHelpers.moveTowardsZero(rotation,0.1);
 
         }
-        if (((TextureEntity) getChild("sprite")).getFlipX()){
+
+
+        if (((TextureEntity) getChild("sprite")).getFlipX()) {
             ((TextureEntity) getChild("sprite")).setRotation(rotation);
-        }else{
+        } else {
             ((TextureEntity) getChild("sprite")).setRotation(-rotation);
         }
 
-        vel.y -= GRAVITY/5 * delta;
 
 
+
+        vel.y -= GRAVITY / 5 * delta;
+
+        System.out.println("vel before: " + vel);
 
         Vector2 tempVector = moveAndSlide( vel,(float) delta) ;
 
@@ -105,10 +118,19 @@ public class Player extends MovementNode {
 
         }
 
+        if (Gdx.input.isKeyPressed(Input.Keys.Z)){
+            if (SceneHandler.getCurrentScene().equals("TestScene")){
+                SceneHandler.setCurrentScene("TestScene2");
+            }
+            else{
+                SceneHandler.setCurrentScene("TestScene");
+            }
+        }
+
 
         Globals.cameraOffset.set(position);
 
-        //System.out.println(vel);
+        System.out.println(vel + " delta " + delta);
 
     }
 

@@ -39,6 +39,8 @@ public class ColliderObject extends Node {
             }
         }
 
+        if (currentInfo.offset.len() > 100 * (1/60)) System.out.println("len " + currentInfo.offset.len() + " " + currentInfo.firstImpact);
+
 
         return output;
 
@@ -109,6 +111,7 @@ public class ColliderObject extends Node {
         lastCollider = null;
         lastCollided = false;
 
+
         setMaskLayers(mask,layers);
 
         return this;
@@ -134,6 +137,7 @@ public class ColliderObject extends Node {
     }
 
     public void setMaskLayers(ArrayList<Integer> mask, ArrayList<Integer> layers){
+
         this.mask.clear();
         for (int i = 0; i < mask.size(); i++){
             this.mask.add(i,mask.get(i));
