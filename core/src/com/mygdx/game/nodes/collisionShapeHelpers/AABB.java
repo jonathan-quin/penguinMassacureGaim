@@ -283,6 +283,9 @@ public class AABB {
 
         info.collides = segmentInfo.collides || segmentInfo.resolves;
 
+        info.collider = null;
+
+
         if (!segmentInfo.collides && !segmentInfo.resolves){
             info.collides = false;
             info.firstImpact =((Vector2) ObjectPool.getGarbage(Vector2.class)).set(pos.x + offset.x,pos.y + offset.y);

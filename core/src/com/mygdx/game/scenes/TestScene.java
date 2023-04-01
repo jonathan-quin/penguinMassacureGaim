@@ -16,7 +16,7 @@ public class TestScene extends Root {
         rootNode.myRoot = this;
 
 
-        add(poolGet(Player.class).init(220,200));
+        add(poolGet(Player.class).init(220,300));
 
         add(ObjectPool.get(Node.class).init(0,0));
 

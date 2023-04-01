@@ -37,6 +37,8 @@ public class MovementNode extends ColliderObject {
 
         Vector2 scaledDistance =  ((Vector2) ObjectPool.getGarbage(Vector2.class)).set(distance).scl(delta);
 
+        Vector2 tempPos = position.cpy();
+
         position.set(getFirstCollision(scaledDistance));
 
         Vector2 difference =  ((Vector2) ObjectPool.getGarbage(Vector2.class));
@@ -64,7 +66,7 @@ public class MovementNode extends ColliderObject {
 
         Vector2 output = difference.scl(Globals.inverse(delta));
 
-        if (output.len() > 100) System.out.println(difference);
+        if (output.len() > 100) System.out.println("Big difference! " + difference + " temp pos: " + tempPos + " pos: " + position);
 
         return output;
     }
