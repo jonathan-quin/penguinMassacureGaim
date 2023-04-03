@@ -61,7 +61,7 @@ public class Node {
     /**
      * whether the ready function has been called
      */
-    boolean ready;
+    protected boolean ready;
 
     /**
      * Creates a new node with position (0,0).
@@ -229,6 +229,7 @@ public class Node {
         child.parentPosition.set(globalPosition);
         child.parent = this;
         child.setMyRoot(myRoot);
+        if (!child.ready) child.ready();
     }
 
 
@@ -252,7 +253,7 @@ public class Node {
     }
 
     /**
-     * Adds this node to the specified group.
+     * Adds this node to the specified group. Adds the group to it's personal groups list
      *
      * @param group The name of the group to add this node to.
      *
@@ -261,8 +262,10 @@ public class Node {
     public boolean addToGroup(String group){
         if (getGroupHander().isInGroup(group,this)) return false;
         getGroupHander().addToGroup(group,this);
+        groups.add(group);
         return true;
     }
+
 
     /**
      * Adds this node to the "queue_free" group, which will free the node after this cycle has ended.
@@ -278,7 +281,8 @@ public class Node {
     public void free(){
 
         for (String group : groups){
-            getGroupHander().removeFromGroup(group,this);
+
+           if (! getGroupHander().removeFromGroup(group,this) ) System.out.println("wasn't in group?");
         }
 
         ObjectPool.remove(this);
@@ -291,6 +295,7 @@ public class Node {
         }
         children.clear();
         groups.clear();
+
 
     }
 

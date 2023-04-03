@@ -12,7 +12,7 @@ public class ObjectPool {
     public static <T> T get(Class<T> type){
         T returnObj = null;
         for (Object obj : objectsStored){
-            if (type.isInstance(obj)){
+            if (type.equals(obj.getClass())){
                 returnObj = (T) obj;
 
                 removeFromList(objectsStored,returnObj);
@@ -37,7 +37,7 @@ public class ObjectPool {
 
 
         for (Object obj : objectsStored){
-            if (type.isInstance(obj)){
+            if (type.equals(obj.getClass())){
                 returnObj = (T) obj;
 
                 removeFromList(objectsStored,returnObj);

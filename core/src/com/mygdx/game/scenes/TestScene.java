@@ -13,7 +13,7 @@ public class TestScene extends Root {
     public void open(){
 
         rootNode = poolGet(Node.class);
-        rootNode.myRoot = this;
+        rootNode.setMyRoot(this);
 
 
         add(poolGet(Player.class).init(220,300));
@@ -32,8 +32,9 @@ public class TestScene extends Root {
         rootNode.addChild(ObjectPool.get(SimpleIcePlatform.class).init(100-96-96-96,120));
         rootNode.addChild(ObjectPool.get(SimpleIcePlatform.class).init(100-96-96-82,130));
         rootNode.addChild(ObjectPool.get(SimpleIcePlatform.class).init(100-96-96-96-96,140));
-
         rootNode.addChild(ObjectPool.get(SimpleIcePlatform.class).init(100+96,100+32));
+
+        System.out.println("opened " + rootNode.children.size());
 
     }
 

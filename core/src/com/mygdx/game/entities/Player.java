@@ -72,6 +72,8 @@ public class Player extends MovementNode {
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) targetSpeed.x -= MAXSPEED;
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) targetSpeed.x += MAXSPEED;
 
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) vel.y -= 100;
+
         if(Gdx.input.isKeyPressed(Input.Keys.UP) && onFloor) vel.y = JUMPFORCE;
 
         vel.x  = lerp(vel.x,targetSpeed.x, ACCEL * (float)delta);
@@ -104,7 +106,7 @@ public class Player extends MovementNode {
 
         vel.y -= GRAVITY / 5 * delta;
 
-        System.out.println("vel before: " + vel);
+        //System.out.println("vel before: " + vel);
 
         Vector2 tempVector = moveAndSlide( vel,(float) delta) ;
 
@@ -130,7 +132,7 @@ public class Player extends MovementNode {
 
         Globals.cameraOffset.set(position);
 
-        System.out.println(vel + " delta " + delta);
+        //System.out.println(vel + " delta " + delta);
 
     }
 

@@ -12,6 +12,8 @@ import com.mygdx.game.nodes.collisionShapeHelpers.SweepInfo;
 
 import java.util.ArrayList;
 
+import static com.mygdx.game.helpers.MathHelpers.isEqualApprox;
+
 public class ColliderObject extends Node {
 
     public Node lastCollider;
@@ -39,8 +41,12 @@ public class ColliderObject extends Node {
             }
         }
 
-        if (currentInfo.offset.len() > 100 * (1/60)) System.out.println("len " + currentInfo.offset.len() + " " + currentInfo.firstImpact);
+        //if (currentInfo.offset.len() > 100 * (1/60)) System.out.println("len " + currentInfo.offset.len() + " " + currentInfo.firstImpact);
 
+
+//        if (isEqualApprox(currentInfo.offset.y,1673/60,0.5) ){
+//            System.out.println("hey, 1673 after colliding");
+//        }
 
         return output;
 
@@ -156,7 +162,10 @@ public class ColliderObject extends Node {
         lastCollider = null;
         lastCollided = false;
 
-        if (myRoot != null) this.myRoot.colliders.add(this);
+        if (myRoot != null){
+            this.myRoot.colliders.add(this);
+            System.out.println("added self to colliders");
+        }
 
         shapes = new Array<>();
 
@@ -175,8 +184,18 @@ public class ColliderObject extends Node {
     }
 
     public void setMyRoot(Root newRoot){
+        boolean rootChanged = newRoot != myRoot;
+
+        if (rootChanged && myRoot != null){
+            myRoot.colliders.removeValue(this,true);
+        }
+
         this.myRoot = newRoot;
-        if (myRoot != null) this.myRoot.colliders.add(this);
+
+        if (myRoot != null && rootChanged){
+            this.myRoot.colliders.add(this);
+        }
+
     }
 
     public void addChild(Node child){
@@ -210,7 +229,10 @@ public class ColliderObject extends Node {
     public void free(){
         super.free();
 
-        if(myRoot.colliders.removeValue(this,true));// System.out.println("removed a collider");
+        //int num = myRoot.colliders.size;
+
+        myRoot.colliders.removeValue(this,true);  // System.out.println("removed a collider");
+
     }
 
 }

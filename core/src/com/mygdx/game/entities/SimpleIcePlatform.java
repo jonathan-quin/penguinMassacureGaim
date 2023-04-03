@@ -31,7 +31,10 @@ public class SimpleIcePlatform extends StaticNode {
         addChild( ObjectPool.get(TextureEntity.class).init(iceTexture,0,0,0,0));
         getNewestChild().setName("sprite");
 
+        ( (TextureEntity) getNewestChild()).setFlip(false,false);
+
         addChild( ObjectPool.get(CollisionShape.class).init(96/2,16,0,0));
+
 
 
         return this;
@@ -44,7 +47,6 @@ public class SimpleIcePlatform extends StaticNode {
     @Override
     public void update(double delta) {
        super.update(delta);
-
 
     }
 

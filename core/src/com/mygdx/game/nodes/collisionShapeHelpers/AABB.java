@@ -279,6 +279,8 @@ public class AABB {
         info.length = offset.len();
 
 
+
+
         AABBIntersectSegmentInfo segmentInfo = otherBox.intersectSegment(pos,offset,half.x,half.y);
 
         info.collides = segmentInfo.collides || segmentInfo.resolves;
@@ -291,6 +293,9 @@ public class AABB {
             info.firstImpact =((Vector2) ObjectPool.getGarbage(Vector2.class)).set(pos.x + offset.x,pos.y + offset.y);
             info.offset = ((Vector2) ObjectPool.getGarbage(Vector2.class)).set(info.firstImpact.x - pos.x,info.firstImpact.y-pos.y);
             info.time = 1;
+
+
+
             return info;
         }
 
@@ -306,12 +311,16 @@ public class AABB {
         }
 
 
-        //if (info.time > 1) System.out.println("time is out of wack " + info.time);
+        if (info.time > 1) System.out.println("time is out of wack " + info.time);
+
+
 
         //System.out.println("AABB first" + info.firstImpact);
 
         return info;
     }
+
+
 
 
 

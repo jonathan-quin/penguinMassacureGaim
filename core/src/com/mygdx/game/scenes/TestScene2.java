@@ -13,7 +13,7 @@ public class TestScene2 extends Root {
 
     public void open(){
         rootNode = poolGet(Node.class);
-        rootNode.myRoot = this;
+        rootNode.setMyRoot(this);
 
 
         add(poolGet(Player.class).init(220,300));

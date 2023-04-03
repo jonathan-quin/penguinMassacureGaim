@@ -102,7 +102,14 @@ public class Root {
      * shuts down the scene
      */
     public void close(){
-        rootNode.queueFree();
+
+        rootNode.free();
+        rootNode = null;
+
+    }
+
+    public boolean isOpen(){
+        return rootNode != null;
     }
 
     /**

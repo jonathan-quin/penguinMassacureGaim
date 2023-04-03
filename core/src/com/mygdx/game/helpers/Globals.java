@@ -11,6 +11,8 @@ public class Globals {
 
     public static boolean showCollision = true;
 
+    public static boolean sceneJustChanged = true;
+
     public static ShapeRenderer globalShape= new ShapeRenderer();
 
     public static Vector2 cameraOffset = Vector2.Zero;

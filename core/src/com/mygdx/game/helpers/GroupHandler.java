@@ -26,6 +26,7 @@ public class GroupHandler {
 
     public boolean removeFromGroup(String group, Node obj) {
         int pos = names.indexOf(group);
+
         if (pos == -1){
             System.out.println("Group does not exist");
             System.exit(0);
