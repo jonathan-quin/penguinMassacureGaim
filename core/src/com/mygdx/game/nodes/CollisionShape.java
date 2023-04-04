@@ -68,22 +68,6 @@ public class CollisionShape extends Node {
 
         returnInfo.collider = other.getParent();
 
-        if (Globals.sceneJustChanged && returnInfo.collides ){
-            System.out.println("\nhey, 1673 after colliding");
-            System.out.println("distance: " + distance);
-            System.out.println("position " + globalPosition + " box position: " + boundingBox.pos);
-            System.out.println("other position: " + returnInfo.collider.globalPosition + " other box position: " + other.boundingBox.pos);
-            System.out.println("time: " + returnInfo.time);
-            System.out.println("collides: " + returnInfo.collides);
-            System.out.println("firstImpact: " + returnInfo.firstImpact);
-            System.out.println("sceneJustChanged? " + Globals.sceneJustChanged);
-            System.out.println("other is in queuefree? " + other.isInGroup(GroupHandler.QUEUEFREE));
-            System.out.println("collidernum: " + myRoot.colliders.size);
-            System.out.println(returnInfo.collider);
-            System.out.println("I am: " + this.getParent());
-            returnInfo.collider.addToGroup("weird");
-        }
-
 
         return returnInfo;
 

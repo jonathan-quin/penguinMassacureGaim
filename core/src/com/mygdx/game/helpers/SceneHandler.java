@@ -9,7 +9,9 @@ import com.mygdx.game.nodes.Root;
 import com.mygdx.game.nodes.TextureEntity;
 import com.mygdx.game.scenes.TestScene;
 import com.mygdx.game.scenes.TestScene2;
+import com.mygdx.game.scenes.TimeRewindScene;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static com.mygdx.game.helpers.Globals.camera;
@@ -31,12 +33,32 @@ public class SceneHandler {
 
         scenes.put("TestScene", new TestScene());
         scenes.put("TestScene2", new TestScene2());
+        scenes.put("TimeRewindTest", new TimeRewindScene());
 
 
         batch = new SpriteBatch();
 
     }
 
+
+    public static void goToNextScene(){
+        String[] tempKeys = scenes.keySet().toArray(new String[0]) ;
+
+        ArrayList<String> keys =  (ArrayList<String>) ObjectPool.get(ArrayList.class);
+
+        for (int i = 0; i < tempKeys.length; i++){
+            keys.add(tempKeys[i]);
+        }
+
+        int newSceneIndex = keys.indexOf(currentSceneName) + 1;
+
+        if (newSceneIndex == keys.size()){
+            newSceneIndex = 0;
+        }
+
+        setCurrentScene(keys.get(newSceneIndex));
+
+    }
 
     public static void setCurrentScene(String scene){
 
@@ -95,15 +117,7 @@ public class SceneHandler {
 
         //ObjectPool.printTotal();
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.C) ){
-            for (Node n : tempScene.groups.getNodesInGroup("weird")){
-                System.out.println(n.position + " " + n);
-            }
-        };
 
-        for (Node n : tempScene.groups.getNodesInGroup("weird")){
-            ((TextureEntity) ((SimpleIcePlatform) n).getChild("sprite")).setFlip(false,true);
-        }
 
         for (Node n : tempScene.groups.getNodesInGroup(GroupHandler.QUEUEFREE)){
             n.free();
@@ -115,12 +129,6 @@ public class SceneHandler {
 
             tempScene.close();
             currentScene.open();
-
-            System.out.println("\n opened");
-            for (Node n : currentScene.rootNode.children){
-                System.out.println(n.position + " " + n.globalPosition + " " + n);
-            }
-            System.out.println();
 
 
             sceneJustChanged = true;

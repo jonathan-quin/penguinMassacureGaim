@@ -230,6 +230,7 @@ public class Node {
         child.parent = this;
         child.setMyRoot(myRoot);
         if (!child.ready) child.ready();
+        child.ready = true;
     }
 
 

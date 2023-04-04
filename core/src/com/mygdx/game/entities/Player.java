@@ -7,7 +7,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.helpers.*;
 import com.mygdx.game.nodes.*;
 
-public class Player extends MovementNode {
+import java.util.HashMap;
+
+public class Player extends MovementNode implements TimeRewindInterface {
 
     private float MAXSPEED = 180;
 
@@ -46,9 +48,7 @@ public class Player extends MovementNode {
 
         super.init(x,y,getMaskLayers(0),getMaskLayers(0));
 
-        addChild(ObjectPool.get(TextureEntity.class).init(TextureHolder.penguinTexture,0f,2f,0,0));
-        getNewestChild().setName("sprite");
-        addChild(ObjectPool.get(CollisionShape.class).init(8,12,0,0));
+
 
         rotation = 0;
 
@@ -59,6 +59,14 @@ public class Player extends MovementNode {
 
     public void ready(){
         bulletHolder = getRootNode().getChild("bulletHolder");
+
+        addToGroup("rewind");
+
+        addChild(ObjectPool.get(TextureEntity.class).init(TextureHolder.penguinTexture,0f,1f,0,0));
+        getNewestChild().setName("sprite");
+        addChild(ObjectPool.get(CollisionShape.class).init(8,12,0,0));
+
+
     }
 
     private final Vector2 targetSpeed = new Vector2();
@@ -120,13 +128,8 @@ public class Player extends MovementNode {
 
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.Z)){
-            if (SceneHandler.getCurrentScene().equals("TestScene")){
-                SceneHandler.setCurrentScene("TestScene2");
-            }
-            else{
-                SceneHandler.setCurrentScene("TestScene");
-            }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.Z)){
+            SceneHandler.goToNextScene();
         }
 
 
@@ -138,6 +141,17 @@ public class Player extends MovementNode {
 
     private float lerp(float a, float b, float f){
         return a + f * (b - a);
+    }
+
+
+    public HashMap<String,Object> save(){
+        HashMap<String,Object> returnHash = (HashMap<String, Object>) ObjectPool.get(HashMap.class);
+
+        returnHash.put("class",this.getClass());
+        returnHash.put("position",ObjectPool.get(Vector2.class).set(position));
+
+
+        return returnHash;
     }
 
 

@@ -53,7 +53,14 @@ public class GroupHandler {
             nodes.add(new ArrayList<Node>());
         }
 
-        return nodes.get(names.indexOf(group));
+        ArrayList<Node> returnArr = (ArrayList<Node>) ObjectPool.getGarbage(ArrayList.class);
+        returnArr.clear();
+
+        for (Node n : nodes.get(names.indexOf(group))){
+            returnArr.add(n);
+        }
+
+        return returnArr;
     }
 
     public void clearGroup(String group){

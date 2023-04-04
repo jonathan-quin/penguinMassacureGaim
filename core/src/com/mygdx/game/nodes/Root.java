@@ -57,7 +57,11 @@ public class Root {
      * Calls the updateCascade method of the root node, which updates the entire scene tree.
      */
     public void update(){
+
+
         rootNode.updateCascade();
+
+
     }
 
     /**
