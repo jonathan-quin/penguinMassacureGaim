@@ -54,12 +54,15 @@ public class TimeRewindRoot extends Root{
 
         ArrayList<ArrayList<Object>> lastFrame;
 
-        if (past.size() > 2) {
+        boolean holding =  past.size() <= 2;
+
+        if (!holding) {
             lastFrame = past.remove(past.size() - 1);
         } else {
             lastFrame = past.get(0);
         }
-        System.out.println(past.size());
+
+
         for (ArrayList<Object> currentNode : lastFrame) {
 
             Object obj = ObjectPool.get((Class) currentNode.get(0));
@@ -72,7 +75,16 @@ public class TimeRewindRoot extends Root{
 
             ((TimeRewindInterface) obj).load(currentNode.toArray());
 
+            if (!holding){
+                for (int i = currentNode.size() - 1; i > 0; i--) {
+                    ObjectPool.removeBackwards(currentNode.get(i));
+                }
+                ObjectPool.removeBackwards(currentNode);
+            }
+
         }
+
+        if (!holding) ObjectPool.removeBackwards(lastFrame);
 
 
 

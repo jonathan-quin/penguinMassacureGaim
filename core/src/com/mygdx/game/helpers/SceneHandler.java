@@ -115,7 +115,7 @@ public class SceneHandler {
         ObjectPool.takeOutTrash();
 
 
-        //ObjectPool.printTotal();
+        ObjectPool.printTotal();
 
 
 

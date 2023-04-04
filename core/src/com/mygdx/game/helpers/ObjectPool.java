@@ -72,6 +72,10 @@ public class ObjectPool {
 
     }
 
+    public static void removeBackwards(Object obj){
+        if (removeFromList(objectsInUse,obj,true)) objectsStored.add(obj);
+    }
+
     private static boolean removeFromList(ArrayList<Object> list, Object o){
 
         if (o == null) {
@@ -82,6 +86,31 @@ public class ObjectPool {
                 }
         } else {
             for (int index = 0; index < list.size(); index++)
+                if (o == (list.get(index))) {
+                    list.remove(index);
+                    return true;
+                }
+        }
+
+        return false;
+    }
+
+    private static boolean removeFromList(ArrayList<Object> list, Object o,boolean backWards){
+
+        if (backWards == false){
+            return removeFromList(list,o);
+        }
+
+        //System.out.println("it's called");
+
+        if (o == null) {
+            for (int index = list.size()-1; index >= 0; index--)
+                if (list.get(index) == null) {
+                    list.remove(index);
+                    return true;
+                }
+        } else {
+            for (int index = list.size()-1; index >= 0; index--)
                 if (o == (list.get(index))) {
                     list.remove(index);
                     return true;
