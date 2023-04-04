@@ -3,10 +3,13 @@ package com.mygdx.game.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.helpers.*;
 import com.mygdx.game.nodes.*;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Player extends MovementNode implements TimeRewindInterface {
@@ -56,6 +59,35 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
         return this;
     }
+
+    public Player init(){
+        return init(0,0);
+    }
+
+
+
+    public <T> T load(Object... vars) {
+
+        this.position.set( (Vector2) vars[1]);
+        this.vel.set((Vector2) vars[2]);
+        this.rotation = ((double) vars[3]);
+
+        if (vel.x != 0){
+            ((TextureEntity) getChild("sprite")).setFlip(vel.x < 0,false);
+        }
+        if (((TextureEntity) getChild("sprite")).getFlipX()) {
+            ((TextureEntity) getChild("sprite")).setRotation(rotation);
+        } else {
+            ((TextureEntity) getChild("sprite")).setRotation(-rotation);
+        }
+
+        updateGlobalPosition();
+        Globals.cameraOffset.set(globalPosition);
+
+
+        return null;
+    }
+
 
     public void ready(){
         bulletHolder = getRootNode().getChild("bulletHolder");
@@ -133,8 +165,8 @@ public class Player extends MovementNode implements TimeRewindInterface {
         }
 
 
-        Globals.cameraOffset.set(position);
 
+        Globals.cameraOffset.set(position);
         //System.out.println(vel + " delta " + delta);
 
     }
@@ -144,7 +176,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
     }
 
 
-    public HashMap<String,Object> save(){
+    /*public HashMap<String,Object> save(){
         HashMap<String,Object> returnHash = (HashMap<String, Object>) ObjectPool.get(HashMap.class);
 
         returnHash.put("class",this.getClass());
@@ -152,6 +184,26 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
 
         return returnHash;
+    }*/
+
+    public ArrayList<Object> save(){
+        ArrayList<Object> returnArr = (ArrayList<Object>) ObjectPool.get(ArrayList.class);
+
+        returnArr.clear();
+
+        returnArr.add(this.getClass());
+        returnArr.add(ObjectPool.get(Vector2.class).set(position));
+        returnArr.add(ObjectPool.get(Vector2.class).set(vel));
+        returnArr.add(rotation);
+
+        return returnArr;
+    }
+
+    @Override
+
+
+    public void render(SpriteBatch batch){
+        //Globals.cameraOffset.set(globalPosition);
     }
 
 

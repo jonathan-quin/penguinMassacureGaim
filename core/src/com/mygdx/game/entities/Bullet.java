@@ -1,16 +1,15 @@
 package com.mygdx.game.entities;
 
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.helpers.LayerNames;
-import com.mygdx.game.helpers.ObjectPool;
-import com.mygdx.game.helpers.TextureHolder;
-import com.mygdx.game.helpers.Utils;
+import com.mygdx.game.helpers.*;
 import com.mygdx.game.nodes.CollisionShape;
 import com.mygdx.game.nodes.MovementNode;
 import com.mygdx.game.nodes.Node;
 import com.mygdx.game.nodes.TextureEntity;
 
-public class Bullet extends MovementNode {
+import java.util.ArrayList;
+
+public class Bullet extends MovementNode implements TimeRewindInterface {
 
     Vector2 vel;
 
@@ -26,7 +25,13 @@ public class Bullet extends MovementNode {
     }
 
     public void ready(){
+        addChild( ( ObjectPool.get(TextureEntity.class) ).init(TextureHolder.bulletTexture,0,0,0,0));
+        sprite = (TextureEntity) getNewestChild();
 
+        addChild( ( ObjectPool.get(CollisionShape.class)).init (10,10,0,0));
+        getNewestChild().setName("shape");
+
+        addToGroup("rewind");
     }
 
     public Bullet init(float posX, float posY, float velX, float velY){
@@ -34,13 +39,6 @@ public class Bullet extends MovementNode {
         super.init(posX,posY,getMaskLayers(LayerNames.DEFAULT),getMaskLayers());
 
         vel.set(velX,velY);
-        position.set(posX,posY);
-
-        addChild( ( ObjectPool.get(TextureEntity.class) ).init(TextureHolder.bulletTexture,0,0,0,0));
-        sprite = (TextureEntity) getNewestChild();
-
-        addChild( ( ObjectPool.get(CollisionShape.class)).init (10,10,0,0));
-        getNewestChild().setName("shape");
 
         return this;
     }
@@ -73,4 +71,34 @@ public class Bullet extends MovementNode {
     }
 
 
+    @Override
+    public ArrayList<Object> save() {
+
+        ArrayList<Object> returnArr = (ArrayList<Object>) ObjectPool.get(ArrayList.class);
+
+        returnArr.clear();
+
+        returnArr.add(this.getClass());
+        returnArr.add(ObjectPool.get(Vector2.class).set(position));
+        returnArr.add(ObjectPool.get(Vector2.class).set(vel));
+
+        return returnArr;
+    }
+
+    @Override
+    public Bullet init() {
+        init(0,0,0,0);
+        return  this;
+    }
+
+    @Override
+    public <T> T load(Object... vars) {
+
+        this.position.set( (Vector2) vars[1]);
+        this.vel.set((Vector2) vars[2]);
+
+        sprite.setRotation(vel.angleDeg());
+        updateGlobalPosition();
+        return null;
+    }
 }

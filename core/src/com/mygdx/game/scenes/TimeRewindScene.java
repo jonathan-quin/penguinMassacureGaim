@@ -13,12 +13,13 @@ public class TimeRewindScene extends TimeRewindRoot {
         rootNode = poolGet(Node.class);
         rootNode.setMyRoot(this);
 
-
-        add(poolGet(Player.class).init(220,300));
-
         add(ObjectPool.get(Node.class).init(0,0));
 
         last().setName("bulletHolder");
+
+
+        add(poolGet(Player.class).init(220,300));
+
 
         rootNode.addChild( ObjectPool.get(SimpleIcePlatform.class).init(110,100));
 

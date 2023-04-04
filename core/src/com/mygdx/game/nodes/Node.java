@@ -188,6 +188,7 @@ public class Node {
      */
     public void renderCascade(SpriteBatch batch){
         render(batch);
+        updateParentPos();
         for (Node child: children){
             child.renderCascade(batch);
         }
