@@ -45,6 +45,7 @@ public class SceneHandler {
         String[] tempKeys = scenes.keySet().toArray(new String[0]) ;
 
         ArrayList<String> keys =  (ArrayList<String>) ObjectPool.get(ArrayList.class);
+        keys.clear();
 
         for (int i = 0; i < tempKeys.length; i++){
             keys.add(tempKeys[i]);

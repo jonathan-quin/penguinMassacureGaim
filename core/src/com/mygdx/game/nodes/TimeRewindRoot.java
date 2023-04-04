@@ -90,6 +90,35 @@ public class TimeRewindRoot extends Root{
 
     }
 
+    public void close(){
+        rootNode.free();
+        rootNode = null;
+
+        for (ArrayList<ArrayList<Object>> frame : past){
+
+
+            for (ArrayList<Object> currentNode : frame) {
+
+                for (int i = currentNode.size() - 1; i > 0; i--) {
+                    ObjectPool.removeBackwards(currentNode.get(i));
+                }
+
+                ObjectPool.removeBackwards(currentNode);
+
+            }
+
+            ObjectPool.removeBackwards(frame);
+
+        }
+
+        past.clear();
+
+
+
+
+
+    }
+
 
     /*public void loadNodes(){
 
