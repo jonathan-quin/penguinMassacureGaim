@@ -1,6 +1,7 @@
 package com.mygdx.game.helpers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ObjectPool {
     static ArrayList<Object> objectsStored = new ArrayList<Object>();
@@ -144,6 +145,20 @@ public class ObjectPool {
             System.out.print("total: " + (garbageObjectInUse.size() + objectsInUse.size() + objectsStored.size()) );
             System.out.println(" inUse: " + objectsInUse.size());
         }
+
+/*        public static void printObjectBreakdownInUse(){
+            HashMap<Class,Integer> breakdown = new HashMap<>();
+
+            for (Object obj : objectsInUse){
+                try(){
+                    breakdown.get(obj.getClass());
+                }
+
+
+            }
+
+
+        }*/
 
         public int total = 0;
         public int calculateTotal(){
