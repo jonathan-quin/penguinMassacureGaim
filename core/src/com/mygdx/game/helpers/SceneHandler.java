@@ -44,7 +44,7 @@ public class SceneHandler {
     public static void goToNextScene(){
         String[] tempKeys = scenes.keySet().toArray(new String[0]) ;
 
-        ArrayList<String> keys =  (ArrayList<String>) ObjectPool.get(ArrayList.class);
+        ArrayList<String> keys =  (ArrayList<String>) ObjectPool.getGarbage(ArrayList.class);
         keys.clear();
 
         for (int i = 0; i < tempKeys.length; i++){
@@ -115,11 +115,8 @@ public class SceneHandler {
 
         ObjectPool.takeOutTrash();
 
-
-        ObjectPool.printTotal();
-        ObjectPool.printObjectBreakdownInUse();
-
-
+        
+       // ObjectPool.printTotal();
 
         for (Node n : tempScene.groups.getNodesInGroup(GroupHandler.QUEUEFREE)){
             n.free();
@@ -128,7 +125,8 @@ public class SceneHandler {
         tempScene.groups.clearGroup(GroupHandler.QUEUEFREE);
         
         if (sceneChangeThisFrame){
-
+//            ObjectPool.printTotal();
+//            ObjectPool.printObjectBreakdownInUse();
             tempScene.close();
             currentScene.open();
 

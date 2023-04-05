@@ -162,9 +162,16 @@ public class ObjectPool {
 
             String tempString = "";
 
-            
+            for (Class c : breakdown.keySet()){
 
-            System.out.println(breakdown);
+                String tempTempString = c.toString();
+                tempTempString = tempTempString.substring(tempTempString.lastIndexOf(".")+1);
+                tempTempString += ": " + breakdown.get(c).toString();
+                tempTempString += "\n";
+                tempString += tempTempString;
+            }
+
+            System.out.println(tempString);
 
 
         }
