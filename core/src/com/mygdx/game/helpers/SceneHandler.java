@@ -117,6 +117,7 @@ public class SceneHandler {
 
 
         ObjectPool.printTotal();
+        ObjectPool.printObjectBreakdownInUse();
 
 
 

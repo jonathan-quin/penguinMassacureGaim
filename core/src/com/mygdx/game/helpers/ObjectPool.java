@@ -146,19 +146,28 @@ public class ObjectPool {
             System.out.println(" inUse: " + objectsInUse.size());
         }
 
-/*        public static void printObjectBreakdownInUse(){
+        public static void printObjectBreakdownInUse(){
             HashMap<Class,Integer> breakdown = new HashMap<>();
 
             for (Object obj : objectsInUse){
-                try(){
-                    breakdown.get(obj.getClass());
-                }
 
+                if (breakdown.containsKey(obj.getClass())){
+                    breakdown.put(obj.getClass(),breakdown.get(obj.getClass()) + 1);
+                }
+                else{
+                    breakdown.put(obj.getClass(),1);
+                }
 
             }
 
+            String tempString = "";
 
-        }*/
+            
+
+            System.out.println(breakdown);
+
+
+        }
 
         public int total = 0;
         public int calculateTotal(){
