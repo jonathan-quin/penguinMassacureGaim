@@ -287,6 +287,8 @@ public class AABB {
 
         info.collider = null;
 
+        info.resolved = segmentInfo.resolves;
+
 
         if (!segmentInfo.collides && !segmentInfo.resolves){
             info.collides = false;

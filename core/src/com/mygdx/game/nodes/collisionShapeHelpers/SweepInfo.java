@@ -15,6 +15,8 @@ public class SweepInfo {
 
         public boolean collides;
 
+        public boolean resolved;
+
         public SweepInfo() {
             this.time = 1;
         }

@@ -24,7 +24,9 @@ public class ObjectPool {
             }        }
         try {
             returnObj =  type.getDeclaredConstructor().newInstance();
-        } catch (Exception ex) {        }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
         objectsInUse.add(returnObj);
 
