@@ -24,7 +24,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	public void create () {
 
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 1024, 600);
+		camera.setToOrtho(false, Globals.screenSize.x, Globals.screenSize.y);
 
 		Globals.camera = camera;
 
@@ -43,6 +43,8 @@ public class MyGdxGame extends ApplicationAdapter {
 //		ObjectPool.printTotal();
 
 		ScreenUtils.clear(0.921f, 0.55f, 0.96f, 1);
+
+
 
 		SceneHandler.update();
 

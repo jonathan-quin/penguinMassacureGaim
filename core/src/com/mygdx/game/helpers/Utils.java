@@ -27,10 +27,13 @@ public class Utils {
 
         returnVector.set(Gdx.input.getX() + offsetX, (- Gdx.input.getY()) + offsetY);
 
-        System.out.println(returnVector);
-
+        //System.out.println(returnVector);
 
         return returnVector;
+    }
+
+    public static void updateGlobalScreenStretch(){
+        Globals.screenStretch = Globals.screenSize.x/
     }
 
 

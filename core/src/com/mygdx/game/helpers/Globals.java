@@ -9,9 +9,14 @@ public class Globals {
     public static int gamespeed = 1;
     public static OrthographicCamera camera;
 
-    public static boolean showCollision = false;
+
+    public static boolean showCollision = true;
 
     public static boolean sceneJustChanged = true;
+
+    public static Vector2 screenStretch = new Vector2(1,1);
+
+    public static Vector2 screenSize = new Vector2(1024,600);
 
     public static ShapeRenderer globalShape= new ShapeRenderer();
 
