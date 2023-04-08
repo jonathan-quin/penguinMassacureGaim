@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.collision.Ray;
 import com.mygdx.game.helpers.*;
 import com.mygdx.game.nodes.*;
 
@@ -29,6 +30,8 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
     private Node bulletHolder;
 
+    private Raycast ray;
+
     //private double
 
 
@@ -38,7 +41,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
     public Player( float x, float y) {
 
-        super(x, y, getMaskLayers(0),getMaskLayers(0));
+        super(x, y, getMaskLayers(LayerNames.WALLS),getMaskLayers(LayerNames.PLAYER));
 
         vel = new Vector2(0,0);
 
@@ -49,7 +52,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
     public Player init(float x, float y){
 
 
-        super.init(x,y,getMaskLayers(0),getMaskLayers(0));
+        super.init(x,y, getMaskLayers(LayerNames.WALLS),getMaskLayers(LayerNames.PLAYER));
 
 
 
@@ -98,9 +101,9 @@ public class Player extends MovementNode implements TimeRewindInterface {
         getNewestChild().setName("sprite");
         addChild(ObjectPool.get(CollisionShape.class).init(8,12,0,0));
 
-        //addChild( ObjectPool.get(Raycast.class).init(0,0,0,0,getMaskLayers(0)) );
+        addChild( ObjectPool.get(Raycast.class).init(0,0,100,-100,getMaskLayers(LayerNames.WALLS)) );
+        ray = (Raycast) getNewestChild();
 
-        addChild((new Raycast()));
 
     }
 
@@ -167,6 +170,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
             SceneHandler.goToNextScene();
         }
 
+        ray.setCast(Utils.getGlobalMousePosition().sub(globalPosition));
 
 
         Globals.cameraOffset.set(position);

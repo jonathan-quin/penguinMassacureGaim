@@ -1,11 +1,6 @@
 package com.mygdx.game.nodes.collisionShapeHelpers;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.helpers.Globals;
 import com.mygdx.game.helpers.ObjectPool;
 
 import static com.badlogic.gdx.math.MathUtils.clamp;
@@ -41,6 +36,10 @@ public class AABB {
         AABBIntersectSegmentInfo returnInfo = ((AABBIntersectSegmentInfo) ObjectPool.getGarbage(AABBIntersectSegmentInfo.class)).init(false,false,0,0);
 
         if (containsPoint(lineStart,paddingX,paddingY,0f) ){
+
+            returnInfo.startsWithin = true;
+
+
 
             Vector2 endPoint = ((Vector2) ObjectPool.getGarbage(Vector2.class)).set(lineStart).add(offset);
 
@@ -287,7 +286,8 @@ public class AABB {
 
         info.collider = null;
 
-        info.resolved = segmentInfo.resolves;
+        info.startedWithin = segmentInfo.startsWithin;
+
 
 
         if (!segmentInfo.collides && !segmentInfo.resolves){

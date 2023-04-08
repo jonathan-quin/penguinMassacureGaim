@@ -20,7 +20,7 @@ public class Bullet extends MovementNode implements TimeRewindInterface {
 
         super();
         vel = new Vector2(0,0);
-        setMaskLayers( getMaskLayers(LayerNames.DEFAULT),getMaskLayers());
+        setMaskLayers( getMaskLayers(LayerNames.WALLS),getMaskLayers());
 
     }
 
@@ -36,7 +36,7 @@ public class Bullet extends MovementNode implements TimeRewindInterface {
 
     public Bullet init(float posX, float posY, float velX, float velY){
 
-        super.init(posX,posY,getMaskLayers(LayerNames.DEFAULT),getMaskLayers());
+        super.init(posX,posY,getMaskLayers(LayerNames.WALLS),getMaskLayers());
 
         vel.set(velX,velY);
 

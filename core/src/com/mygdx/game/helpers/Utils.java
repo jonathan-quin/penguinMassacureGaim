@@ -1,5 +1,6 @@
 package com.mygdx.game.helpers;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
 public class Utils {
@@ -16,6 +17,20 @@ public class Utils {
         if (y < (Globals.cameraOffset.y - (Globals.camera.viewportHeight/2)) - toleranceY) return false;
 
         return true;
+    }
+
+    public static Vector2 getGlobalMousePosition(){
+        Vector2 returnVector = ObjectPool.getGarbage(Vector2.class);
+
+        float offsetX = Globals.cameraOffset.x - 512;
+        float offsetY = Globals.cameraOffset.y + 300;
+
+        returnVector.set(Gdx.input.getX() + offsetX, (- Gdx.input.getY()) + offsetY);
+
+        System.out.println(returnVector);
+
+
+        return returnVector;
     }
 
 

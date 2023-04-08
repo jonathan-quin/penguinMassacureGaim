@@ -23,7 +23,7 @@ public class SimpleIcePlatform extends StaticNode {
 
     public SimpleIcePlatform init(float x, float y){
 
-        super.init(x,y,getMaskLayers(LayerNames.DEFAULT),getMaskLayers(LayerNames.DEFAULT));
+        super.init(x,y,getMaskLayers(),getMaskLayers(LayerNames.WALLS));
 
         Texture iceTexture = TextureHolder.iceTexture;
 

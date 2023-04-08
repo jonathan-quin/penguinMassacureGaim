@@ -1,6 +1,7 @@
 package com.mygdx.game.nodes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -29,9 +30,12 @@ public class Raycast extends Node{
         castTo = new Vector2(0,0);
         lastCollider = null;
         lastCollided = false;
+        myPoint  = new CollisionShape();
+        myPoint.init(1,1,0,0);
 
         lastCollisionPoint = new Vector2(0,0);
 
+        mask = new ArrayList<>();
         setMaskLayers( getMaskLayers(0) );
 
 
@@ -44,11 +48,16 @@ public class Raycast extends Node{
         lastCollider = null;
         lastCollided = false;
 
-        lastCollisionPoint.set(castX,castY);
+        castTo.set(castX,castY);
 
         setMaskLayers(mask);
 
         return this;
+    }
+
+    public void ready(){
+
+        updateRaycast();
     }
 
     public static ArrayList<Integer> getMaskLayers(int...newArr){
@@ -91,7 +100,9 @@ public class Raycast extends Node{
         updateRaycast();
     }
 
-    public CollisionShape myPoint = new CollisionShape(1,1,0,0);
+
+
+    public CollisionShape myPoint;
 
 
     public Vector2 getGlobalFirstCollision(Vector2 distance){
@@ -104,13 +115,17 @@ public class Raycast extends Node{
 
         if (currentInfo != null){
             output.set(globalPosition.x + currentInfo.offset.x,globalPosition.y + currentInfo.offset.y);
-            lastCollided = currentInfo.collides;
+
+            lastCollided = currentInfo.collides || currentInfo.startedWithin;
+
             if (lastCollided){
                 lastCollider = currentInfo.collider;
             }
-            if (currentInfo.resolved){
+
+            if (currentInfo.startedWithin){
                 output.set(globalPosition);
             }
+
         }
 
         return output;
@@ -123,6 +138,8 @@ public class Raycast extends Node{
 
         SweepInfo returnSweepInfo = myPoint.sweepTestArray(distance,other.getShapes());
 
+
+
         return returnSweepInfo;
     }
 
@@ -134,8 +151,15 @@ public class Raycast extends Node{
 
         SweepInfo returnSweepInfo = null;
         SweepInfo tempSweepInfo;
+
+        boolean startedInSomething = false;
+
         for (ColliderObject other : others){
             tempSweepInfo = sweepTest(distance,other);
+
+            if (tempSweepInfo.startedWithin){
+                startedInSomething = true;
+            }
 
             if (tempSweepInfo != null && (returnSweepInfo == null || tempSweepInfo.time < returnSweepInfo.time) )
                 returnSweepInfo = tempSweepInfo;
@@ -144,6 +168,8 @@ public class Raycast extends Node{
 
         //System.out.println("colliderobjecct array " + returnSweepInfo.firstImpact);
 
+        if (returnSweepInfo != null) returnSweepInfo.startedWithin = startedInSomething;
+
         return returnSweepInfo;
     }
 
@@ -151,16 +177,38 @@ public class Raycast extends Node{
 
 
         if (Globals.showCollision){
-
+            myPoint.debug();
 
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
             //I'm using the Filled ShapeType, but remember you have three of them
 
-            Globals.globalShape.line( (globalPosition.x)- Globals.cameraOffset.x + 512,  (globalPosition.y )- Globals.cameraOffset.y + 300,(globalPosition.x)- Globals.cameraOffset.x + 512 + castTo.x,  (globalPosition.y )- Globals.cameraOffset.y + 300 + castTo.y); //assuming you have created those x, y, width and height variables
+            float offsetPosX = (globalPosition.x)- Globals.cameraOffset.x + 512;
+            float offsetPosY = (globalPosition.y )- Globals.cameraOffset.y + 300;
+
+            float distanceToPointX = lastCollisionPoint.x - globalPosition.x;
+            float distanceToPointY = lastCollisionPoint.y - globalPosition.y;
 
 
+            //Globals.globalShape.rect( offsetX,offsetY,offsetX + castTo.x,  offsetY + castTo.y); //assuming you have created those x, y, width and height variables
 
+            Color tempColor = Globals.globalShape.getColor().cpy();
+
+            Globals.globalShape.setColor(new Color(Color.RED));
+
+            Globals.globalShape.rectLine( offsetPosX,  offsetPosY,offsetPosX + castTo.x,  offsetPosY + castTo.y,3); //assuming you have created those x, y, width and height variables
+
+            Globals.globalShape.setColor(new Color(Color.BLUE));
+
+            Globals.globalShape.rectLine( offsetPosX,  offsetPosY,offsetPosX + distanceToPointX,  offsetPosY + distanceToPointY,3);
+
+
+            Globals.globalShape.setColor(new Color(Color.GREEN));
+            if (lastCollided) Globals.globalShape.setColor(new Color(Color.YELLOW));
+
+            Globals.globalShape.rect(offsetPosX + distanceToPointX - 5,  offsetPosY + distanceToPointY - 5,10,10);
+
+            Globals.globalShape.setColor(tempColor);
 
             //Gdx.gl.glDisable(GL20.GL_BLEND); //this breaks transparency apparently?
         }

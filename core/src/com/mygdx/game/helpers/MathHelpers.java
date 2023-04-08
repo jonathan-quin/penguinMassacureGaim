@@ -1,5 +1,8 @@
 package com.mygdx.game.helpers;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
+
 public class MathHelpers {
     public static double moveTowardsZero(double num, double amount){
         if (num > 0) return Math.max(num-amount,0);
@@ -28,5 +31,7 @@ public class MathHelpers {
         if (a + tolerance > b && a - tolerance < b) return true;
         return false;
     }
+
+
 
 }

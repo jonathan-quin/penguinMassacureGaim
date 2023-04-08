@@ -21,6 +21,8 @@ public class Globals {
 
     }
 
+
+
     public static float inverse(float num){
         if (num == 0) return 0;
 

@@ -78,9 +78,16 @@ public class CollisionShape extends Node {
 
         SweepInfo returnSweepInfo = null;
         SweepInfo tempSweepInfo;
+        boolean startedInSomething = false;
+
         for (CollisionShape other : others){
             tempSweepInfo = sweepTest(distance,other);
-            if (returnSweepInfo == null || tempSweepInfo.time < returnSweepInfo.time ){
+
+            if (tempSweepInfo.startedWithin){
+                startedInSomething = true;
+            }
+
+            if (returnSweepInfo == null || tempSweepInfo.time < returnSweepInfo.time){
                 //System.out.println(tempSweepInfo.time);
                 returnSweepInfo = tempSweepInfo;
                 //System.out.println("hey");
@@ -88,6 +95,8 @@ public class CollisionShape extends Node {
 
 
         }
+
+        returnSweepInfo.startedWithin = startedInSomething;
 
         return returnSweepInfo;
     }
