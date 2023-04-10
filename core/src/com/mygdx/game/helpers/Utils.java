@@ -22,18 +22,21 @@ public class Utils {
     public static Vector2 getGlobalMousePosition(){
         Vector2 returnVector = ObjectPool.getGarbage(Vector2.class);
 
-        float offsetX = Globals.cameraOffset.x - 512;
-        float offsetY = Globals.cameraOffset.y + 300;
+        updateGlobalScreenStretch();
 
-        returnVector.set(Gdx.input.getX() + offsetX, (- Gdx.input.getY()) + offsetY);
+        float offsetX = Globals.cameraOffset.x - Globals.screenSize.x/2;
+        float offsetY = Globals.cameraOffset.y + Globals.screenSize.y/2;
 
-        //System.out.println(returnVector);
+        returnVector.set((Gdx.input.getX() * Globals.screenStretch.x) + offsetX, (- (Gdx.input.getY() * Globals.screenStretch.y)) + offsetY);
 
         return returnVector;
     }
 
     public static void updateGlobalScreenStretch(){
-        Globals.screenStretch = Globals.screenSize.x/
+
+        //Globals.screenStretch = Globals.screenSize.x/
+        Globals.screenStretch.x = Gdx.graphics.getWidth()/Globals.screenSize.x;
+        Globals.screenStretch.y = Gdx.graphics.getHeight()/Globals.screenSize.y;
     }
 
 
