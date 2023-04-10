@@ -32,6 +32,7 @@ public class Bullet extends MovementNode implements TimeRewindInterface {
         getNewestChild().setName("shape");
 
         addToGroup("rewind");
+        sprite.setRotation(vel.angleDeg());
     }
 
     public Bullet init(float posX, float posY, float velX, float velY){
@@ -39,6 +40,7 @@ public class Bullet extends MovementNode implements TimeRewindInterface {
         super.init(posX,posY,getMaskLayers(LayerNames.WALLS),getMaskLayers());
 
         vel.set(velX,velY);
+
 
         return this;
     }

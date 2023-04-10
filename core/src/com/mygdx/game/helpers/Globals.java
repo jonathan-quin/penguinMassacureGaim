@@ -11,7 +11,7 @@ public class Globals {
     public static OrthographicCamera camera;
 
 
-    public static boolean showCollision = true;
+    public static boolean showCollision = false;
 
     public static boolean sceneJustChanged = true;
 
