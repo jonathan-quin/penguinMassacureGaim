@@ -27,7 +27,7 @@ public class Utils {
         float offsetX = Globals.cameraOffset.x - Globals.screenSize.x/2;
         float offsetY = Globals.cameraOffset.y + Globals.screenSize.y/2;
 
-        returnVector.set((Gdx.input.getX() * Globals.screenStretch.x) + offsetX, (- (Gdx.input.getY() * Globals.screenStretch.y)) + offsetY);
+        returnVector.set((Gdx.input.getX() / Globals.screenStretch.x) + offsetX, (- (Gdx.input.getY() / Globals.screenStretch.y)) + offsetY);
 
         return returnVector;
     }
