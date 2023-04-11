@@ -33,10 +33,11 @@ public class Utils {
     }
 
     public static void updateGlobalScreenStretch(){
-
         //Globals.screenStretch = Globals.screenSize.x/
+
         Globals.screenStretch.x = Gdx.graphics.getWidth()/Globals.screenSize.x;
         Globals.screenStretch.y = Gdx.graphics.getHeight()/Globals.screenSize.y;
+
     }
 
 
