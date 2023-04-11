@@ -101,9 +101,9 @@ public class Player extends MovementNode implements TimeRewindInterface {
         getNewestChild().setName("sprite");
         addChild(ObjectPool.get(CollisionShape.class).init(8,12,0,0));
 
+
         addChild( ObjectPool.get(Raycast.class).init(0,0,100,-100,getMaskLayers(LayerNames.WALLS)) );
         ray = (Raycast) getNewestChild();
-
 
     }
 
