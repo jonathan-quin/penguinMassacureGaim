@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class ColliderObject extends Node {
 
-    public Node lastCollider;
+    public ColliderObject lastCollider;
     public boolean lastCollided;
     Array<CollisionShape> shapes;
     protected ArrayList<Integer> mask;
@@ -30,7 +30,7 @@ public class ColliderObject extends Node {
             output.set(position.x + currentInfo.offset.x,position.y + currentInfo.offset.y);
             lastCollided = currentInfo.collides;
             if (lastCollided){
-                lastCollider = currentInfo.collider;
+                lastCollider = (ColliderObject) currentInfo.collider;
             }
         }
 
@@ -218,6 +218,14 @@ public class ColliderObject extends Node {
 
         return false;
 
+    }
+
+    public boolean isOnLayer(int layer){
+        return  (layers.contains(layer));
+    }
+
+    public boolean hasMask(int maskLayer){
+        return  (mask.contains(maskLayer));
     }
 
     public void free(){

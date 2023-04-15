@@ -57,7 +57,7 @@ public class Bullet extends MovementNode implements TimeRewindInterface {
         sprite.setRotation(vel.angleDeg());
 
         if (lastCollided){
-            if (lastCollider.isInGroup("icePlatform")){
+            if (lastCollider.isOnLayer(LayerNames.WALLS)){
                 queueFree();
 
             }

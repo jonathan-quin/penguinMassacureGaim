@@ -49,7 +49,7 @@ public class MovementNode extends ColliderObject {
 
 
         if ( !difference.epsilonEquals(scaledDistance,0.1f) ){
-            Node tempCollider = lastCollider;
+            ColliderObject tempCollider = lastCollider;
 
             updateParentPos();
 

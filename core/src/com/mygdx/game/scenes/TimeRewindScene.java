@@ -3,7 +3,9 @@ package com.mygdx.game.scenes;
 import com.mygdx.game.entities.Player;
 import com.mygdx.game.entities.SimpleIcePlatform;
 import com.mygdx.game.helpers.constants.ObjectPool;
+import com.mygdx.game.helpers.constants.TileMapHolder;
 import com.mygdx.game.nodes.Node;
+import com.mygdx.game.nodes.TileMapProcessor;
 import com.mygdx.game.nodes.TimeRewindRoot;
 
 public class TimeRewindScene extends TimeRewindRoot {
@@ -18,20 +20,10 @@ public class TimeRewindScene extends TimeRewindRoot {
         last().setName("bulletHolder");
 
 
-        add(poolGet(Player.class).init(220,300));
+        add(poolGet(Player.class).init(0,0));
 
 
-        rootNode.addChild( ObjectPool.get(SimpleIcePlatform.class).init(110,100));
-
-
-        //rootNode.addChild();
-
-        rootNode.addChild(ObjectPool.get(SimpleIcePlatform.class).init(100-96,100));
-        rootNode.addChild(ObjectPool.get(SimpleIcePlatform.class).init(100-96-96,120));
-        rootNode.addChild(ObjectPool.get(SimpleIcePlatform.class).init(80-96-96-96,120));
-        rootNode.addChild(ObjectPool.get(SimpleIcePlatform.class).init(100-96-96-82,110));
-        rootNode.addChild(ObjectPool.get(SimpleIcePlatform.class).init(100-96-96-96-96,140));
-        rootNode.addChild(ObjectPool.get(SimpleIcePlatform.class).init(100+96,100+32));
+        add(poolGet(TileMapProcessor.class).init(TileMapHolder.sillyLevel));
 
     }
 

@@ -17,8 +17,7 @@ public class TileMapProcessor extends ColliderObject{
     }
 
     public TileMapProcessor init(TileMapInfo tileMapInfo){
-        super.init(0,0,getMaskLayers(LayerNames.DEFAULT),getMaskLayers(LayerNames.WALLS));
-        //setMaskLayers(getMaskLayers(LayerNames.DEFAULT),getMaskLayers(LayerNames.WALLS) );
+        super.init(0,0,getMaskLayers(),getMaskLayers(LayerNames.WALLS));
 
         this.tileMapInfo = tileMapInfo;
 
