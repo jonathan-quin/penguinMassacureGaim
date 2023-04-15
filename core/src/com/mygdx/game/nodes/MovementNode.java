@@ -1,8 +1,8 @@
 package com.mygdx.game.nodes;
 
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.helpers.Globals;
-import com.mygdx.game.helpers.ObjectPool;
+import com.mygdx.game.helpers.constants.Globals;
+import com.mygdx.game.helpers.constants.ObjectPool;
 
 import java.util.ArrayList;
 

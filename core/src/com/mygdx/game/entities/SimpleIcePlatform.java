@@ -1,13 +1,10 @@
 package com.mygdx.game.entities;
 
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
-import com.mygdx.game.helpers.LayerNames;
-import com.mygdx.game.helpers.ObjectPool;
-import com.mygdx.game.helpers.TextureHolder;
-import com.mygdx.game.helpers.Utils;
+import com.mygdx.game.helpers.constants.LayerNames;
+import com.mygdx.game.helpers.constants.ObjectPool;
+import com.mygdx.game.helpers.constants.TextureHolder;
 import com.mygdx.game.nodes.*;
 
 public class SimpleIcePlatform extends StaticNode {

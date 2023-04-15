@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.mygdx.game.helpers.Globals;
-import com.mygdx.game.helpers.ObjectPool;
+import com.mygdx.game.helpers.constants.Globals;
+import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.nodes.collisionShapeHelpers.SweepInfo;
 
 import java.util.ArrayList;

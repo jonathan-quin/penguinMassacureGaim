@@ -2,16 +2,15 @@ package com.mygdx.game.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.collision.Ray;
-import com.mygdx.game.helpers.*;
+import com.mygdx.game.helpers.constants.*;
+import com.mygdx.game.helpers.utilities.MathUtils;
+import com.mygdx.game.helpers.utilities.TimeRewindInterface;
+import com.mygdx.game.helpers.utilities.Utils;
 import com.mygdx.game.nodes.*;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Player extends MovementNode implements TimeRewindInterface {
 
@@ -135,8 +134,8 @@ public class Player extends MovementNode implements TimeRewindInterface {
         }
         else{
             rotation = rotation % 360;
-            rotation += MathHelpers.differenceBetweenAngles(Math.toRadians(rotation),0) * 30;
-            rotation = MathHelpers.moveTowardsZero(rotation,0.1);
+            rotation += MathUtils.differenceBetweenAngles(Math.toRadians(rotation),0) * 30;
+            rotation = MathUtils.moveTowardsZero(rotation,0.1);
 
         }
 

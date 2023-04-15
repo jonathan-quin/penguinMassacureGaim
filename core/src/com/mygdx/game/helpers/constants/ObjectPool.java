@@ -1,4 +1,4 @@
-package com.mygdx.game.helpers;
+package com.mygdx.game.helpers.constants;
 
 import java.util.ArrayList;
 import java.util.HashMap;

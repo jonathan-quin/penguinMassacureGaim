@@ -5,8 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.game.helpers.ObjectPool;
-import com.mygdx.game.helpers.PoolableSprite;
+import com.mygdx.game.helpers.constants.ObjectPool;
 
 
 public class TextureEntity extends Node {

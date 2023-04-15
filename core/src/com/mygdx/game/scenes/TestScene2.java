@@ -1,10 +1,8 @@
 package com.mygdx.game.scenes;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.entities.Player;
 import com.mygdx.game.entities.SimpleIcePlatform;
-import com.mygdx.game.helpers.GroupHandler;
-import com.mygdx.game.helpers.ObjectPool;
+import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.nodes.Node;
 import com.mygdx.game.nodes.Root;
 

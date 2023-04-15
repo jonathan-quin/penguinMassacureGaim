@@ -1,4 +1,4 @@
-package com.mygdx.game.helpers;
+package com.mygdx.game.helpers.constants;
 
 import com.badlogic.gdx.graphics.Texture;
 

@@ -1,14 +1,10 @@
 package com.mygdx.game.nodes;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Array;
-import com.mygdx.game.entities.Player;
-import com.mygdx.game.helpers.GroupHandler;
-import com.mygdx.game.helpers.ObjectPool;
+import com.mygdx.game.helpers.constants.ObjectPool;
 import java.util.ArrayList;
 
 /**

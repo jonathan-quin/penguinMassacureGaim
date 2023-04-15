@@ -1,6 +1,6 @@
-package com.mygdx.game.helpers;
+package com.mygdx.game.nodes;
 
-import com.mygdx.game.nodes.Node;
+import com.mygdx.game.helpers.constants.ObjectPool;
 
 import java.util.ArrayList;
 

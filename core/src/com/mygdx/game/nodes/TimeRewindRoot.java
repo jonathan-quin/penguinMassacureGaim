@@ -2,14 +2,13 @@ package com.mygdx.game.nodes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.mygdx.game.helpers.ObjectPool;
-import com.mygdx.game.helpers.TimeRewindInterface;
+import com.mygdx.game.helpers.constants.ObjectPool;
+import com.mygdx.game.helpers.utilities.TimeRewindInterface;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class TimeRewindRoot extends Root{
 

@@ -1,7 +1,9 @@
-package com.mygdx.game.helpers;
+package com.mygdx.game.helpers.utilities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.helpers.constants.Globals;
+import com.mygdx.game.helpers.constants.ObjectPool;
 
 public class Utils {
 

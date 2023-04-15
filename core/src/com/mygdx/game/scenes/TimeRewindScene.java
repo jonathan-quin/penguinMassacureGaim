@@ -2,7 +2,7 @@ package com.mygdx.game.scenes;
 
 import com.mygdx.game.entities.Player;
 import com.mygdx.game.entities.SimpleIcePlatform;
-import com.mygdx.game.helpers.ObjectPool;
+import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.nodes.Node;
 import com.mygdx.game.nodes.TimeRewindRoot;
 

@@ -1,7 +1,7 @@
 package com.mygdx.game.nodes.collisionShapeHelpers;
 
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.helpers.ObjectPool;
+import com.mygdx.game.helpers.constants.ObjectPool;
 
 import static com.badlogic.gdx.math.MathUtils.clamp;
 

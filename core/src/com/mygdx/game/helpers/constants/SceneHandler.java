@@ -1,12 +1,9 @@
-package com.mygdx.game.helpers;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+package com.mygdx.game.helpers.constants;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.mygdx.game.entities.SimpleIcePlatform;
+import com.mygdx.game.nodes.GroupHandler;
 import com.mygdx.game.nodes.Node;
 import com.mygdx.game.nodes.Root;
-import com.mygdx.game.nodes.TextureEntity;
 import com.mygdx.game.scenes.TestScene;
 import com.mygdx.game.scenes.TestScene2;
 import com.mygdx.game.scenes.TimeRewindScene;
@@ -14,8 +11,8 @@ import com.mygdx.game.scenes.TimeRewindScene;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static com.mygdx.game.helpers.Globals.camera;
-import static com.mygdx.game.helpers.Globals.sceneJustChanged;
+import static com.mygdx.game.helpers.constants.Globals.camera;
+import static com.mygdx.game.helpers.constants.Globals.sceneJustChanged;
 
 public class SceneHandler {
 

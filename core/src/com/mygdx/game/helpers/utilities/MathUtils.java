@@ -1,9 +1,6 @@
-package com.mygdx.game.helpers;
+package com.mygdx.game.helpers.utilities;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Vector2;
-
-public class MathHelpers {
+public class MathUtils {
     public static double moveTowardsZero(double num, double amount){
         if (num > 0) return Math.max(num-amount,0);
         if (num < 0) return Math.min(num+amount,0);

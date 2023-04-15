@@ -1,18 +1,11 @@
 package com.mygdx.game.nodes;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.mygdx.game.helpers.Globals;
-import com.mygdx.game.helpers.ObjectPool;
+import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.nodes.collisionShapeHelpers.SweepInfo;
 
 import java.util.ArrayList;
-
-import static com.mygdx.game.helpers.MathHelpers.isEqualApprox;
 
 public class ColliderObject extends Node {
 
