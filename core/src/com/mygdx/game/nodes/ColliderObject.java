@@ -177,6 +177,7 @@ public class ColliderObject extends Node {
     }
 
     public void setMyRoot(Root newRoot){
+
         boolean rootChanged = newRoot != myRoot;
 
         if (rootChanged && myRoot != null){
@@ -224,7 +225,7 @@ public class ColliderObject extends Node {
 
         //int num = myRoot.colliders.size;
 
-        myRoot.colliders.removeValue(this,true);  // System.out.println("removed a collider");
+        //myRoot.colliders.removeValue(this,true);  // System.out.println("removed a collider");
 
     }
 

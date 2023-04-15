@@ -18,19 +18,13 @@ public class Globals {
 
     public static Vector2 screenStretch = new Vector2(1,1);
 
-    public static Viewport viewport = new Viewport() {
-        @Override
-        public void setScreenSize(int screenWidth, int screenHeight) {
-            super.setScreenSize(screenWidth, screenHeight);
-        }
 
-    };
 
     public static Vector2 screenSize = screenSize = new Vector2(1024,600);
 
     public static ShapeRenderer globalShape = new ShapeRenderer();
 
-    public static Vector2 cameraOffset = Vector2.Zero;
+    public static Vector2 cameraOffset = new Vector2(0,0);
 
     public Globals(){
 

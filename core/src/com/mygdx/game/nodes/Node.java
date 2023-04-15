@@ -294,6 +294,7 @@ public class Node {
         children.clear();
         groups.clear();
 
+        setMyRoot(null);
 
     }
 

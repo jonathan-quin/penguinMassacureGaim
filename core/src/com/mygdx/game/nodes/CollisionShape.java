@@ -1,16 +1,20 @@
 package com.mygdx.game.nodes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.helpers.constants.Constants;
 import com.mygdx.game.helpers.constants.Globals;
 import com.mygdx.game.nodes.collisionShapeHelpers.AABB;
 import com.mygdx.game.nodes.collisionShapeHelpers.SweepInfo;
 
 public class CollisionShape extends Node {
 
-    AABB boundingBox;
+    public AABB boundingBox;
+
+    public Color myColor;
 
     public CollisionShape(){
         this(0,0);
@@ -24,6 +28,8 @@ public class CollisionShape extends Node {
 
         super(posX,posY);
 
+        myColor = Constants.defaultCollisionShapeColor;
+
         boundingBox = new AABB();
 
 
@@ -32,7 +38,7 @@ public class CollisionShape extends Node {
     public CollisionShape init(int sizeX, int sizeY, int posX, int posY){
         super.init(posX,posY);
 
-
+        myColor = Constants.defaultCollisionShapeColor;
         boundingBox.pos.set(globalPosition);
         boundingBox.half.set(sizeX,sizeY);
         return this;
@@ -117,9 +123,15 @@ public class CollisionShape extends Node {
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
              //I'm using the Filled ShapeType, but remember you have three of them
 
-            Globals.globalShape.rect( (globalPosition.x - boundingBox.half.x)- Globals.cameraOffset.x + 512,  (globalPosition.y - boundingBox.half.y)- Globals.cameraOffset.y + 300,boundingBox.half.x * 2,boundingBox.half.y * 2); //assuming you have created those x, y, width and height variables
+            //assuming you have created those x, y, width and height variables
 
+            Color tempColor = Globals.globalShape.getColor().cpy();
 
+            Globals.globalShape.setColor(myColor);
+
+            Globals.globalShape.rect( (globalPosition.x - boundingBox.half.x)- Globals.cameraOffset.x + 512,  (globalPosition.y - boundingBox.half.y)- Globals.cameraOffset.y + 300,boundingBox.half.x * 2,boundingBox.half.y * 2);
+
+            Globals.globalShape.setColor(tempColor);
 
 
             //Gdx.gl.glDisable(GL20.GL_BLEND); //this breaks transparency apparently?
@@ -128,4 +140,7 @@ public class CollisionShape extends Node {
 
     }
 
+    public void setColor(Color color) {
+        myColor = color;
+    }
 }
