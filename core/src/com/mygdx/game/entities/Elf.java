@@ -293,7 +293,7 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         ray.dirty = true;
 
         if (!playerInSightBox) return false;
-        
+
 
         ray.setCast(player.globalPosition.x - globalPosition.x,player.globalPosition.y - globalPosition.y);
 
