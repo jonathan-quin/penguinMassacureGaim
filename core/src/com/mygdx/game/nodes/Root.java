@@ -3,13 +3,13 @@ package com.mygdx.game.nodes;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
-public class root {
+public class Root {
 
-    public Array<colliderObject> colliders = new Array<colliderObject>();
+    public Array<ColliderObject> colliders = new Array<ColliderObject>();
 
-    public node rootNode;
+    public Node rootNode;
 
-    public root(){
+    public Root(){
 
     }
 

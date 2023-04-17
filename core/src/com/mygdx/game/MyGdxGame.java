@@ -12,7 +12,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	private OrthographicCamera camera;
 
 
-	root scene1;// = new testScene();
+	Root scene1;// = new testScene();
 	
 	@Override
 	public void create () {
@@ -31,7 +31,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		scene1.update();
 
 
-		camera.position.set(globals.cameraOffset,camera.position.z);
+		camera.position.set(Globals.cameraOffset,camera.position.z);
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 
