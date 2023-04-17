@@ -29,10 +29,10 @@ public class Bullet extends MovementNode implements TimeRewindInterface {
 
     public void ready(){
         addChild( ( ObjectPool.get(TextureEntity.class) ).init(TextureHolder.bulletTexture,0,0,0,0));
-        sprite = (TextureEntity) getNewestChild();
+        sprite = (TextureEntity) lastChild();
 
         addChild( ( ObjectPool.get(CollisionShape.class)).init (10,10,0,0));
-        getNewestChild().setName("shape");
+        lastChild().setName("shape");
 
         addToGroup("rewind");
         sprite.setRotation(vel.angleDeg());

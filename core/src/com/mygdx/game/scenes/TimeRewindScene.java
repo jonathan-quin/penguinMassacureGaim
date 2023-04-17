@@ -1,7 +1,9 @@
 package com.mygdx.game.scenes;
 
+import com.mygdx.game.entities.Elf;
 import com.mygdx.game.entities.Player;
 import com.mygdx.game.entities.SimpleIcePlatform;
+import com.mygdx.game.entities.guns.elfGuns.ElfRevolver;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TileMapHolder;
 import com.mygdx.game.nodes.Node;
@@ -21,6 +23,8 @@ public class TimeRewindScene extends TimeRewindRoot {
 
 
         add(poolGet(Player.class).init(0,0));
+
+        add(poolGet(Elf.class).init(100,0,ObjectPool.get(ElfRevolver.class)));
 
 
         add(poolGet(TileMapProcessor.class).init(TileMapHolder.sillyLevel));

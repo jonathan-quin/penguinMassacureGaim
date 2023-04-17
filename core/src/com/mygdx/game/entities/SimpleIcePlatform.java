@@ -26,9 +26,9 @@ public class SimpleIcePlatform extends StaticNode {
 
 
         addChild( ObjectPool.get(TextureEntity.class).init(iceTexture,0,0,0,0));
-        getNewestChild().setName("sprite");
+        lastChild().setName("sprite");
 
-        ( (TextureEntity) getNewestChild()).setFlip(false,false);
+        ( (TextureEntity) lastChild()).setFlip(false,false);
 
         addChild( ObjectPool.get(CollisionShape.class).init(96/2,16,0,0));
 

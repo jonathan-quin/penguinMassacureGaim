@@ -10,6 +10,8 @@ public class TextureHolder {
 
     public static Texture bulletTexture = new Texture("bullet.png");
 
+    public static Texture elfTexture = new Texture("elfForNow.png");
+
 
 
 

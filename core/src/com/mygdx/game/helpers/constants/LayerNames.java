@@ -8,6 +8,5 @@ public class LayerNames {
     public static final int WALLS = 3;
 
 
-
-
+    public static final int ELVES = 4;
 }

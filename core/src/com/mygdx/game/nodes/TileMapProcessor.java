@@ -1,12 +1,9 @@
 package com.mygdx.game.nodes;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.helpers.constants.LayerNames;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.utilities.TileMapInfo;
-
-import java.util.ArrayList;
 
 public class TileMapProcessor extends ColliderObject{
 
@@ -27,9 +24,9 @@ public class TileMapProcessor extends ColliderObject{
     public void ready(){
 
         addChild( ObjectPool.get(TextureEntity.class).init(tileMapInfo.mapTexture,tileMapInfo.mapTexture.getWidth()/2,-tileMapInfo.mapTexture.getHeight()/2,0,0));
-        getNewestChild().setName("sprite");
+        lastChild().setName("sprite");
 
-        ( (TextureEntity) getNewestChild()).setFlip(false,false);
+        ( (TextureEntity) lastChild()).setFlip(false,false);
 
         for (CollisionShape shape : tileMapInfo.getShapes()){
             addChild(shape);

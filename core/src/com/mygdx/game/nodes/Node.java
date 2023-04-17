@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.helpers.constants.Globals;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import java.util.ArrayList;
 
@@ -124,7 +125,7 @@ public class Node {
      */
     public void updateCascade(){
 
-        update(Math.min(1/6f, Gdx.graphics.getDeltaTime()));
+        update(Math.min(1/6f, Gdx.graphics.getDeltaTime() * Globals.gameSpeed));
 
         updateParentPos();
 
@@ -313,7 +314,7 @@ public class Node {
      *
      * @return The most recently added child node.
      */
-    public Node getNewestChild(){
+    public Node lastChild(){
         return children.get(children.size() - 1);
     }
 
@@ -327,6 +328,13 @@ public class Node {
     public Node getChild(String name){
         for (Node child : children){
             if (child.name.equals( name)) return child;
+        }
+        return null;
+    }
+
+    public  <T> T getChild(String name, Class<T> type){
+        for (Node child : children){
+            if (child.name.equals( name)) return (T) child;
         }
         return null;
     }

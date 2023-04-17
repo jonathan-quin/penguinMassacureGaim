@@ -97,7 +97,7 @@ public class Root {
     }
 
     public Node last(){
-        return rootNode.getNewestChild();
+        return rootNode.lastChild();
     }
 
 

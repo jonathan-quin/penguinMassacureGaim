@@ -4,11 +4,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class Globals {
 
-    public static int gamespeed = 1;
+    public static int gameSpeed = 1;
     public static OrthographicCamera camera;
     public static MapRenderer mapRenderer;
 

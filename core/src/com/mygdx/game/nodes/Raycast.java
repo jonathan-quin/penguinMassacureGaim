@@ -17,7 +17,7 @@ public class Raycast extends Node{
     public boolean lastCollided;
     protected ArrayList<Integer> mask;
 
-
+    public boolean updateOnUpdate = false;
 
     Vector2 lastCollisionPoint;
 
@@ -41,7 +41,7 @@ public class Raycast extends Node{
 
     }
 
-    public Raycast init(float x,float y, float castX,float castY,ArrayList<Integer> mask){
+    public Raycast init(float x,float y, float castX,float castY,boolean updateOnUpdate, ArrayList<Integer> mask){
         super.init(x,y);
 
 
@@ -51,6 +51,8 @@ public class Raycast extends Node{
         castTo.set(castX,castY);
 
         setMaskLayers(mask);
+
+        this.updateOnUpdate = updateOnUpdate;
 
         return this;
     }
@@ -84,7 +86,12 @@ public class Raycast extends Node{
         lastCollisionPoint.set(getGlobalFirstCollision(castTo));
     }
 
+    public boolean lastColliding(){
+        return lastCollided;
+    }
+
     public boolean isColliding(){
+        updateRaycast();
         return lastCollided;
     }
 
@@ -97,7 +104,8 @@ public class Raycast extends Node{
     }
 
     public void update(double delta){
-        updateRaycast();
+
+        if (updateOnUpdate) updateRaycast();
     }
 
 

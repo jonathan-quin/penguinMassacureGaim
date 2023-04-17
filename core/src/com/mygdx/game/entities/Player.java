@@ -21,7 +21,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
     private float JUMPFORCE = 200;
 
-    private float GRAVITY = 2000;
+    private float GRAVITY = 400;
 
     private float ACCEL = 6;
 
@@ -97,12 +97,12 @@ public class Player extends MovementNode implements TimeRewindInterface {
         addToGroup("rewind");
 
         addChild(ObjectPool.get(TextureEntity.class).init(TextureHolder.penguinTexture,0f,1f,0,0));
-        getNewestChild().setName("sprite");
+        lastChild().setName("sprite");
         addChild(ObjectPool.get(CollisionShape.class).init(8,12,0,0));
 
 
-        addChild( ObjectPool.get(Raycast.class).init(0,0,100,-100,getMaskLayers(LayerNames.WALLS)) );
-        ray = (Raycast) getNewestChild();
+        addChild( ObjectPool.get(Raycast.class).init(0,0,100,-100,true,getMaskLayers(LayerNames.WALLS)) );
+        ray = (Raycast) lastChild();
 
     }
 
@@ -149,7 +149,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
 
 
-        vel.y -= GRAVITY / 5 * delta;
+        vel.y -= GRAVITY * delta;
 
         //System.out.println("vel before: " + vel);
 
