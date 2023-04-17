@@ -118,6 +118,8 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         this.myGun = gun;
         gun.init();
 
+        vel.set(0,0);
+
         return this;
     }
 
@@ -125,19 +127,7 @@ public class Elf extends MovementNode implements TimeRewindInterface {
     public <T> T load(Object... vars) {
         this.position.set( (Vector2) vars[1]);
         this.vel.set((Vector2) vars[2]);
-        
 
-        if (vel.x != 0){
-            ((TextureEntity) getChild("sprite")).setFlip(vel.x < 0,false);
-        }
-        if (((TextureEntity) getChild("sprite")).getFlipX()) {
-            ((TextureEntity) getChild("sprite")).setRotation(rotation);
-        } else {
-            ((TextureEntity) getChild("sprite")).setRotation(-rotation);
-        }
-
-        updateGlobalPosition();
-        Globals.cameraOffset.set(globalPosition);
 
 
         return null;
