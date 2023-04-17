@@ -45,9 +45,6 @@ public class MovementNode extends ColliderObject {
 
         difference.set(position.x - prevPos.x, position.y - prevPos.y);
 
-
-
-
         if ( !difference.epsilonEquals(scaledDistance,0.1f) ){
             ColliderObject tempCollider = lastCollider;
 

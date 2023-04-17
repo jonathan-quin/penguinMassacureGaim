@@ -19,6 +19,9 @@ public class Raycast extends Node{
 
     public boolean updateOnUpdate = false;
 
+    public boolean dirty = true;
+    public boolean makeDirtyOnUpdate = true;
+
     Vector2 lastCollisionPoint;
 
     public Vector2 castTo;
@@ -83,6 +86,7 @@ public class Raycast extends Node{
     }
 
     public void updateRaycast(){
+         dirty = false;
         lastCollisionPoint.set(getGlobalFirstCollision(castTo));
     }
 
@@ -91,7 +95,8 @@ public class Raycast extends Node{
     }
 
     public boolean isColliding(){
-        updateRaycast();
+
+        if (dirty) updateRaycast();
         return lastCollided;
     }
 
@@ -103,8 +108,13 @@ public class Raycast extends Node{
         castTo.set(newCast);
     }
 
+    public void setCast(float x, float y){
+        castTo.set(x,y);
+    }
+
     public void update(double delta){
 
+        if (makeDirtyOnUpdate) dirty = true;
         if (updateOnUpdate) updateRaycast();
     }
 
@@ -185,7 +195,7 @@ public class Raycast extends Node{
 
 
         if (Globals.showCollision){
-            myPoint.debug();
+            //myPoint.debug();
 
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -202,19 +212,28 @@ public class Raycast extends Node{
 
             Color tempColor = Globals.globalShape.getColor().cpy();
 
-            Globals.globalShape.setColor(new Color(Color.RED));
+            if (!dirty && !Globals.currentlyRewinding){
+                Globals.globalShape.setColor(new Color(Color.RED));
 
-            Globals.globalShape.rectLine( offsetPosX,  offsetPosY,offsetPosX + castTo.x,  offsetPosY + castTo.y,3); //assuming you have created those x, y, width and height variables
+                Globals.globalShape.rectLine(offsetPosX, offsetPosY, offsetPosX + castTo.x, offsetPosY + castTo.y, 3); //assuming you have created those x, y, width and height variables
 
-            Globals.globalShape.setColor(new Color(Color.BLUE));
+                Globals.globalShape.setColor(new Color(Color.BLUE));
 
-            Globals.globalShape.rectLine( offsetPosX,  offsetPosY,offsetPosX + distanceToPointX,  offsetPosY + distanceToPointY,3);
+                Globals.globalShape.rectLine(offsetPosX, offsetPosY, offsetPosX + distanceToPointX, offsetPosY + distanceToPointY, 3);
 
 
-            Globals.globalShape.setColor(new Color(Color.GREEN));
-            if (lastCollided) Globals.globalShape.setColor(new Color(Color.YELLOW));
+                Globals.globalShape.setColor(new Color(Color.GREEN));
+                if (lastCollided) Globals.globalShape.setColor(new Color(Color.YELLOW));
 
-            Globals.globalShape.rect(offsetPosX + distanceToPointX - 5,  offsetPosY + distanceToPointY - 5,10,10);
+                Globals.globalShape.rect(offsetPosX + distanceToPointX - 5, offsetPosY + distanceToPointY - 5, 10, 10);
+            }
+            else{
+                Globals.globalShape.setColor(new Color(Color.GRAY));
+                Globals.globalShape.rectLine(offsetPosX, offsetPosY, offsetPosX + castTo.x, offsetPosY + castTo.y, 3);
+                Globals.globalShape.rect(offsetPosX + castTo.x - 5, offsetPosY + castTo.y - 5, 10, 10);
+            }
+
+
 
             Globals.globalShape.setColor(tempColor);
 

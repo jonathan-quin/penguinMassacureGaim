@@ -50,10 +50,9 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
     public Player init(float x, float y){
 
-
         super.init(x,y, getMaskLayers(LayerNames.WALLS),getMaskLayers(LayerNames.PLAYER));
 
-
+        name = "player";
 
         rotation = 0;
 
@@ -73,6 +72,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
         this.position.set( (Vector2) vars[1]);
         this.vel.set((Vector2) vars[2]);
         this.rotation = ((double) vars[3]);
+
 
         if (vel.x != 0){
             ((TextureEntity) getChild("sprite")).setFlip(vel.x < 0,false);
@@ -101,8 +101,8 @@ public class Player extends MovementNode implements TimeRewindInterface {
         addChild(ObjectPool.get(CollisionShape.class).init(8,12,0,0));
 
 
-        addChild( ObjectPool.get(Raycast.class).init(0,0,100,-100,true,getMaskLayers(LayerNames.WALLS)) );
-        ray = (Raycast) lastChild();
+        //addChild( ObjectPool.get(Raycast.class).init(0,0,100,-100,true,getMaskLayers(LayerNames.WALLS)) );
+        //ray = (Raycast) lastChild();
 
     }
 
@@ -169,7 +169,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
             SceneHandler.goToNextScene();
         }
 
-        ray.setCast(Utils.getGlobalMousePosition().sub(globalPosition));
+        //ray.setCast(Utils.getGlobalMousePosition().sub(globalPosition));
 
 
         Globals.cameraOffset.set(position);

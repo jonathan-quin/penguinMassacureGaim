@@ -2,6 +2,7 @@ package com.mygdx.game.nodes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.mygdx.game.helpers.constants.Globals;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.utilities.TimeRewindInterface;
 
@@ -19,10 +20,12 @@ public class TimeRewindRoot extends Root{
         boolean shouldRewind = Gdx.input.isKeyPressed(Input.Keys.C);
 
         if (!shouldRewind){
+            Globals.currentlyRewinding = false;
             rootNode.updateCascade();
             saveNodes();
         }
         else{
+            Globals.currentlyRewinding = true;
             loadNodes();
         }
 
