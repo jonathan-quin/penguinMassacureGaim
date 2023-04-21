@@ -11,22 +11,50 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
+import static com.mygdx.game.helpers.constants.Globals.gameSpeed;
+
 public class TimeRewindRoot extends Root{
 
     ArrayList<ArrayList<ArrayList<Object>>> past = new ArrayList<>();
 
+    double time = 0;
+    double lastSaveTime = 0;
+
     public void update(){
+
+
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)){
+            Globals.gameSpeed = 0.1;
+        }
+        else{
+            Globals.gameSpeed = 1;
+        }
 
         boolean shouldRewind = Gdx.input.isKeyPressed(Input.Keys.C);
 
         if (!shouldRewind){
             Globals.currentlyRewinding = false;
             rootNode.updateCascade();
-            saveNodes();
+
+            time += Gdx.graphics.getDeltaTime() * gameSpeed;
+
+            if (time > lastSaveTime + (1f/60f - 1f/600f)){
+                saveNodes();
+                lastSaveTime = time;
+            }
+
         }
         else{
             Globals.currentlyRewinding = true;
-            loadNodes();
+
+            time -= Gdx.graphics.getDeltaTime() * gameSpeed;
+
+            if (time < lastSaveTime - 1f/60f + 1f/600f){
+                loadNodes();
+                lastSaveTime = time;
+            }
+
+
         }
 
 

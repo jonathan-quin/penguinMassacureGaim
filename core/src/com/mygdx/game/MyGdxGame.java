@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.helpers.constants.Globals;
+import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.SceneHandler;
 import com.mygdx.game.nodes.*;
 
@@ -42,6 +43,9 @@ public class MyGdxGame extends ApplicationAdapter {
 
 
 		SceneHandler.update();
+
+		//System.out.println(ObjectPool.calculateTotal());
+		//ObjectPool.printObjectBreakdownInUse();
 
 	}
 	

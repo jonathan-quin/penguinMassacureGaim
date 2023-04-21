@@ -1,6 +1,8 @@
-package com.mygdx.game.entities;
+package com.mygdx.game.entities.guns.elfGuns.Bullets;
 
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.entities.BulletOLD;
+import com.mygdx.game.entities.Player;
 import com.mygdx.game.helpers.constants.LayerNames;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TextureHolder;
@@ -12,38 +14,42 @@ import com.mygdx.game.nodes.TextureEntity;
 
 import java.util.ArrayList;
 
-public class Bullet extends MovementNode implements TimeRewindInterface {
+public class ElfBullet extends MovementNode implements TimeRewindInterface {
 
     Vector2 vel;
 
 
+    float damage;
+
     TextureEntity sprite;
 
-    public Bullet(){
+    public ElfBullet(){
 
         super();
         vel = new Vector2(0,0);
+        damage = 0;
         setMaskLayers( getMaskLayers(LayerNames.WALLS),getMaskLayers());
 
     }
 
     public void ready(){
-        addChild( ( ObjectPool.get(TextureEntity.class) ).init(TextureHolder.bulletTexture,0,0,0,0));
+        addChild( ( ObjectPool.get(TextureEntity.class) ).init(TextureHolder.smallBulletTexture,0,0,0,0));
         sprite = (TextureEntity) lastChild();
 
-        addChild( ( ObjectPool.get(CollisionShape.class)).init (10,10,0,0));
+        addChild( ( ObjectPool.get(CollisionShape.class)).init (4,4,0,0));
         lastChild().setName("shape");
 
         addToGroup("rewind");
         sprite.setRotation(vel.angleDeg());
     }
 
-    public Bullet init(float posX, float posY, float velX, float velY){
+    public ElfBullet init(float posX, float posY, float velX, float velY, float damage){
 
-        super.init(posX,posY,getMaskLayers(LayerNames.WALLS),getMaskLayers());
+        super.init(posX,posY,getMaskLayers(LayerNames.WALLS,LayerNames.ELVES,LayerNames.PLAYER),getMaskLayers());
 
         vel.set(velX,velY);
 
+        this.damage = damage;
 
         return this;
     }
@@ -59,7 +65,13 @@ public class Bullet extends MovementNode implements TimeRewindInterface {
         if (lastCollided){
             if (lastCollider.isOnLayer(LayerNames.WALLS)){
                 queueFree();
-
+            }
+            if (lastCollider.isOnLayer(LayerNames.PLAYER)){
+                ((Player) lastCollider).hit(vel,damage);
+                queueFree();
+            }
+            if (lastCollider.isOnLayer(LayerNames.ELVES)){
+                queueFree();
             }
         }
 
@@ -86,13 +98,14 @@ public class Bullet extends MovementNode implements TimeRewindInterface {
         returnArr.add(this.getClass());
         returnArr.add(ObjectPool.get(Vector2.class).set(position));
         returnArr.add(ObjectPool.get(Vector2.class).set(vel));
+        returnArr.add(damage);
 
         return returnArr;
     }
 
     @Override
-    public Bullet init() {
-        init(0,0,0,0);
+    public ElfBullet init() {
+        init(0,0,0,0,0);
         return  this;
     }
 
@@ -101,9 +114,15 @@ public class Bullet extends MovementNode implements TimeRewindInterface {
 
         this.position.set( (Vector2) vars[1]);
         this.vel.set((Vector2) vars[2]);
+        this.damage = ((float) vars[3]);
 
         sprite.setRotation(vel.angleDeg());
         updateGlobalPosition();
         return null;
     }
+
+
+
+
+
 }

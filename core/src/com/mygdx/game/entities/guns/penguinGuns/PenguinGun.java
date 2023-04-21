@@ -1,4 +1,4 @@
-package com.mygdx.game.entities.guns.elfGuns;
+package com.mygdx.game.entities.guns.penguinGuns;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
@@ -6,25 +6,27 @@ import com.mygdx.game.entities.guns.elfGuns.Bullets.ElfBullet;
 
 import static java.lang.Math.*;
 
-public class ElfGun {
+public class PenguinGun {
 
     public double moveSpeed;
-    public double distanceMin;
-    public double distanceMax;
 
     public double rotation;
 
-    protected double aimedTolerance;
     protected double aimSpeed;
     protected double fixedAimSpeed;
 
+    public int startingAmmo;
+
+    public int ammoLeft;
+
+    public double recoil;
     public Texture tex;
     public Vector2 texOffset;
 
     public double timeUntilNextShot;
     protected double fireRate; //shots per second
 
-    public ElfGun() {
+    public PenguinGun() {
     }
 
     public void init(){
@@ -46,9 +48,9 @@ public class ElfGun {
         timeUntilNextShot = max(0,timeUntilNextShot-num);
     }
 
-    public boolean canShoot(Vector2 myPos, Vector2 target){
+    public boolean canShoot(){
 
-        return timeUntilNextShot == 0 && abs(differenceBetweenAngles(getTargetRotation(myPos,target),rotation)) < aimedTolerance;
+        return timeUntilNextShot == 0;
     }
 
     public void aimAt(Vector2 myPos, Vector2 target){
@@ -58,7 +60,7 @@ public class ElfGun {
         rotation = rotation + difference * aimSpeed;
 
         if (abs(difference)>fixedAimSpeed)
-        rotation = rotation + signum(difference) * fixedAimSpeed;
+            rotation = rotation + signum(difference) * fixedAimSpeed;
     }
 
     private double getTargetRotation(Vector2 myPos, Vector2 target) {

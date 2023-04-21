@@ -7,11 +7,11 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Globals {
 
-    public static int gameSpeed = 1;
+    public static double gameSpeed = 1;
     public static OrthographicCamera camera;
     public static MapRenderer mapRenderer;
 
-    public static boolean showCollision = true;
+    public static boolean showCollision = false;
 
     public static boolean sceneJustChanged = true;
 

@@ -16,6 +16,9 @@ public class TextureEntity extends Node {
 
     Vector2 offset;
 
+    private boolean visible = true;
+
+
 
     public TextureEntity(){
         this(null,0,0);
@@ -35,7 +38,7 @@ public class TextureEntity extends Node {
     public TextureEntity init(Texture image, float posX, float posY,float offsetX,float offsetY){
         super.init(posX,posY);
 
-
+        visible = true;
 
         if (sprite == null) {
             sprite = (new PoolableSprite()).init(image);
@@ -63,6 +66,14 @@ public class TextureEntity extends Node {
         sprite.setRotation(degrees);
     }
 
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
     public boolean getFlipX(){
         return sprite.isFlipX();
     }
@@ -82,23 +93,25 @@ public class TextureEntity extends Node {
 
     public void render(SpriteBatch batch){
 
-        updateGlobalPosition();
+        if (visible){
+            updateGlobalPosition();
 
 
-        sprite.setCenter(globalPosition.x + offset.x,globalPosition.y + offset.y);
+            sprite.setCenter(globalPosition.x + offset.x, globalPosition.y + offset.y);
 
-        sprite.setOrigin(sprite.getWidth()/2 - offset.x,sprite.getHeight()/2 - offset.y);
+            sprite.setOrigin(sprite.getWidth() / 2 - offset.x, sprite.getHeight() / 2 - offset.y);
 
 
-        sprite.draw(batch);
+            sprite.draw(batch);
+        }
 
 
     }
 
     public void free(){
         super.free();
-        ObjectPool.remove(sprite);
-        ObjectPool.remove(offset);
+        //ObjectPool.remove(sprite);
+
 
     }
 

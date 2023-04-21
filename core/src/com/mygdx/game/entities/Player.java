@@ -12,6 +12,9 @@ import com.mygdx.game.nodes.*;
 
 import java.util.ArrayList;
 
+import static java.lang.Math.PI;
+import static java.lang.Math.min;
+
 public class Player extends MovementNode implements TimeRewindInterface {
 
     private float MAXSPEED = 180;
@@ -19,7 +22,9 @@ public class Player extends MovementNode implements TimeRewindInterface {
     private float speed = 5;
     private Vector2 vel;
 
-    private float JUMPFORCE = 200;
+    private float health = 100;
+
+    private float JUMPFORCE = 240;
 
     private float GRAVITY = 400;
 
@@ -56,6 +61,8 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
         rotation = 0;
 
+        health = 100;
+
         vel.set(0,0);
 
         return this;
@@ -82,6 +89,8 @@ public class Player extends MovementNode implements TimeRewindInterface {
         } else {
             ((TextureEntity) getChild("sprite")).setRotation(-rotation);
         }
+
+        health = (float) vars[4];
 
         updateGlobalPosition();
         Globals.cameraOffset.set(globalPosition);
@@ -129,12 +138,12 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
         if (!onFloor){
             //rotation = rotation % 360;
-            rotation += 4 + Math.min(10,rotation * 0.01);
+            rotation += (4 + min(10,rotation * 0.01)) * 60 * delta;
 
         }
         else{
             rotation = rotation % 360;
-            rotation += MathUtils.differenceBetweenAngles(Math.toRadians(rotation),0) * 30;
+            rotation += MathUtils.differenceBetweenAngles(Math.toRadians(rotation),0) * 30 * 60 * delta;
             rotation = MathUtils.moveTowardsZero(rotation,0.1);
 
         }
@@ -153,21 +162,33 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
         //System.out.println("vel before: " + vel);
 
+        if (health <= 0){
+            rotation = 90;
+            ((TextureEntity) getChild("sprite")).setRotation(rotation);
+            ((TextureEntity) getChild("sprite")).setFlip(false,false);
+            vel.x = 0;
+            vel.y = min(vel.y,0);
+        }
+
         Vector2 tempVector = moveAndSlide( vel,(float) delta) ;
-
-
         vel.set(tempVector);
 
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.X)){
 
-            bulletHolder.addChild( ( (Bullet) ObjectPool.get( Bullet.class) ).init(globalPosition.x,globalPosition.y,vel.x*2,vel.y*2) );
+            bulletHolder.addChild( ( (BulletOLD) ObjectPool.get( BulletOLD.class) ).init(globalPosition.x,globalPosition.y,vel.x*2,vel.y*2) );
 
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.Z)){
             SceneHandler.goToNextScene();
         }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.V)){
+            System.out.println(Utils.getGlobalMousePosition());
+        }
+
+
 
         //ray.setCast(Utils.getGlobalMousePosition().sub(globalPosition));
 
@@ -201,6 +222,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
         returnArr.add(ObjectPool.get(Vector2.class).set(position));
         returnArr.add(ObjectPool.get(Vector2.class).set(vel));
         returnArr.add(rotation);
+        returnArr.add(health);
 
         return returnArr;
     }
@@ -215,4 +237,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
 
 
+    public void hit(Vector2 vel, float damage) {
+        health -= damage;
+    }
 }
