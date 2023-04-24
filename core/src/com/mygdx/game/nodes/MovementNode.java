@@ -1,60 +1,72 @@
 package com.mygdx.game.nodes;
 
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.globals;
+import com.mygdx.game.helpers.constants.Globals;
+import com.mygdx.game.helpers.constants.ObjectPool;
 
-public class movementNode extends colliderObject{
+import java.util.ArrayList;
 
-    public movementNode(root myRoot){
-        super(myRoot);
+public class MovementNode extends ColliderObject {
+
+
+    public MovementNode(){
+
+        this(0,0, getMaskLayers(0),getMaskLayers(0));
+
     }
 
-    public movementNode(root myRoot,float x, float y){
-        super(myRoot,x,y);
+    public MovementNode(float x, float y, ArrayList<Integer> mask, ArrayList<Integer> layers){
+
+        super(x,y,mask,layers);
+
     }
 
     private Vector2 tempPos = new Vector2(0,0);
 
-    public Vector2 moveAndSlide(Vector2 distance,float delta){
+    public Vector2 moveAndSlide(float x, float y, double delta){
+        return moveAndSlide(((Vector2) ObjectPool.getGarbage(Vector2.class)).set(x,y),delta);
+    }
 
-        Vector2 prevPos = new Vector2(position);
 
-        Vector2 scaledDistance = distance.cpy().scl(delta);
+    public Vector2 moveAndSlide(Vector2 distance,double delta){
+
+        Vector2 prevPos =  ((Vector2) ObjectPool.getGarbage(Vector2.class)).set(position);
+
+        Vector2 scaledDistance =  ((Vector2) ObjectPool.getGarbage(Vector2.class)).set(distance).scl( (float) delta);
+
+       // Vector2 tempPos = position.cpy();
 
         position.set(getFirstCollision(scaledDistance));
 
-        Vector2 difference = new Vector2();
+        Vector2 difference =  ((Vector2) ObjectPool.getGarbage(Vector2.class));
 
         difference.set(position.x - prevPos.x, position.y - prevPos.y);
 
-
-        if ( !difference.epsilonEquals(scaledDistance,0.1f) ){
+        if ( !difference.epsilonEquals(scaledDistance,0.001f) ){
+            ColliderObject tempCollider = lastCollider;
 
             updateParentPos();
 
-            position.set(getFirstCollision(new Vector2(scaledDistance.x - difference.x, 0)));
+            position.set(getFirstCollision( ((Vector2) ObjectPool.getGarbage(Vector2.class)).set(scaledDistance.x - difference.x, 0)));
             updateParentPos();
 
-            position.set(getFirstCollision(new Vector2(0, scaledDistance.y - difference.y)));
+            position.set(getFirstCollision( ((Vector2) ObjectPool.getGarbage(Vector2.class)).set(0, scaledDistance.y - difference.y)));
+
+            lastCollided = true;
+            lastCollider = tempCollider;
         }
 
         difference.set(position.x - prevPos.x, position.y - prevPos.y);
 
-        if (Math.signum(difference.x) != Math.signum(distance.x) && !isZeroApprox(distance.x) && !isZeroApprox(difference.x)) {
-            System.out.println("heyo");
-            System.out.println(difference);
-            System.out.println(distance);
-            System.out.println(prevPos);
-            System.out.println(position);
-        }
+        Vector2 output = difference.scl( (float) Globals.inverse(delta));
 
-        return difference.scl(globals.inverse(delta));
+        //if (output.len() > 100) System.out.println("Big difference! " + difference + " temp pos: " + tempPos + " pos: " + position);
+
+        return output;
     }
 
 
     public Vector2 moveAndSlideBruteForce(Vector2 distance){
-
-
 
         if ((int)distance.x == 0 && (int)distance.y == 0) return distance.cpy();
 
@@ -147,7 +159,7 @@ public class movementNode extends colliderObject{
 
     }
 
-    public int moveTowardsZero(int num, int amount){
+    private int moveTowardsZero(int num, int amount){
         if (num > 0) return Math.max(num-amount,0);
         if (num < 0) return Math.min(num+amount,0);
         return 0;
@@ -157,24 +169,12 @@ public class movementNode extends colliderObject{
         return testMove(distance.x, distance.y);
     }
 
-/*    public boolean testMove(float x, float y){
-        updateGlobalPosition();
-        position.add(x,y);
-        updateParentPos();
-
-        boolean returnValue = isColliding();
-        position.sub(x,y);
-
-
-
-        return returnValue;
-    }*/
 
     public boolean testMove(float x, float y){
         updateGlobalPosition();
         updateParentPos();
 
-        return sweepTestArray(new Vector2(x,y),myRoot.colliders).collides;
+        return sweepTestArray(((Vector2) ObjectPool.getGarbage(Vector2.class)).set(x,y),myRoot.getCollidersInLayers(mask)).collides;
     }
 
     public Vector2 move(Vector2 distance){
@@ -198,6 +198,8 @@ public class movementNode extends colliderObject{
         return (num < 0.01 && num > -0.01);
 
     }
+
+
 
 
 }

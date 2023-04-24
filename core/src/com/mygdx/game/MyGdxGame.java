@@ -1,54 +1,57 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.game.helpers.constants.Globals;
+import com.mygdx.game.helpers.constants.ObjectPool;
+import com.mygdx.game.helpers.constants.SceneHandler;
 import com.mygdx.game.nodes.*;
-import com.mygdx.game.scenes.testScene;
 
 public class MyGdxGame extends ApplicationAdapter {
-	SpriteBatch batch;
+
 	private OrthographicCamera camera;
 
 
-	root scene1;// = new testScene();
+	Root scene1;// = new testScene();
 	
 	@Override
 	public void create () {
-		batch = new SpriteBatch();
-		scene1 = new testScene();
 
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 1024, 600);
+		camera.setToOrtho(false, Globals.screenSize.x, Globals.screenSize.y);
+
+		Globals.camera = camera;
+
+		Globals.globalShape.setColor(new Color(0, 0, 1, 0.5f));
+
+		SceneHandler.ready();
+
+		SceneHandler.setCurrentScene("TestScene");
+
 	}
 
 	@Override
 	public void render () {
 
+//		System.out.println("before");
+//		ObjectPool.printTotal();
+
 		ScreenUtils.clear(0.921f, 0.55f, 0.96f, 1);
 
-		scene1.update();
 
 
-		camera.position.set(globals.cameraOffset,camera.position.z);
-		camera.update();
-		batch.setProjectionMatrix(camera.combined);
+		SceneHandler.update();
 
-		batch.begin();
-
-		scene1.render(batch);
-
-
-		batch.end();
-
-		scene1.debug();
+		//System.out.println(ObjectPool.calculateTotal());
+		//ObjectPool.printObjectBreakdownInUse();
 
 	}
 	
 	@Override
 	public void dispose () {
-		batch.dispose();
+
 
 	}
 }
