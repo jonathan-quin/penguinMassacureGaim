@@ -28,7 +28,7 @@ public class MyGdxGame extends ApplicationAdapter {
 
 		SceneHandler.ready();
 
-		SceneHandler.setCurrentScene("TestScene");
+		SceneHandler.setCurrentScene("Lobby");
 
 	}
 

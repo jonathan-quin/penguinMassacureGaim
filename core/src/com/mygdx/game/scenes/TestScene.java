@@ -29,7 +29,7 @@ public class TestScene extends Root {
         rootNode.addChild( ObjectPool.get(SimpleIcePlatform.class).init(110+96,100));
 
 
-        add(poolGet(TileMapProcessor.class).init(TileMapHolder.testInfo) );
+        //add(poolGet(TileMapProcessor.class).init(TileMapHolder.testInfo) );
 
         //rootNode.addChild();
 

@@ -24,7 +24,7 @@ public class TimeRewindScene extends TimeRewindRoot {
 
 
         add(poolGet(Player.class).init(658,-150));
-        ((Player) last()).takeGun(PenguinRevolver.class);;
+        ((Player) last()).takeGun(PenguinRevolver.class);
 
 
         add(poolGet(Elf.class).init(200,-180,ObjectPool.get(ElfRevolver.class)));
@@ -36,7 +36,7 @@ public class TimeRewindScene extends TimeRewindRoot {
         add(poolGet(Elf.class).init(850,-199,ObjectPool.get(ElfRevolver.class)));
         add(poolGet(Elf.class).init(710,-281,ObjectPool.get(ElfRevolver.class)));
 
-        add(poolGet(TileMapProcessor.class).init(TileMapHolder.biggerTestLevel));
+        //add(poolGet(TileMapProcessor.class).init(TileMapHolder.biggerTestLevel));
 
     }
 
