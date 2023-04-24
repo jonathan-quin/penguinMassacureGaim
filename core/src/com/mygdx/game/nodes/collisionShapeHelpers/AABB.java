@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.Globals;
+import com.mygdx.game.globals;
 
 import static com.badlogic.gdx.math.MathUtils.clamp;
 
@@ -253,22 +253,22 @@ public class AABB {
         //if (!intercepts) return null;
 
 
-        if (false && Globals.showCollision && intercepts ){
+        if (false && globals.showCollision && intercepts ){
 
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-            Globals.globalShape.begin(ShapeRenderer.ShapeType.Filled);
-            Globals.globalShape.setColor(new Color(1, 1, 1, 1f));
+            globals.globalShape.begin(ShapeRenderer.ShapeType.Filled);
+            globals.globalShape.setColor(new Color(1, 1, 1, 1f));
 
-            Globals.globalShape.circle( (returnVector.x )- Globals.cameraOffset.x + 512,
-                    (returnVector.y )- Globals.cameraOffset.y + 300,4);
+            globals.globalShape.circle( (returnVector.x )-globals.cameraOffset.x + 512,
+                    (returnVector.y )-globals.cameraOffset.y + 300,4);
 
-            Globals.globalShape.line( (returnVector.x )- Globals.cameraOffset.x + 512,
-                    (returnVector.y )- Globals.cameraOffset.y + 300,
-                    (pos.x )- Globals.cameraOffset.x + 512,
-                    (pos.y )- Globals.cameraOffset.y + 300);
+            globals.globalShape.line( (returnVector.x )-globals.cameraOffset.x + 512,
+                    (returnVector.y )-globals.cameraOffset.y + 300,
+                    (pos.x )-globals.cameraOffset.x + 512,
+                    (pos.y )-globals.cameraOffset.y + 300);
 
-            Globals.globalShape.end();
+            globals.globalShape.end();
             Gdx.gl.glDisable(GL20.GL_BLEND);
         } //debugging nonsense
 

@@ -1,15 +1,15 @@
 package com.mygdx.game.nodes;
 
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.Globals;
+import com.mygdx.game.globals;
 
-public class MovementNode extends ColliderObject {
+public class movementNode extends colliderObject{
 
-    public MovementNode(Root myRoot){
+    public movementNode(root myRoot){
         super(myRoot);
     }
 
-    public MovementNode(Root myRoot, float x, float y){
+    public movementNode(root myRoot,float x, float y){
         super(myRoot,x,y);
     }
 
@@ -48,7 +48,7 @@ public class MovementNode extends ColliderObject {
             System.out.println(position);
         }
 
-        return difference.scl(Globals.inverse(delta));
+        return difference.scl(globals.inverse(delta));
     }
 
 
@@ -193,11 +193,6 @@ public class MovementNode extends ColliderObject {
 
     }
 
-    /**
-     * returns true if number is within 0.01 of 0
-     * @param num
-     * @return
-     */
     public boolean isZeroApprox(float num){
 
         return (num < 0.01 && num > -0.01);

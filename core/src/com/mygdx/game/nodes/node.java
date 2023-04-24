@@ -1,33 +1,36 @@
 package com.mygdx.game.nodes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+
+import com.badlogic.gdx.math.Rectangle;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
-public class Node {
-    public Array<Node> children = new Array<Node>();
+public class node {
+    public Array<node> children = new Array<node>();
     public Vector2 position;
     public Vector2 globalPosition = new Vector2(0,0);
     public Vector2 parentPosition;
 
-    Node parent = this;
+    node parent = this;
 
-    public Node(){
+    public node(){
 
         position = new Vector2(0,0);
         parentPosition = new Vector2(0,0);
         updateGlobalPosition();
 
     }
-    public Node(float x, float y){
+    public node(float x, float y){
         position = new Vector2(x,y);
         parentPosition = new Vector2(0,0);
         updateGlobalPosition();
     }
 
-    public Node getParent(){
+    public node getParent(){
         return parent;
     }
 
@@ -38,7 +41,7 @@ public class Node {
         update(Math.min(1/6f, Gdx.graphics.getDeltaTime()));
 
         updateParentPos();
-        for (Node child: children){
+        for (node child: children){
             child.updateCascade();
         }
 
@@ -50,7 +53,7 @@ public class Node {
 
     public void updateParentPos(){
         updateGlobalPosition();
-        for (Node child:children) {
+        for (node child:children) {
             child.parentPosition.set(globalPosition);
             child.parent = this;
         }
@@ -58,7 +61,7 @@ public class Node {
 
     public void renderCascade(SpriteBatch batch){
         render(batch);
-        for (Node child: children){
+        for (node child: children){
             child.renderCascade(batch);
         }
     }
@@ -69,7 +72,7 @@ public class Node {
 
     public void debugCascade(){
         debug();
-        for (Node child: children){
+        for (node child: children){
             child.debugCascade();
         }
     }
@@ -78,17 +81,13 @@ public class Node {
 
     }
 
-    public void addChild(Node child){
+    public void addChild(node child){
         children.add(child);
     }
 
 
-    /**
-     * Returns true if a child is successfully removed. Returns false if no child is present.
-     * @param child
-     * @return
-     */
-    public boolean removeChild(Node child){
+    //returns true if the child was found
+    public boolean removeChild(node child){
 
         if (children.contains(child,true)){
             children.removeIndex(children.indexOf(child,true));
@@ -98,12 +97,10 @@ public class Node {
         return false;
 
     }
-    /**
-     * Removes all children from parent object
-     */
+
     public void free(){
         getParent().removeChild(this);
-        for (Node child : children){
+        for (node child : children){
             child.free();
         }
     }

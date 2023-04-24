@@ -4,10 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.Globals;
+import com.mygdx.game.globals;
 import com.mygdx.game.nodes.*;
 
-public class Player extends MovementNode {
+public class player extends movementNode {
 
     private float MAXSPEED = 180;
 
@@ -23,17 +23,17 @@ public class Player extends MovementNode {
     //private double
 
 
-    public Player(Root myRoot) {
+    public player(root myRoot) {
         this(myRoot,0f,0f);
     }
 
-    public Player(Root myRoot, float x, float y) {
+    public player(root myRoot, float x, float y) {
 
         super(myRoot, x, y);
 
         Texture penguinTX = new Texture("penguinForNow.png");
-        addChild(new TextureEntity(penguinTX,0,2,32,32));
-        addChild(new CollisionShape(8,12,0,0));
+        addChild(new textureEntity(penguinTX,0,2,32,32));
+        addChild(new collisionShape(8,12,0,0));
 
         //addChild(new collisionShape(16,16,25,8));
 
@@ -80,7 +80,7 @@ public class Player extends MovementNode {
 
         //if (Math.abs(vel.x) < 0.1) vel.x = 0;
 
-        Globals.cameraOffset.set(position);
+        globals.cameraOffset.set(position);
 
         //System.out.println(position);
 

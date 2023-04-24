@@ -6,26 +6,14 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.mygdx.game.Globals;
+import com.mygdx.game.globals;
 import com.mygdx.game.nodes.collisionShapeHelpers.sweepInfo;
 
-public class ColliderObject extends Node {
+public class colliderObject extends node{
 
 
-    Array<CollisionShape> shapes = new Array<CollisionShape>();
-    Root myRoot;
-
-    //Constructors
-    public ColliderObject(Root myRoot){
-        super();
-        this.myRoot = myRoot;
-        this.myRoot.colliders.add(this);
-    }
-    public ColliderObject(Root myRoot, float x, float y ){
-        super(x,y);
-        this.myRoot = myRoot;
-        this.myRoot.colliders.add(this);
-    }
+    Array<collisionShape> shapes = new Array<collisionShape>();
+    root myRoot;
 
     public boolean isColliding(){
         return overlaps(myRoot.colliders);
@@ -37,25 +25,25 @@ public class ColliderObject extends Node {
 
        // System.out.println("first impact " + currentInfo.firstImpact);
 
-        if (false && Globals.showCollision){
+        if (false && globals.showCollision){
 
 
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-            Globals.globalShape.begin(ShapeRenderer.ShapeType.Filled);
-            Globals.globalShape.setColor(new Color(0, 1, 0, 1f));
+            globals.globalShape.begin(ShapeRenderer.ShapeType.Filled);
+            globals.globalShape.setColor(new Color(0, 1, 0, 1f));
 
-            Globals.globalShape.circle( (globalPosition.x )- Globals.cameraOffset.x + 512,
-                    (globalPosition.y )- Globals.cameraOffset.y + 300,5);
+            globals.globalShape.circle( (globalPosition.x )-globals.cameraOffset.x + 512,
+                    (globalPosition.y )-globals.cameraOffset.y + 300,5);
 
-            Globals.globalShape.setColor(new Color(0, 1, 1, 1f));
-            Globals.globalShape.circle( ( currentInfo.firstImpact.x)- Globals.cameraOffset.x + 512,
-                    (currentInfo.firstImpact.y )- Globals.cameraOffset.y + 300,5);
+            globals.globalShape.setColor(new Color(0, 1, 1, 1f));
+            globals.globalShape.circle( ( currentInfo.firstImpact.x)-globals.cameraOffset.x + 512,
+                    (currentInfo.firstImpact.y )-globals.cameraOffset.y + 300,5);
 
            // if (currentInfo.hit != null) globals.globalShape.circle( (globalPosition.x + currentInfo.hit.delta.x)-globals.cameraOffset.x + 512,
             //        ( globalPosition.y + currentInfo.hit.delta.y )-globals.cameraOffset.y + 300,5);
 
-            Globals.globalShape.end();
+            globals.globalShape.end();
             Gdx.gl.glDisable(GL20.GL_BLEND);
         } //debugging nonsense
 
@@ -72,13 +60,13 @@ public class ColliderObject extends Node {
 
     }
 
-    public sweepInfo sweepTest(Vector2 distance, ColliderObject other){
+    public sweepInfo sweepTest(Vector2 distance,colliderObject other){
 
         if (other == this) return null;
 
         sweepInfo returnSweepInfo = null;
         sweepInfo tempSweepInfo;
-        for (CollisionShape myShape : shapes){
+        for (collisionShape myShape : shapes){
             tempSweepInfo = myShape.sweepTestArray(distance,other.getShapes());
             if (returnSweepInfo == null || tempSweepInfo.time < returnSweepInfo.time )
                 returnSweepInfo = tempSweepInfo;
@@ -87,10 +75,10 @@ public class ColliderObject extends Node {
         return returnSweepInfo;  
     }
 
-    public sweepInfo sweepTestArray(Vector2 distance,Array<ColliderObject> others){
+    public sweepInfo sweepTestArray(Vector2 distance,Array<colliderObject> others){
         sweepInfo returnSweepInfo = null;
         sweepInfo tempSweepInfo;
-        for (ColliderObject other : others){
+        for (colliderObject other : others){
             tempSweepInfo = sweepTest(distance,other);
             if ( (returnSweepInfo == null || tempSweepInfo.time < returnSweepInfo.time) )
                 returnSweepInfo = tempSweepInfo;
@@ -102,55 +90,54 @@ public class ColliderObject extends Node {
         return returnSweepInfo;
     }
 
-    /**
-     * Returns true if param is different object and if any of their shapes overlaps
-     * @param other
-     * @return
-     */
-    public boolean overlaps(ColliderObject other){
+    public boolean overlaps(colliderObject other){
 
         if (other == this){
             //System.out.println("collider equals this!");
             return false;
         }
 
-        for (CollisionShape shape : shapes){
-            if (shape instanceof CollisionShape) {
+        for (collisionShape shape : shapes){
+            if (shape instanceof collisionShape) {
                 if (shape.overlaps(other.getShapes())) return true;
             }
         }
         return false;
     }
 
-
-    public boolean overlaps(Array<ColliderObject> others){
-        for (ColliderObject other : others){
+    public boolean overlaps(Array<colliderObject> others){
+        for (colliderObject other : others){
             if (overlaps(other)) return true;
         }
 
         return false;
     }
 
-    public Array<CollisionShape> getShapes(){
+    public Array<collisionShape> getShapes(){
         return shapes;
     }
 
+    public colliderObject(root myRoot){
+        super();
+        this.myRoot = myRoot;
+        this.myRoot.colliders.add(this);
+    }
+    public colliderObject(root myRoot,float x, float y ){
+        super(x,y);
+        this.myRoot = myRoot;
+        this.myRoot.colliders.add(this);
+    }
 
-    public void addChild(Node child){
+    public void addChild(node child){
         children.add(child);
 
-        if (child instanceof CollisionShape){
-            shapes.add( (CollisionShape) child);
+        if (child instanceof collisionShape){
+            shapes.add( (collisionShape) child);
         }
 
     }
 
-    /**
-     * Returns true if a child is successfully removed. Returns false if no child is present.
-     * @param child
-     * @return 
-     */
-    public boolean removeChild(Node child){
+    public boolean removeChild(node child){
 
         if (children.contains(child,true)){
 
@@ -158,8 +145,8 @@ public class ColliderObject extends Node {
 
         }
 
-        if (child instanceof CollisionShape){
-            if (shapes.contains((CollisionShape) child,true)){
+        if (child instanceof collisionShape){
+            if (shapes.contains((collisionShape) child,true)){
                 shapes.removeIndex(children.indexOf(child,true));
                 return true;
             }
@@ -169,12 +156,9 @@ public class ColliderObject extends Node {
 
     }
 
-    /**
-     * Removes all children from parent object
-     */
     public void free(){
         getParent().removeChild(this);
-        for (Node child : children){
+        for (node child : children){
             child.free();
         }
         myRoot.colliders.removeIndex(myRoot.colliders.indexOf(this,true));

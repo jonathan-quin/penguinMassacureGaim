@@ -1,6 +1,7 @@
 package com.mygdx.game.nodes.collisionShapeHelpers;
 
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.nodes.node;
 
 public class hitInfo {
 
