@@ -74,6 +74,12 @@ public class CollisionShape extends Node {
 
     }
 
+    /**
+     * checks to see if there would be  collision by moving "this" {@code distance} amount
+     * @param distance how far to move "this"
+     * @param others the collision shapes to test and see if there is a collision
+     * @return returns null if there is no collision returns the closest {@code SweepInfo} collison
+     */
     public SweepInfo sweepTestArray(Vector2 distance, Array<CollisionShape> others){
 
 

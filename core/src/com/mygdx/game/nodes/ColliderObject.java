@@ -19,6 +19,12 @@ public class ColliderObject extends Node {
         return overlaps(myRoot.colliders);
     }
 
+
+    /**
+     * gets location of first collision when attempting to move {@code distance} amount
+     * @param distance
+     * @return returns vector2 of disatnce + current position if no collision, otherwise returns location of collision
+     */
     public Vector2 getFirstCollision(Vector2 distance){
 
         SweepInfo currentInfo = sweepTestArray(distance,myRoot.getCollidersInLayers(mask));
@@ -45,21 +51,37 @@ public class ColliderObject extends Node {
 
     }
 
+    /**
+     * checks to see if there would be  collision by moving "this" {@code distance} amount
+     * @param distance how far to move "this"
+     * @param other the object to test and see if there is a collision
+     * @return returns null if there is no collision returns the {@code SweepInfo} of the closest collision
+     */
     public SweepInfo sweepTest(Vector2 distance, ColliderObject other){
 
         if (other == this) return null;
 
         SweepInfo returnSweepInfo = null;
         SweepInfo tempSweepInfo;
+
+        //region check collision for each shape to other objects shapes
         for (CollisionShape myShape : shapes){
             tempSweepInfo = myShape.sweepTestArray(distance,other.getShapes());
             if (returnSweepInfo == null || tempSweepInfo.time < returnSweepInfo.time )
                 returnSweepInfo = tempSweepInfo;
 
         }
+        //endregion check collision for each shape to other objects shapes
+
         return returnSweepInfo;  
     }
 
+    /**
+     * checks to see if there would be  collision by moving "this" {@code distance} amount
+     * @param distance how far to move "this"
+     * @param others list of objects to test and see if there is a collision
+     * @return returns null if there is no collision returns the {@code SweepInfo} of the closest collision
+     */
     public SweepInfo sweepTestArray(Vector2 distance, Array<ColliderObject> others){
         SweepInfo returnSweepInfo = null;
         SweepInfo tempSweepInfo;

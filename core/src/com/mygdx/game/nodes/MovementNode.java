@@ -28,6 +28,12 @@ public class MovementNode extends ColliderObject {
     }
 
 
+    /**
+     *
+     * @param distance how much Node tries to move
+     * @param delta amount of in-game time
+     * @return returns the inverse of {@code delta}
+     */
     public Vector2 moveAndSlide(Vector2 distance,double delta){
 
         Vector2 prevPos =  ((Vector2) ObjectPool.getGarbage(Vector2.class)).set(position);

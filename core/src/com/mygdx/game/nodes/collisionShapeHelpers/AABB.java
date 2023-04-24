@@ -271,14 +271,17 @@ public class AABB {
         return true;
     }
 
+    /**
+     *
+     * @param otherBox
+     * @param offset
+     * @return
+     */
     public SweepInfo sweepAABB(AABB otherBox, Vector2 offset) {
 
         SweepInfo info = ((SweepInfo) ObjectPool.getGarbage(SweepInfo.class));
 
         info.length = offset.len();
-
-
-
 
         AABBIntersectSegmentInfo segmentInfo = otherBox.intersectSegment(pos,offset,half.x,half.y);
 
