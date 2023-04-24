@@ -2,7 +2,7 @@ package com.mygdx.game.entities.guns.elfGuns;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.entities.guns.elfGuns.Bullets.ElfBullet;
+import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
 
 import static java.lang.Math.*;
 
@@ -31,14 +31,14 @@ public class ElfGun {
 
     }
 
-    public ElfBullet[] shoot(Vector2 pos){
+    public GenericBullet[] shoot(Vector2 pos){
         timeUntilNextShot = 1/fireRate;
 
         return getBullets(pos);
 
     }
 
-    protected ElfBullet[] getBullets(Vector2 pos) {
+    protected GenericBullet[] getBullets(Vector2 pos) {
         return null;
     }
 
@@ -51,14 +51,17 @@ public class ElfGun {
         return timeUntilNextShot == 0 && abs(differenceBetweenAngles(getTargetRotation(myPos,target),rotation)) < aimedTolerance;
     }
 
-    public void aimAt(Vector2 myPos, Vector2 target){
+    public void aimAt(Vector2 myPos, Vector2 target,double delta){
 
         double difference = differenceBetweenAngles(rotation,getTargetRotation(myPos,target));
 
-        rotation = rotation + difference * aimSpeed;
+        rotation = rotation + difference * aimSpeed * 60 * delta;
 
-        if (abs(difference)>fixedAimSpeed)
-        rotation = rotation + signum(difference) * fixedAimSpeed;
+        if (abs(difference)>fixedAimSpeed) {
+            rotation = rotation + signum(difference) * fixedAimSpeed * 60 * delta;
+        }
+
+        rotation = rotation % (2*PI);
     }
 
     private double getTargetRotation(Vector2 myPos, Vector2 target) {

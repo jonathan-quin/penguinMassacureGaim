@@ -23,19 +23,16 @@ public class MovementNode extends ColliderObject {
 
     private Vector2 tempPos = new Vector2(0,0);
 
-    public Vector2 moveAndSlide(float x, float y, float delta){
+    public Vector2 moveAndSlide(float x, float y, double delta){
         return moveAndSlide(((Vector2) ObjectPool.getGarbage(Vector2.class)).set(x,y),delta);
     }
 
-    public Vector2 moveAndSlide(Vector2 distance, double delta){
-        return moveAndSlide(distance,(float)delta);
-    }
 
-    public Vector2 moveAndSlide(Vector2 distance,float delta){
+    public Vector2 moveAndSlide(Vector2 distance,double delta){
 
         Vector2 prevPos =  ((Vector2) ObjectPool.getGarbage(Vector2.class)).set(position);
 
-        Vector2 scaledDistance =  ((Vector2) ObjectPool.getGarbage(Vector2.class)).set(distance).scl(delta);
+        Vector2 scaledDistance =  ((Vector2) ObjectPool.getGarbage(Vector2.class)).set(distance).scl( (float) delta);
 
        // Vector2 tempPos = position.cpy();
 
@@ -45,7 +42,7 @@ public class MovementNode extends ColliderObject {
 
         difference.set(position.x - prevPos.x, position.y - prevPos.y);
 
-        if ( !difference.epsilonEquals(scaledDistance,0.1f) ){
+        if ( !difference.epsilonEquals(scaledDistance,0.001f) ){
             ColliderObject tempCollider = lastCollider;
 
             updateParentPos();
@@ -61,7 +58,7 @@ public class MovementNode extends ColliderObject {
 
         difference.set(position.x - prevPos.x, position.y - prevPos.y);
 
-        Vector2 output = difference.scl(Globals.inverse(delta));
+        Vector2 output = difference.scl( (float) Globals.inverse(delta));
 
         //if (output.len() > 100) System.out.println("Big difference! " + difference + " temp pos: " + tempPos + " pos: " + position);
 

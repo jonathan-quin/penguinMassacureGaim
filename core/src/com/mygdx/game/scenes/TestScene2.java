@@ -2,6 +2,7 @@ package com.mygdx.game.scenes;
 
 import com.mygdx.game.entities.Player;
 import com.mygdx.game.entities.SimpleIcePlatform;
+import com.mygdx.game.entities.guns.penguinGuns.PenguinRevolver;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.nodes.Node;
 import com.mygdx.game.nodes.Root;
@@ -18,6 +19,7 @@ public class TestScene2 extends Root {
         last().setName("bulletHolder");
 
         add(poolGet(Player.class).init(220,300));
+        ((Player) last()).takeGun(PenguinRevolver.class);;
 
 
         rootNode.addChild( ObjectPool.get(SimpleIcePlatform.class).init(110,100));

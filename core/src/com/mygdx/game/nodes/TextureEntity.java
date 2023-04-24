@@ -14,7 +14,7 @@ public class TextureEntity extends Node {
 
     Sprite sprite;
 
-    Vector2 offset;
+    public Vector2 offset;
 
     private boolean visible = true;
 

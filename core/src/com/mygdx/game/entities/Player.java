@@ -4,6 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
+import com.mygdx.game.entities.guns.penguinGuns.PenguinGun;
+import com.mygdx.game.entities.guns.penguinGuns.PenguinRevolver;
 import com.mygdx.game.helpers.constants.*;
 import com.mygdx.game.helpers.utilities.MathUtils;
 import com.mygdx.game.helpers.utilities.TimeRewindInterface;
@@ -17,24 +20,30 @@ import static java.lang.Math.min;
 
 public class Player extends MovementNode implements TimeRewindInterface {
 
-    private float MAXSPEED = 180;
+    private final float MAXSPEED = 180;
 
     private float speed = 5;
     private Vector2 vel;
 
-    private float health = 100;
+    private int health;
 
-    private float JUMPFORCE = 240;
+    private final int maxHealth = 100;
 
-    private float GRAVITY = 400;
+    private final float JUMPFORCE = 240;
 
-    private float ACCEL = 6;
+    private final float GRAVITY = 400;
+
+    private final double ACCEL = 6;
 
     double rotation = 0;
 
     private Node bulletHolder;
 
     private Raycast ray;
+
+    boolean dead = false;
+
+    PenguinGun myGun;
 
     //private double
 
@@ -61,9 +70,13 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
         rotation = 0;
 
-        health = 100;
+        health = maxHealth;
 
         vel.set(0,0);
+
+        dead = false;
+
+        myGun = null;
 
         return this;
     }
@@ -74,30 +87,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
 
 
-    public <T> T load(Object... vars) {
 
-        this.position.set( (Vector2) vars[1]);
-        this.vel.set((Vector2) vars[2]);
-        this.rotation = ((double) vars[3]);
-
-
-        if (vel.x != 0){
-            ((TextureEntity) getChild("sprite")).setFlip(vel.x < 0,false);
-        }
-        if (((TextureEntity) getChild("sprite")).getFlipX()) {
-            ((TextureEntity) getChild("sprite")).setRotation(rotation);
-        } else {
-            ((TextureEntity) getChild("sprite")).setRotation(-rotation);
-        }
-
-        health = (float) vars[4];
-
-        updateGlobalPosition();
-        Globals.cameraOffset.set(globalPosition);
-
-
-        return null;
-    }
 
 
     public void ready(){
@@ -109,7 +99,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
         lastChild().setName("sprite");
         addChild(ObjectPool.get(CollisionShape.class).init(8,12,0,0));
 
-
+        //takeGun(PenguinRevolver.class);
         //addChild( ObjectPool.get(Raycast.class).init(0,0,100,-100,true,getMaskLayers(LayerNames.WALLS)) );
         //ray = (Raycast) lastChild();
 
@@ -123,17 +113,90 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
         boolean onFloor = testMove(0,-1);
 
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) targetSpeed.x -= MAXSPEED;
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) targetSpeed.x += MAXSPEED;
+        if (!dead)
+        {
+            takeMovementInput(onFloor,delta);
+
+
+            if (myGun != null){
+                myGun.updateTimeUntilNextShot(delta);
+                myGun.aimAt(Utils.getGlobalMousePosition(), delta);
+                myGun.setFlip();
+
+                if (myGun.canShoot() && Gdx.input.isTouched()) {
+                    for (GenericBullet bullet : myGun.shoot()) {
+                        bulletHolder.addChild(bullet);
+                    }
+                }
+            }
+
+        }
+
+        if (dead){
+            beDead(delta);
+        }
+
+
+        vel.set(moveAndSlide( vel,(float) delta) );
+
+
+
+        takeDebugInputs();
+        Globals.cameraOffset.set(position);
+
+    }
+
+    public void takeGun(Class type){
+        if (type == null) return;
+
+        addChild( ((PenguinGun)ObjectPool.get(type)).init() );
+        myGun = (PenguinGun) lastChild();
+    }
+
+    public void takeGun(Class type,double rotation,int ammoLeft,double timeUntilNextShot){
+
+        if (type == null) return;
+
+        addChild( ((Node)ObjectPool.get(type)).init(0,0) );
+        myGun = (PenguinGun) lastChild();
+        myGun.setRotation(rotation);
+        myGun.ammoLeft = ammoLeft;
+        myGun.timeUntilNextShot = timeUntilNextShot;
+    }
+
+    public void beDead(double delta){
+        rotation = 90;
+        ((TextureEntity) getChild("sprite")).setRotation(rotation);
+        ((TextureEntity) getChild("sprite")).setFlip(false,false);
+        vel.x = lerp(vel.x,0,0.1f);
+        vel.y -= GRAVITY * delta;
+    }
+
+    private float lerp(float a, float b, float f){
+        return a + f * (b - a);
+    }
+
+    private double lerp(double a, double b, double f){
+        return a + f * (b - a);
+    }
+
+    private void takeMovementInput(boolean onFloor,double delta){
+
+        TextureEntity sprite = ((TextureEntity) getChild("sprite"));
+
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) targetSpeed.x -= MAXSPEED;
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) targetSpeed.x += MAXSPEED;
 
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) vel.y -= 100;
 
-        if(Gdx.input.isKeyPressed(Input.Keys.UP) && onFloor) vel.y = JUMPFORCE;
+        if (Gdx.input.isKeyPressed(Input.Keys.UP) && onFloor) vel.y = JUMPFORCE;
 
-        vel.x  = lerp(vel.x,targetSpeed.x, ACCEL * (float)delta);
+
+        vel.x  = (float) lerp(vel.x,targetSpeed.x, ACCEL * delta);
+
 
         if (vel.x != 0){
-            ((TextureEntity) getChild("sprite")).setFlip(vel.x < 0,false);
+            sprite.setFlip(vel.x < 0,false);
         }
 
         if (!onFloor){
@@ -149,35 +212,20 @@ public class Player extends MovementNode implements TimeRewindInterface {
         }
 
 
-        if (((TextureEntity) getChild("sprite")).getFlipX()) {
-            ((TextureEntity) getChild("sprite")).setRotation(rotation);
+        if (sprite.getFlipX()) {
+            sprite.setRotation(rotation);
         } else {
-            ((TextureEntity) getChild("sprite")).setRotation(-rotation);
+            sprite.setRotation(-rotation);
         }
-
-
 
 
         vel.y -= GRAVITY * delta;
 
-        //System.out.println("vel before: " + vel);
+    }
 
-        if (health <= 0){
-            rotation = 90;
-            ((TextureEntity) getChild("sprite")).setRotation(rotation);
-            ((TextureEntity) getChild("sprite")).setFlip(false,false);
-            vel.x = 0;
-            vel.y = min(vel.y,0);
-        }
-
-        Vector2 tempVector = moveAndSlide( vel,(float) delta) ;
-        vel.set(tempVector);
-
-
+    public void takeDebugInputs(){
         if (Gdx.input.isKeyJustPressed(Input.Keys.X)){
-
             bulletHolder.addChild( ( (BulletOLD) ObjectPool.get( BulletOLD.class) ).init(globalPosition.x,globalPosition.y,vel.x*2,vel.y*2) );
-
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.Z)){
@@ -187,44 +235,70 @@ public class Player extends MovementNode implements TimeRewindInterface {
         if (Gdx.input.isKeyJustPressed(Input.Keys.V)){
             System.out.println(Utils.getGlobalMousePosition());
         }
-
-
-
-        //ray.setCast(Utils.getGlobalMousePosition().sub(globalPosition));
-
-
-        Globals.cameraOffset.set(position);
-        //System.out.println(vel + " delta " + delta);
-
     }
-
-    private float lerp(float a, float b, float f){
-        return a + f * (b - a);
-    }
-
-
-    /*public HashMap<String,Object> save(){
-        HashMap<String,Object> returnHash = (HashMap<String, Object>) ObjectPool.get(HashMap.class);
-
-        returnHash.put("class",this.getClass());
-        returnHash.put("position",ObjectPool.get(Vector2.class).set(position));
-
-
-        return returnHash;
-    }*/
 
     public ArrayList<Object> save(){
         ArrayList<Object> returnArr = (ArrayList<Object>) ObjectPool.get(ArrayList.class);
 
         returnArr.clear();
 
-        returnArr.add(this.getClass());
-        returnArr.add(ObjectPool.get(Vector2.class).set(position));
-        returnArr.add(ObjectPool.get(Vector2.class).set(vel));
-        returnArr.add(rotation);
-        returnArr.add(health);
+        returnArr.add(this.getClass()); //0
+        returnArr.add(ObjectPool.get(Vector2.class).set(position)); //1
+        returnArr.add(ObjectPool.get(Vector2.class).set(vel)); //2
+        returnArr.add(rotation); //3
+        returnArr.add(health); //4
+
+        returnArr.add(getChild("sprite",TextureEntity.class).getFlipX()); //5
+        returnArr.add(dead); //6
+
+        if (myGun != null){
+
+            returnArr.add(myGun.getClass()); //7
+            returnArr.add((Double) myGun.rotation);//8
+            returnArr.add(myGun.ammoLeft);//9
+            returnArr.add(myGun.timeUntilNextShot); //10
+        }
+        else{
+            returnArr.add(null);//7
+            returnArr.add(null);
+            returnArr.add(null);
+            returnArr.add(null);//10
+        }
 
         return returnArr;
+    }
+
+    public <T> T load(Object... vars) {
+
+        this.position.set( (Vector2) vars[1]);
+        this.vel.set((Vector2) vars[2]);
+        this.rotation = ((double) vars[3]);
+
+        health = (int) vars[4];
+
+        TextureEntity sprite = ((TextureEntity) getChild("sprite"));
+
+        sprite.setFlip((boolean) vars[5],false);
+
+        if ((boolean) vars[5]) {
+            sprite.setRotation(rotation);
+        } else {
+            sprite.setRotation(-rotation);
+        }
+
+        dead = (boolean) vars[6];
+
+        if (dead) beDead(0.016);
+
+        if (vars[7] != null){
+            takeGun((Class) vars[7],(double)vars[8],(int)vars[9],(double) vars[10]);
+        }
+
+        updateGlobalPosition();
+        Globals.cameraOffset.set(globalPosition);
+
+
+        return null;
     }
 
     @Override
@@ -239,5 +313,10 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
     public void hit(Vector2 vel, float damage) {
         health -= damage;
+
+        if (health <= 0){
+            dead = true;
+        }
+
     }
 }

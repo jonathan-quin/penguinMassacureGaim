@@ -164,6 +164,8 @@ public class ObjectPool {
 
     public static void remove(Object obj){
 
+        if (obj == null) return;;
+
         if (removeFromList(hashObjectsInUse.get(obj.getClass()),obj))
          putIntoStorage(obj);
 
@@ -180,6 +182,9 @@ public class ObjectPool {
 //    }
 
     public static void removeBackwards(Object obj){
+
+        if (obj == null) return;;
+
         ArrayList<Object> list = hashObjectsInUse.get(obj.getClass());
 
         if (list == null) return;

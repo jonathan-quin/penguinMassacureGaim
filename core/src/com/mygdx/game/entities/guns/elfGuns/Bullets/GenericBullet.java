@@ -1,7 +1,7 @@
 package com.mygdx.game.entities.guns.elfGuns.Bullets;
 
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.entities.BulletOLD;
+import com.mygdx.game.entities.Elf;
 import com.mygdx.game.entities.Player;
 import com.mygdx.game.helpers.constants.LayerNames;
 import com.mygdx.game.helpers.constants.ObjectPool;
@@ -14,7 +14,7 @@ import com.mygdx.game.nodes.TextureEntity;
 
 import java.util.ArrayList;
 
-public class ElfBullet extends MovementNode implements TimeRewindInterface {
+public class GenericBullet extends MovementNode implements TimeRewindInterface {
 
     Vector2 vel;
 
@@ -23,7 +23,7 @@ public class ElfBullet extends MovementNode implements TimeRewindInterface {
 
     TextureEntity sprite;
 
-    public ElfBullet(){
+    public GenericBullet(){
 
         super();
         vel = new Vector2(0,0);
@@ -43,7 +43,7 @@ public class ElfBullet extends MovementNode implements TimeRewindInterface {
         sprite.setRotation(vel.angleDeg());
     }
 
-    public ElfBullet init(float posX, float posY, float velX, float velY, float damage){
+    public GenericBullet init(float posX, float posY, float velX, float velY, float damage){
 
         super.init(posX,posY,getMaskLayers(LayerNames.WALLS,LayerNames.ELVES,LayerNames.PLAYER),getMaskLayers());
 
@@ -71,6 +71,7 @@ public class ElfBullet extends MovementNode implements TimeRewindInterface {
                 queueFree();
             }
             if (lastCollider.isOnLayer(LayerNames.ELVES)){
+                ((Elf) lastCollider).hit(vel,damage);
                 queueFree();
             }
         }
@@ -104,7 +105,7 @@ public class ElfBullet extends MovementNode implements TimeRewindInterface {
     }
 
     @Override
-    public ElfBullet init() {
+    public GenericBullet init() {
         init(0,0,0,0,0);
         return  this;
     }

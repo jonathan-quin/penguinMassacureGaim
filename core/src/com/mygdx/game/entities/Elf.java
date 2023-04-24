@@ -2,7 +2,7 @@ package com.mygdx.game.entities;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.entities.guns.elfGuns.Bullets.ElfBullet;
+import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
 import com.mygdx.game.entities.guns.elfGuns.ElfGun;
 import com.mygdx.game.helpers.constants.LayerNames;
 import com.mygdx.game.helpers.constants.ObjectPool;
@@ -25,6 +25,9 @@ public class Elf extends MovementNode implements TimeRewindInterface {
 
     Vector2 vel;
 
+    int health;
+    final int maxHealth = 100;
+
     private float wanderSpeed = 60;
 
     private float searchSpeed = 80;
@@ -34,6 +37,11 @@ public class Elf extends MovementNode implements TimeRewindInterface {
 
     private Vector2 lastPlayerPos;
     private Node bulletHolder;
+
+    public void hit(Vector2 vel, float damage) {
+        health -= damage;
+        if (health <= 0) queueFree();
+    }
 
 
     enum State {
@@ -147,21 +155,22 @@ public class Elf extends MovementNode implements TimeRewindInterface {
 
         returnArr.clear();
 
-        returnArr.add(this.getClass());
-        returnArr.add(ObjectPool.get(Vector2.class).set(position));
-        returnArr.add(ObjectPool.get(Vector2.class).set(vel));
-        returnArr.add(myGun.getClass());
+        returnArr.add(this.getClass()); //0
+        returnArr.add(ObjectPool.get(Vector2.class).set(position)); //1
+        returnArr.add(ObjectPool.get(Vector2.class).set(vel)); //2
+        returnArr.add(myGun.getClass()); //3
 
-        returnArr.add(getChild("sprite",TextureEntity.class).getFlipX());
+        returnArr.add(getChild("sprite",TextureEntity.class).getFlipX()); //4
 
-        returnArr.add(direction == Direction.LEFT);
+        returnArr.add(direction == Direction.LEFT); //5
 
 
-        returnArr.add(ObjectPool.get(Vector2.class).set(lastPlayerPos));
-        returnArr.add(state);
+        returnArr.add(ObjectPool.get(Vector2.class).set(lastPlayerPos)); //6
+        returnArr.add(state); //7
 
-        returnArr.add(myGun.timeUntilNextShot);
-        returnArr.add((Double) myGun.rotation);
+        returnArr.add(myGun.timeUntilNextShot); //8
+        returnArr.add((Double) myGun.rotation); //9
+        returnArr.add((Integer)health); // 10
 
         return returnArr;
     }
@@ -187,6 +196,7 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         myGun.timeUntilNextShot = (double) vars[8];
         myGun.rotation = (double) vars[9];
 
+        health = (int) vars[10];
 
 
         getChild("gunSprite",TextureEntity.class).setRotation( toDegrees(myGun.rotation));
@@ -225,6 +235,7 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         this.myGun = gun;
         if (gun != null) gun.init();
 
+        health = maxHealth;
         vel.set(0,0);
 
         return this;
@@ -336,11 +347,11 @@ public class Elf extends MovementNode implements TimeRewindInterface {
                 getChild("exclaim",TextureEntity.class).setVisible(true);
                 getChild("question",TextureEntity.class).setVisible(false);
 
-                myGun.aimAt(globalPosition,player.globalPosition);
+                myGun.aimAt(globalPosition,player.globalPosition,delta);
 
                 if (myGun.canShoot(globalPosition,player.globalPosition)){
 
-                    for (ElfBullet bullet : myGun.shoot(ObjectPool.getGarbage(Vector2.class).set(globalPosition).sub(0,-2))){
+                    for (GenericBullet bullet : myGun.shoot(ObjectPool.getGarbage(Vector2.class).set(globalPosition).sub(0,-2))){
                         bulletHolder.addChild(bullet);
                     }
 
