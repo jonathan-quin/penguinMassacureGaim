@@ -19,7 +19,7 @@ public class TextureHolder {
 
 
     public static Texture endGate = new Texture("endLevelGate.png");
-
+    public static Texture endGateClosed = new Texture("endLevelGateClosed.png");
 
 
 
