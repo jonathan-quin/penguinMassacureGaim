@@ -11,7 +11,8 @@ public class EndLevelGate extends StaticNode {
 
     public String nextScene = "";
 
-    public String name = "";
+    public String doorName = "";
+    public String openWhenEntered = "";
 
     public boolean open = false;
 
@@ -24,11 +25,14 @@ public class EndLevelGate extends StaticNode {
 
     }
 
-    public EndLevelGate init(float x, float y,String name,String nextScene){
+    public EndLevelGate init(float x, float y,String doorName,String openWhenEntered,String nextScene){
 
-        super.init(x,y,getMaskLayers(),getMaskLayers(LayerNames.WALLS));
+        super.init( x, y, getMaskLayers(LayerNames.PLAYER), getMaskLayers());
 
         this.nextScene = nextScene;
+
+        this.doorName = doorName;
+        this.openWhenEntered = openWhenEntered;
 
         addChild( ObjectPool.get(TextureEntity.class).init(TextureHolder.endGate,0,0,0,0));
         lastChild().setName("open");
@@ -57,27 +61,36 @@ public class EndLevelGate extends StaticNode {
     public void update(double delta) {
         super.update(delta);
 
-        getFirstCollision(ObjectPool.getGarbage(Vector2.class).set(0,0));
+        if (open)
+            getFirstCollision(ObjectPool.getGarbage(Vector2.class).set(0,0));
 
-        if (lastCollided){
+        if (lastCollided && open){
             SceneHandler.setCurrentScene(nextScene);
+
+            if (Globals.lobbyDoorsOpen.containsKey(openWhenEntered)){
+                Globals.lobbyDoorsOpen.put(openWhenEntered,true);
+                System.out.println("opened a door!");
+            }
+
         }
 
     }
 
-    public void updateSprite(){
+        public void updateSprite(){
 
-        if (Globals.lobbyDoorsOpen.get(name) != null){
-            open = Globals.lobbyDoorsOpen.get(name);
+            if (Globals.lobbyDoorsOpen.containsKey(doorName)){
+                open = Globals.lobbyDoorsOpen.get(doorName);
+                System.out.println("found myself " + doorName);
+
+            } else {
+                open = true;
+            }
 
             getChild("open",TextureEntity.class).setVisible(open);
             getChild("closed",TextureEntity.class).setVisible(!open);
-        } else {
-            open = true;
+
+
         }
-
-
-    }
 
 
 }

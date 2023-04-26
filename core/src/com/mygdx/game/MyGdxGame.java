@@ -30,6 +30,8 @@ public class MyGdxGame extends ApplicationAdapter {
 
 		SceneHandler.setCurrentScene("Lobby");
 
+		Globals.globalsInit();
+
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package com.mygdx.game.scenes.lobbyAndLevels;
 
+import com.mygdx.game.entities.EndLevelGate;
 import com.mygdx.game.entities.Player;
 import com.mygdx.game.entities.guns.penguinGuns.PenguinRevolver;
 import com.mygdx.game.helpers.constants.ObjectPool;
@@ -20,9 +21,11 @@ public class tempLevel1 extends TimeRewindRoot {
 
         last().setName("bulletHolder");
 
+        add(poolGet(EndLevelGate.class).init(915,-386,"","lobby-Level2","Lobby"));
 
-        add(poolGet(Player.class).init(700,-150));
+        add(poolGet(Player.class).init(115,-260));
         ((Player) last()).takeGun(PenguinRevolver.class);
+
 
 
         add(poolGet(TileMapProcessor.class).init(TileMapHolder.tempLevel1));

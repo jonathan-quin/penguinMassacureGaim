@@ -184,12 +184,12 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
         TextureEntity sprite = ((TextureEntity) getChild("sprite"));
 
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) targetSpeed.x -= MAXSPEED;
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) targetSpeed.x += MAXSPEED;
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) targetSpeed.x -= MAXSPEED;
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) targetSpeed.x += MAXSPEED;
 
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) vel.y -= 100;
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) vel.y -= 100;
 
-        if (Gdx.input.isKeyPressed(Input.Keys.UP) && onFloor) vel.y = JUMPFORCE;
+        if (Gdx.input.isKeyPressed(Input.Keys.W) && onFloor) vel.y = JUMPFORCE;
 
 
         vel.x  = (float) lerp(vel.x,targetSpeed.x, ACCEL * delta);
@@ -233,6 +233,11 @@ public class Player extends MovementNode implements TimeRewindInterface {
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.V)){
+
+            Vector2 tempValue = Utils.getGlobalMousePosition();
+
+            tempValue.set(16 * (int) (tempValue.x/16),16 * (int) (tempValue.y/16));
+
             System.out.println(Utils.getGlobalMousePosition());
         }
     }
