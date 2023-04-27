@@ -84,6 +84,10 @@ public class SceneHandler {
         return currentSceneName;
     }
 
+    public static Root getCurrentRoot(){
+        return currentScene;
+    }
+
     public static void update(){
         
         boolean sceneWasChangedBeforeStart = Globals.sceneJustChanged;
@@ -134,6 +138,8 @@ public class SceneHandler {
 //            ObjectPool.printTotal();
 //            ObjectPool.printObjectBreakdownInUse();
             tempScene.close();
+
+            currentScene.init();
             currentScene.open();
 
 

@@ -25,7 +25,7 @@ public class Lobby extends Root {
 
 
 
-        add(poolGet(Player.class).init(700,-150));
+        add(poolGet(Player.class).init(496.0f , -400.0f));
         ((Player) last()).takeGun(PenguinRevolver.class);
 
 

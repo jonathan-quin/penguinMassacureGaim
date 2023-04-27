@@ -6,6 +6,7 @@ import com.mygdx.game.helpers.constants.*;
 import com.mygdx.game.nodes.CollisionShape;
 import com.mygdx.game.nodes.StaticNode;
 import com.mygdx.game.nodes.TextureEntity;
+import com.mygdx.game.nodes.TimeRewindRoot;
 
 public class EndLevelGate extends StaticNode {
 
@@ -65,11 +66,17 @@ public class EndLevelGate extends StaticNode {
             getFirstCollision(ObjectPool.getGarbage(Vector2.class).set(0,0));
 
         if (lastCollided && open){
-            SceneHandler.setCurrentScene(nextScene);
+
+            if (!(SceneHandler.getCurrentRoot() instanceof TimeRewindRoot)){
+                SceneHandler.setCurrentScene(nextScene);
+            }else{
+                ((TimeRewindRoot) SceneHandler.getCurrentRoot()).playBackAndChangeScene(nextScene);
+            }
+
 
             if (Globals.lobbyDoorsOpen.containsKey(openWhenEntered)){
                 Globals.lobbyDoorsOpen.put(openWhenEntered,true);
-                System.out.println("opened a door!");
+                //System.out.println("opened a door!");
             }
 
         }
@@ -80,7 +87,7 @@ public class EndLevelGate extends StaticNode {
 
             if (Globals.lobbyDoorsOpen.containsKey(doorName)){
                 open = Globals.lobbyDoorsOpen.get(doorName);
-                System.out.println("found myself " + doorName);
+                //System.out.println("found myself " + doorName);
 
             } else {
                 open = true;

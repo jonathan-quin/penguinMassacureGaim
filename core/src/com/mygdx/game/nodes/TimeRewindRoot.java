@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.mygdx.game.helpers.constants.Globals;
 import com.mygdx.game.helpers.constants.ObjectPool;
+import com.mygdx.game.helpers.constants.SceneHandler;
 import com.mygdx.game.helpers.utilities.TimeRewindInterface;
 
 import java.lang.reflect.Field;
@@ -12,6 +13,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import static com.mygdx.game.helpers.constants.Globals.gameSpeed;
+import static com.mygdx.game.helpers.constants.Globals.sceneJustChanged;
 
 public class TimeRewindRoot extends Root{
 
@@ -20,44 +22,139 @@ public class TimeRewindRoot extends Root{
     double time = 0;
     double lastSaveTime = 0;
 
+    double nextGameSpeed = 1;
+
+    public void setNextGameSpeed(double nextGameSpeed) {
+        this.nextGameSpeed = nextGameSpeed;
+        nextGameSpeedChanged = true;
+    }
+
+    boolean nextGameSpeedChanged = false;
+
+    boolean playBack = false;
+    int playBackFrame = 0;
+
+    private int playBackStage = 0;
+
+    String nextScene = "";
+
+    public TimeRewindRoot init(){
+        playBack = false;
+        playBackFrame = 0;
+        lastSaveTime = 0;
+        time = 0;
+        nextScene = "";
+        playBackStage = 0;
+
+        return this;
+    }
+
     public void update(){
 
 
-        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)){
-            Globals.gameSpeed = 0.1;
-        }
-        else{
-            Globals.gameSpeed = 1;
-        }
+        if (!playBack){
 
-        boolean shouldRewind = Gdx.input.isKeyPressed(Input.Keys.C);
 
-        if (!shouldRewind){
-            Globals.currentlyRewinding = false;
-            rootNode.updateCascade();
-
-            time += Gdx.graphics.getDeltaTime() * gameSpeed;
-
-            if (time > lastSaveTime + (1f/60f - 1f/600f)){
-                saveNodes();
-                lastSaveTime = time;
+            if (!nextGameSpeedChanged){
+                if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+                    Globals.gameSpeed = 0.1;
+                } else {
+                    Globals.gameSpeed = 1;
+                }
             }
+            else{
+                gameSpeed = nextGameSpeed;
 
-        }
-        else{
-            Globals.currentlyRewinding = true;
+                if (nextGameSpeed != 0){
 
-            time -= Gdx.graphics.getDeltaTime() * gameSpeed;
+                    nextGameSpeedChanged = false;
+                }
 
-            if (time < lastSaveTime - 1f/60f + 1f/600f){
-                loadNodes();
-                lastSaveTime = time;
             }
 
 
+            boolean shouldRewind = Gdx.input.isKeyPressed(Input.Keys.SPACE) && !sceneJustChanged;
+
+            if (shouldRewind){
+                nextGameSpeedChanged = false;
+                if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+                    Globals.gameSpeed = 0.1;
+                } else {
+                    Globals.gameSpeed = 1;
+                }
+            }
+
+            if (!shouldRewind) {
+                Globals.currentlyRewinding = false;
+
+                if (gameSpeed > 0.001){
+                    rootNode.updateCascade();
+                }
+
+                time += Gdx.graphics.getDeltaTime() * gameSpeed;
+
+                if (time > lastSaveTime + (1f / 60f - 1f / 600f)) {
+                    saveNodes();
+                    lastSaveTime = time;
+                }
+
+            } else {
+                Globals.currentlyRewinding = true;
+
+                time -= Gdx.graphics.getDeltaTime() * gameSpeed;
+
+                if (time < lastSaveTime - 1f / 60f + 1f / 600f) {
+                    loadNodes();
+                    lastSaveTime = time;
+                }
+
+
+            }
+        }
+        else{
+            switch (playBackStage){
+                case 0:
+                    {
+                    playBackStage++;
+                    playBackFrame = past.size() - 1;
+                    break;
+                    }
+                case 1:
+                {
+                    playBack(playBackFrame);
+
+                    if (playBackFrame > 50){
+                        playBackFrame -= 4;
+                    }
+
+                    playBackFrame--;
+
+                    if (playBackFrame < 2) {
+                        playBackStage++;
+                    }
+                    break;
+                }
+                case 2:
+                {
+                    playBack(playBackFrame);
+                    playBackFrame++;
+                    if (playBackFrame > past.size() - 1) {
+                        SceneHandler.setCurrentScene(nextScene);
+                    }
+                    break;
+                }
+
+            }
+
+
         }
 
 
+    }
+
+    public void playBackAndChangeScene(String nextScene){
+        this.nextScene = nextScene;
+        playBack = true;
     }
 
     public void saveNodes(){
@@ -76,6 +173,8 @@ public class TimeRewindRoot extends Root{
     }
 
     public void loadNodes() {
+
+
 
         for (Node n : groups.getNodesInGroup("rewind")) {
 
@@ -120,9 +219,42 @@ public class TimeRewindRoot extends Root{
 
     }
 
+    public void playBack(int frame){
+        for (Node n : groups.getNodesInGroup("rewind")) {
+
+            n.free();
+        }
+
+        ArrayList<ArrayList<Object>> currentFrame;
+
+
+
+
+        currentFrame = past.get(frame);
+
+
+
+        for (ArrayList<Object> currentNode : currentFrame) {
+
+            Object obj = ObjectPool.get((Class) currentNode.get(0));
+
+            ((TimeRewindInterface) obj).init();
+
+            add(obj);
+
+            ((Node) obj).updateGlobalPosition();
+
+            ((TimeRewindInterface) obj).load(currentNode.toArray());
+
+        }
+
+
+    }
+
     public void close(){
         rootNode.free();
         rootNode = null;
+        gameSpeed = 1;
 
         for (ArrayList<ArrayList<Object>> frame : past){
 
@@ -262,6 +394,7 @@ public class TimeRewindRoot extends Root{
         }
         return null;
     }
+
 
 
 

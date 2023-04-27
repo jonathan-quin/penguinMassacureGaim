@@ -27,7 +27,7 @@ public class ElfRevolver extends ElfGun {
 
     protected GenericBullet[] getBullets(Vector2 pos) {
 
-        float damage = 50;
+        float damage = 100;
         float bulletFromPlayer = 17;
         float bulletSpeed = 300;
 

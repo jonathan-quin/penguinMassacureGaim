@@ -12,6 +12,8 @@ import java.util.ArrayList;
  */
 public class Root {
 
+
+
     /** The colliders in the scene. */
     public Array<ColliderObject> colliders = new Array<ColliderObject>();
 
@@ -26,6 +28,10 @@ public class Root {
      */
     public Root(){
 
+    }
+
+    public Root init(){
+        return this;
     }
 
     /**

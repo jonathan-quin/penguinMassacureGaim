@@ -295,6 +295,8 @@ public class Elf extends MovementNode implements TimeRewindInterface {
 
             case CHASE:
 
+                myGun.aimAt(globalPosition,player.globalPosition,delta);
+
                 getChild("exclaim",TextureEntity.class).setVisible(true);
                 getChild("question",TextureEntity.class).setVisible(false);
 

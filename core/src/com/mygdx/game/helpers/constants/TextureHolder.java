@@ -22,7 +22,7 @@ public class TextureHolder {
     public static Texture endGateClosed = new Texture("endLevelGateClosed.png");
 
 
-
+    public static Texture timeVortex = new Texture("timeVortex.png");
 
 
 

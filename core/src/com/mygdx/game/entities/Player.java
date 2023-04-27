@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
+import com.mygdx.game.entities.guns.elfGuns.ElfRevolver;
 import com.mygdx.game.entities.guns.penguinGuns.PenguinGun;
 import com.mygdx.game.entities.guns.penguinGuns.PenguinRevolver;
 import com.mygdx.game.helpers.constants.*;
@@ -15,8 +16,7 @@ import com.mygdx.game.nodes.*;
 
 import java.util.ArrayList;
 
-import static java.lang.Math.PI;
-import static java.lang.Math.min;
+import static java.lang.Math.*;
 
 public class Player extends MovementNode implements TimeRewindInterface {
 
@@ -201,7 +201,18 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
         if (!onFloor){
             //rotation = rotation % 360;
-            rotation += (4 + min(10,rotation * 0.01)) * 60 * delta;
+
+            double rotationChange = (4 + min(10,rotation * 0.01)) * 60 * delta;
+
+            rotation += rotationChange;
+
+            if (myGun != null){
+                if (sprite.getFlipX()) {
+                    myGun.rotation += toRadians(rotationChange);
+                } else {
+                    myGun.rotation -= toRadians(rotationChange);
+                }
+            }
 
         }
         else{
@@ -224,9 +235,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
     }
 
     public void takeDebugInputs(){
-        if (Gdx.input.isKeyJustPressed(Input.Keys.X)){
-            bulletHolder.addChild( ( (BulletOLD) ObjectPool.get( BulletOLD.class) ).init(globalPosition.x,globalPosition.y,vel.x*2,vel.y*2) );
-        }
+
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.Z)){
             SceneHandler.goToNextScene();
@@ -234,11 +243,18 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.V)){
 
+            if (getRootNode().getChild("debugElf") == null){
+                getRootNode().addChild(ObjectPool.get(MouseFollowSprite.class).init(TextureHolder.elfTexture, 0, 0, 0, 0));
+                getRootNode().lastChild().setName("debugElf");
+            }
+
             Vector2 tempValue = Utils.getGlobalMousePosition();
 
             tempValue.set(16 * (int) (tempValue.x/16),16 * (int) (tempValue.y/16));
 
-            System.out.println(Utils.getGlobalMousePosition());
+            //add(poolGet(Elf.class).init(200,-180,ObjectPool.get(ElfRevolver.class)));
+
+            System.out.println("add(poolGet(Elf.class).init(" + tempValue.x + "f , " + tempValue.y + "f ,ObjectPool.get(ElfRevolver.class)));" );
         }
     }
 
