@@ -7,6 +7,7 @@ import com.mygdx.game.entities.guns.elfGuns.ElfRevolver;
 import com.mygdx.game.entities.guns.penguinGuns.PenguinRevolver;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TileMapHolder;
+import com.mygdx.game.helpers.constants.TileMapHolder2;
 import com.mygdx.game.nodes.Node;
 import com.mygdx.game.nodes.TileMapProcessor;
 import com.mygdx.game.nodes.TimeRewindRoot;
@@ -36,7 +37,7 @@ public class TimeRewindScene extends TimeRewindRoot {
         add(poolGet(Elf.class).init(850,-199,ObjectPool.get(ElfRevolver.class)));
         add(poolGet(Elf.class).init(710,-281,ObjectPool.get(ElfRevolver.class)));
 
-        //add(poolGet(TileMapProcessor.class).init(TileMapHolder.biggerTestLevel));
+        add(poolGet(TileMapProcessor.class).init(TileMapHolder2.biggerTestLevel));
 
     }
 

@@ -15,8 +15,8 @@ public class PenguinRevolver extends PenguinGun{
 
         rotation = 0;
 
-        aimSpeed = 0.08;
-        fixedAimSpeed = Math.toDegrees(2);
+        aimSpeed = 0.2;
+        fixedAimSpeed = Math.toDegrees(6);
 
 
         startingAmmo = 3;

@@ -136,9 +136,9 @@ public class Player extends MovementNode implements TimeRewindInterface {
             beDead(delta);
         }
 
-
+        float tempVelY = vel.y;
         vel.set(moveAndSlide( vel,(float) delta) );
-
+        if (signum(tempVelY) != signum(vel.y)) vel.y = 0;
 
 
         takeDebugInputs();

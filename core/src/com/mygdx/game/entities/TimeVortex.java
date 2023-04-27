@@ -42,7 +42,7 @@ public class TimeVortex extends StaticNode implements TimeRewindInterface {
 
         ( (TextureEntity) lastChild()).setFlip(false,false);
 
-        addChild( ObjectPool.get(CollisionShape.class).init(1950,1024,0,0));
+        addChild( ObjectPool.get(CollisionShape.class).init(1958,1024,0,0));
 
 
 

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
 import com.mygdx.game.entities.guns.elfGuns.ElfGun;
+import com.mygdx.game.helpers.constants.Globals;
 import com.mygdx.game.helpers.constants.LayerNames;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TextureHolder;
@@ -19,24 +20,24 @@ import static java.lang.Math.toDegrees;
 
 public class Elf extends MovementNode implements TimeRewindInterface {
 
-    Player player;
+    protected Player player;
 
-    ElfGun myGun;
+    protected ElfGun myGun;
 
-    Vector2 vel;
+    protected Vector2 vel;
 
-    int health;
-    final int maxHealth = 100;
+    protected int health;
+    protected final int maxHealth = 100;
 
-    private float wanderSpeed = 60;
+    protected  float wanderSpeed = 60;
 
-    private float searchSpeed = 80;
-    private float wanderAccel = 0.3f * 60;
+    protected  float searchSpeed = 80;
+    protected  float wanderAccel = 0.3f * 60;
 
-    private double gravity = 400;
+    protected  double gravity = 400;
 
-    private Vector2 lastPlayerPos;
-    private Node bulletHolder;
+    protected  Vector2 lastPlayerPos;
+    protected  Node bulletHolder;
 
     public void hit(Vector2 vel, float damage) {
         health -= damage;
@@ -44,7 +45,7 @@ public class Elf extends MovementNode implements TimeRewindInterface {
     }
 
 
-    enum State {
+    protected enum State {
         WANDER,
         CHASE,
         SEARCH,
@@ -52,12 +53,12 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         REPOSITION
     }
 
-    enum Direction {
+    protected enum Direction {
         LEFT,
         RIGHT
     }
-    State state = State.WANDER;
-    Direction direction = Direction.LEFT;
+    protected State state = State.WANDER;
+    protected Direction direction = Direction.LEFT;
 
     public Elf(){
         super();
@@ -387,6 +388,8 @@ public class Elf extends MovementNode implements TimeRewindInterface {
     }
 
     public boolean canSeePlayer(){
+
+        if (Globals.aiIgnore) return false;
 
         if (state == State.WANDER) {
             switch (direction) {

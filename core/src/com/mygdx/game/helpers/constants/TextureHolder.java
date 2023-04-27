@@ -13,6 +13,7 @@ public class TextureHolder {
 
 
     public static Texture elfTexture = new Texture("elfForNow.png");
+    public static Texture elfVipTexture = new Texture("elf vip for now.png");
 
     public static Texture elfExclaim = new Texture("exclaim.png");
     public static Texture elfQuestion = new Texture("question.png");

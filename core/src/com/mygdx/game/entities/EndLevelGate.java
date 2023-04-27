@@ -47,7 +47,7 @@ public class EndLevelGate extends StaticNode {
 
         ( (TextureEntity) lastChild()).setFlip(false,false);
 
-        addChild( ObjectPool.get(CollisionShape.class).init(8,16,0,0));
+        addChild( ObjectPool.get(CollisionShape.class).init(8,16,0,-16));
 
 
 
@@ -65,7 +65,7 @@ public class EndLevelGate extends StaticNode {
         if (open)
             getFirstCollision(ObjectPool.getGarbage(Vector2.class).set(0,0));
 
-        if (lastCollided && open){
+        if (lastCollided && !((Player) lastCollider).dead && open){
 
             if (!(SceneHandler.getCurrentRoot() instanceof TimeRewindRoot)){
                 SceneHandler.setCurrentScene(nextScene);

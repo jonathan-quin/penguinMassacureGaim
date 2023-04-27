@@ -27,7 +27,7 @@ public class tempLevel1 extends TimeRewindRoot {
         add(poolGet(Player.class).init(115,-260));
         ((Player) last()).takeGun(PenguinRevolver.class);
 
-        add(poolGet(Elf.class).init(704.0f , -448.0f ,ObjectPool.get(ElfRevolver.class)));
+        add(poolGet(ElfVip.class).init(704.0f , -448.0f ,ObjectPool.get(ElfRevolver.class)));
         add(poolGet(Elf.class).init(144.0f , -416.0f ,ObjectPool.get(ElfRevolver.class)));
         add(poolGet(Elf.class).init(96.0f , -576.0f ,ObjectPool.get(ElfRevolver.class)));
         add(poolGet(Elf.class).init(752.0f , -576.0f ,ObjectPool.get(ElfRevolver.class)));
