@@ -1,11 +1,11 @@
 package com.mygdx.game.nodes;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.game.helpers.constants.ObjectPool;
 
 
 public class TextureEntity extends Node {
@@ -17,6 +17,16 @@ public class TextureEntity extends Node {
     public Vector2 offset;
 
     private boolean visible = true;
+
+    public Color getMyColor() {
+        return myColor;
+    }
+
+    public void myColor(Color myColor) {
+        this.myColor = myColor;
+    }
+
+    public Color myColor;
 
 
 
@@ -39,6 +49,8 @@ public class TextureEntity extends Node {
         super.init(posX,posY);
 
         visible = true;
+
+        myColor = Color.WHITE;
 
         if (sprite == null) {
             sprite = (new PoolableSprite()).init(image);
@@ -101,8 +113,12 @@ public class TextureEntity extends Node {
 
             sprite.setOrigin(sprite.getWidth() / 2 - offset.x, sprite.getHeight() / 2 - offset.y);
 
+            //batch.setColor(myColor);
+            sprite.setColor(myColor);
 
             sprite.draw(batch);
+            //batch.setColor(Color.WHITE);
+
         }
 
 

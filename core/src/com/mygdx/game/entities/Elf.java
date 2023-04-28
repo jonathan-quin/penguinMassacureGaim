@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
 import com.mygdx.game.entities.guns.elfGuns.ElfGun;
+import com.mygdx.game.entities.guns.floorGuns.FloorGun;
 import com.mygdx.game.helpers.constants.Globals;
 import com.mygdx.game.helpers.constants.LayerNames;
 import com.mygdx.game.helpers.constants.ObjectPool;
@@ -22,7 +23,7 @@ public class Elf extends MovementNode implements TimeRewindInterface {
 
     protected Player player;
 
-    protected ElfGun myGun;
+    public ElfGun myGun;
 
     protected Vector2 vel;
 
@@ -42,6 +43,7 @@ public class Elf extends MovementNode implements TimeRewindInterface {
     public void hit(Vector2 vel, float damage) {
         health -= damage;
         if (health <= 0) queueFree();
+        bulletHolder.addChild(((FloorGun) ObjectPool.get(myGun.floorClass)).init(position.x,position.y,vel.x,vel.y));
     }
 
 

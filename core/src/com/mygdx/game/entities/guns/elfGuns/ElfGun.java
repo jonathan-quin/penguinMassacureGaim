@@ -21,6 +21,8 @@ public class ElfGun {
     public Texture tex;
     public Vector2 texOffset;
 
+    public Class floorClass;
+
     public double timeUntilNextShot;
     protected double fireRate; //shots per second
 

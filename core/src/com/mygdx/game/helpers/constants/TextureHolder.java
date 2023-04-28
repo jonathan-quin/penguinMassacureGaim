@@ -25,7 +25,7 @@ public class TextureHolder {
 
     public static Texture timeVortex = new Texture("timeVortex.png");
 
-
+    public static Texture revolver = new Texture("revolverForNow.png");
 
 
 }

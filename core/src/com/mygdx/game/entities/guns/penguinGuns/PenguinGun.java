@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
+import com.mygdx.game.entities.guns.elfGuns.thrownGuns.ThrownGun;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.utilities.Utils;
 import com.mygdx.game.nodes.Node;
@@ -16,6 +17,7 @@ public class PenguinGun extends Node {
     public double moveSpeed;
 
     public double rotation;
+    public Class<? extends ThrownGun> throwClass;
 
     protected double aimSpeed;
     protected double fixedAimSpeed;

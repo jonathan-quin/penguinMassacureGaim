@@ -2,12 +2,11 @@ package com.mygdx.game.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
-import com.mygdx.game.entities.guns.elfGuns.ElfRevolver;
 import com.mygdx.game.entities.guns.penguinGuns.PenguinGun;
-import com.mygdx.game.entities.guns.penguinGuns.PenguinRevolver;
 import com.mygdx.game.helpers.constants.*;
 import com.mygdx.game.helpers.utilities.MathUtils;
 import com.mygdx.game.helpers.utilities.TimeRewindInterface;
@@ -27,7 +26,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
     private int health;
 
-    private final int maxHealth = 100;
+    private final int maxHealth = 1000000000;
 
     private final float JUMPFORCE = 240;
 
@@ -42,6 +41,10 @@ public class Player extends MovementNode implements TimeRewindInterface {
     private Raycast ray;
 
     boolean dead = false;
+
+    public PenguinGun getGun() {
+        return myGun;
+    }
 
     PenguinGun myGun;
 
@@ -119,13 +122,22 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
 
             if (myGun != null){
-                myGun.updateTimeUntilNextShot(delta);
-                myGun.aimAt(Utils.getGlobalMousePosition(), delta);
-                myGun.setFlip();
 
-                if (myGun.canShoot() && Gdx.input.isTouched()) {
-                    for (GenericBullet bullet : myGun.shoot()) {
-                        bulletHolder.addChild(bullet);
+                if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)){
+                    bulletHolder.addChild(ObjectPool.get(myGun.throwClass).initThrow(globalPosition,Utils.getGlobalMousePosition()));
+                    removeChild(myGun);
+                    myGun = null;
+                }
+
+                else {
+                    myGun.updateTimeUntilNextShot(delta);
+                    myGun.aimAt(Utils.getGlobalMousePosition(), delta);
+                    myGun.setFlip();
+
+                    if (myGun.canShoot() && Gdx.input.isTouched()) {
+                        for (GenericBullet bullet : myGun.shoot()) {
+                            bulletHolder.addChild(bullet);
+                        }
                     }
                 }
             }
@@ -134,6 +146,9 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
         if (dead){
             beDead(delta);
+        }
+        else{
+            ((TextureEntity) getChild("sprite")).myColor(Color.WHITE);
         }
 
         float tempVelY = vel.y;
@@ -147,17 +162,18 @@ public class Player extends MovementNode implements TimeRewindInterface {
     }
 
     public void takeGun(Class type){
-        if (type == null) return;
+        if (type == null || myGun != null) return;
 
         addChild( ((PenguinGun)ObjectPool.get(type)).init() );
         myGun = (PenguinGun) lastChild();
+        myGun.aimAt(Utils.getGlobalMousePosition(),10);
     }
 
     public void takeGun(Class type,double rotation,int ammoLeft,double timeUntilNextShot){
 
         if (type == null) return;
 
-        addChild( ((Node)ObjectPool.get(type)).init(0,0) );
+        addChild( ((PenguinGun)ObjectPool.get(type)).init() );
         myGun = (PenguinGun) lastChild();
         myGun.setRotation(rotation);
         myGun.ammoLeft = ammoLeft;
@@ -168,6 +184,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
         rotation = 90;
         ((TextureEntity) getChild("sprite")).setRotation(rotation);
         ((TextureEntity) getChild("sprite")).setFlip(false,false);
+        ((TextureEntity) getChild("sprite")).myColor(Color.RED);
         vel.x = lerp(vel.x,0,0.1f);
         vel.y -= GRAVITY * delta;
     }

@@ -23,7 +23,7 @@ public class Globals {
 
     public static boolean currentlyRewinding = false;
 
-    public static Vector2 screenSize = screenSize = new Vector2(1024,600);
+    public static Vector2 screenSize =  new Vector2(1024,600);
 
     public static ShapeRenderer globalShape = new ShapeRenderer();
 

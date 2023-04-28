@@ -37,10 +37,94 @@ public class ElfVip extends Elf implements TimeRewindInterface {
     }
 
     public ElfVip init(float x, float y, ElfGun gun){
-        super.init(x,y,getMaskLayers(LayerNames.WALLS),getMaskLayers(LayerNames.ELVES));
+        super.init(x,y,gun);
 
 
         return this;
+    }
+
+    public void ready(){
+        player = (Player) getRootNode().getChild("player");
+        bulletHolder = getRootNode().getChild("bulletHolder");
+
+        addToGroup("rewind");
+
+        addChild(ObjectPool.get(TextureEntity.class).init(TextureHolder.elfVipTexture,0f,4f,0,0));
+        lastChild().setName("sprite");
+
+        if (myGun != null){
+            addChild(ObjectPool.get(TextureEntity.class).init(myGun.tex,0f,1f,myGun.texOffset.x,myGun.texOffset.y));
+            lastChild().setName("gunSprite");
+        }
+
+        addChild(ObjectPool.get(TextureEntity.class).init(TextureHolder.elfExclaim,0f,30f,0,0));
+        lastChild().setName("exclaim");
+        addChild(ObjectPool.get(TextureEntity.class).init(TextureHolder.elfQuestion,0f,30f,0,0));
+        lastChild().setName("question");
+
+
+        addChild(ObjectPool.get(CollisionShape.class).init(8,12,0,0));
+
+        addChild(ObjectPool.get(ColliderObject.class).init(350,0,getMaskLayers(LayerNames.PLAYER),getMaskLayers()));
+        lastChild().setName("playerDetect");
+        lastChild().addChild(ObjectPool.get(CollisionShape.class).init(400,200,0,0));
+        ((CollisionShape)lastChild(). lastChild()).myColor = new Color(0,0,0.5f,0.1f);
+
+        addChild( ObjectPool.get(Raycast.class).init(0,4,0,0,false,getMaskLayers(LayerNames.WALLS)) );
+        lastChild().setName("playerLOS");
+        ((Raycast)lastChild()).makeDirtyOnUpdate = false;
+
+        addChild( ObjectPool.get(Raycast.class).init(0,36,0,0,false,getMaskLayers(LayerNames.WALLS)) );
+        lastChild().setName("playerLOS2");
+        ((Raycast)lastChild()).makeDirtyOnUpdate = false;
+
+        addChild( ObjectPool.get(Raycast.class).init(15,-30,0,-48,false,getMaskLayers(LayerNames.WALLS)) );
+        lastChild().setName("rightLedgeDetect");
+
+        addChild( ObjectPool.get(Raycast.class).init(20,-24,30,0,false,getMaskLayers(LayerNames.WALLS)) );
+        lastChild().setName("rightGapJump");
+        addChild( ObjectPool.get(Raycast.class).init(10,0,30,0,false,getMaskLayers(LayerNames.WALLS)) );
+        lastChild().setName("rightNoJump");
+        addChild( ObjectPool.get(Raycast.class).init(10,32,30,0,false,getMaskLayers(LayerNames.WALLS)) );
+        lastChild().setName("rightHalfJump");
+        addChild( ObjectPool.get(Raycast.class).init(10,64,30,0,false,getMaskLayers(LayerNames.WALLS)) );
+        lastChild().setName("rightFullJump");
+
+        addChild( ObjectPool.get(Raycast.class).init(-15,-30,0,-48,false,getMaskLayers(LayerNames.WALLS)) );
+        lastChild().setName("leftLedgeDetect");
+
+        addChild( ObjectPool.get(Raycast.class).init(-20,-24,-30,0,false,getMaskLayers(LayerNames.WALLS)) );
+        lastChild().setName("leftGapJump");
+        addChild( ObjectPool.get(Raycast.class).init(-10,0,-30,0,false,getMaskLayers(LayerNames.WALLS)) );
+        lastChild().setName("leftNoJump");
+        addChild( ObjectPool.get(Raycast.class).init(-10,32,-30,0,false,getMaskLayers(LayerNames.WALLS)) );
+        lastChild().setName("leftHalfJump");
+        addChild( ObjectPool.get(Raycast.class).init(-10,64,-30,0,false,getMaskLayers(LayerNames.WALLS)) );
+        lastChild().setName("leftFullJump");
+
+        addChild( ObjectPool.get(Raycast.class).init(0,16,0,20,false,getMaskLayers(LayerNames.WALLS)) );
+        lastChild().setName("roofCast");
+
+        addChild( ObjectPool.get(Raycast.class).init(0,0,0,0,false,getMaskLayers(LayerNames.WALLS)) );
+        lastChild().setName("randCast");
+        ((Raycast)lastChild()).makeDirtyOnUpdate = false;
+
+
+        getChild("rightLedgeDetect",Raycast.class).makeDirtyOnUpdate = false;
+        getChild("rightNoJump",Raycast.class).makeDirtyOnUpdate = false;
+        getChild("rightHalfJump",Raycast.class).makeDirtyOnUpdate = false;
+        getChild("rightFullJump",Raycast.class).makeDirtyOnUpdate = false;
+        getChild("leftLedgeDetect",Raycast.class).makeDirtyOnUpdate = false;
+        getChild("leftNoJump",Raycast.class).makeDirtyOnUpdate = false;
+        getChild("leftHalfJump",Raycast.class).makeDirtyOnUpdate = false;
+        getChild("leftFullJump",Raycast.class).makeDirtyOnUpdate = false;
+        getChild("roofCast",Raycast.class).makeDirtyOnUpdate = false;
+        getChild("leftGapJump",Raycast.class).makeDirtyOnUpdate = false;
+        getChild("rightGapJump",Raycast.class).makeDirtyOnUpdate = false;
+
+        //ray = (Raycast) getNewestChild();
+
+
     }
 
 
