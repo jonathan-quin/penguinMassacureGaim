@@ -212,7 +212,7 @@ public class AABB {
         //if (intercepts) System.out.println("intercepts: " + intercepts);
         returnInfo.resolves = false;
 
-        if (containsPoint(returnVector,paddingX,paddingY,0) && !edgeContainsPoint(returnVector,paddingX,paddingY)){
+        if (false && containsPoint(returnVector,paddingX,paddingY,0) && !edgeContainsPoint(returnVector,paddingX,paddingY)){
             System.out.println("WELL THAT'S A PROBLEM " + intercepts);
             System.out.println("started at: " + lineStart);
             System.out.println("ended at: " + returnVector);

@@ -19,8 +19,31 @@ public class TimeParticle extends Particle implements TimeRewindInterface {
 
     @Override
     public TimeParticle init() {
-        init(ObjectPool.get(Vector2.class).set(0,0),0,0,0,0,ObjectPool.get(Vector2.class).set(0,0),0.01,0,1,false, Color.WHITE,Color.WHITE,0,0);
+        init(ObjectPool.getGarbage(Vector2.class).set(0,0),0,0,0,0,ObjectPool.get(Vector2.class).set(0,0),0.01,0,1,false, Color.WHITE,Color.WHITE,0,0);
         return this;
+    }
+
+    public TimeParticle init(Vector2 vel, double rotationVel, double rotation, double lifeSpan, double gravity, Vector2 accel, double damping, double speedForward, double bounce, boolean collide, Color color, Color targetColor, double lerpToColor, double moveToColor) {
+        super.init(0,0,getMaskLayers(),getMaskLayers());
+        this.vel.set(vel);
+        this.rotationVel = rotationVel;
+        this.rotation = rotation;
+        this.lifeSpan = lifeSpan;
+        this.gravity = gravity;
+        this.accel.set(accel);
+        this.damping = damping;
+        this.speedForward = speedForward;
+        this.collide = collide;
+        this.color.set(color);
+        this.targetColor.set( targetColor);
+        this.lerpToColor = lerpToColor;
+        this.moveToColor = moveToColor;
+        this.bounce = bounce;
+
+
+
+        return this;
+
     }
 
 
@@ -52,7 +75,11 @@ public class TimeParticle extends Particle implements TimeRewindInterface {
         a.add(lerpToColor); //14
         a.add(moveToColor); //15
 
-        a.add(mask.get(0));
+        if (mask.size() > 0){ //16
+            a.add(mask.get(0));
+        }else{
+            a.add(null);
+        }
 
         return a;
     }
@@ -76,7 +103,7 @@ public class TimeParticle extends Particle implements TimeRewindInterface {
         lerpToColor = (double) vars[14];
         moveToColor = (double) vars[15];
 
-        mask.add((Integer) vars[16]);
+        if (vars[16] != null)mask.add((Integer) vars[16]);
 
         sprite.setMyColor(color);
         sprite.setRotation(rotation);

@@ -12,7 +12,7 @@ public class TextureEntity extends Node {
 
    // Texture sprite;
 
-    Sprite sprite;
+    public Sprite sprite;
 
     public Vector2 offset;
 

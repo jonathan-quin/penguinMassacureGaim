@@ -16,7 +16,7 @@ import static com.mygdx.game.helpers.utilities.MathUtils.moveTowardsNum;
 
 public class Particle extends MovementNode {
 
-    protected Vector2 vel; //changes
+    public Vector2 vel; //changes
 
     protected double rotation; //changes
 
@@ -101,12 +101,15 @@ public class Particle extends MovementNode {
 
     public void update(double delta){
 
+        System.out.println(vel + " " + this);
+
         lifeSpan -= delta;
         if (lifeSpan < 0) queueFree();
 
-        vel.set(lerp(vel.x, (float) 0, (float) (damping*60*delta)),lerp(vel.y, (float) 0, (float) (damping*60*delta)));
+        //vel.set(lerp(vel.x, (float) 0, (float) (damping*60*delta)),lerp(vel.y, (float) 0, (float) (damping*60*delta)));
 
         vel.y -= delta * gravity;
+
         vel.add((float) (accel.x * delta), (float) (accel.y * delta));
 
         rotation += rotationVel * delta;
@@ -123,11 +126,13 @@ public class Particle extends MovementNode {
 
             Vector2 newVel = moveAndSlide(tempVel,delta);
 
-            if (!MathUtils.isEqual(newVel.x,tempVel.x, 0.01F)){
-                vel.x *= -bounce;
-            }
-            if (!MathUtils.isEqual(newVel.y,tempVel.y, 0.01F)){
-                vel.y *= -bounce;
+            if (lastCollided){
+                if (!MathUtils.isEqual(newVel.x, tempVel.x, 0.001F)) {
+                    vel.x *= -bounce;
+                }
+                if (!MathUtils.isEqual(newVel.y, tempVel.y, 0.001F)) {
+                    vel.y *= -bounce;
+                }
             }
 
         } else {

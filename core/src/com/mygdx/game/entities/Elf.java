@@ -10,7 +10,9 @@ import com.mygdx.game.helpers.constants.LayerNames;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TextureHolder;
 import com.mygdx.game.helpers.utilities.MathUtils;
+import com.mygdx.game.helpers.utilities.ParticleMaker;
 import com.mygdx.game.helpers.utilities.TimeRewindInterface;
+import com.mygdx.game.helpers.utilities.Utils;
 import com.mygdx.game.nodes.*;
 
 import java.util.ArrayList;
@@ -40,15 +42,7 @@ public class Elf extends MovementNode implements TimeRewindInterface {
     protected  Vector2 lastPlayerPos;
     protected  Node bulletHolder;
 
-    public void hit(Vector2 vel, float damage) {
-        health -= damage;
 
-        if (health <= 0){
-            queueFree();
-            bulletHolder.addChild(((FloorGun) ObjectPool.get(myGun.floorClass)).init(position.x,position.y,vel.x,vel.y));
-        }
-
-    }
 
 
     protected enum State {
@@ -748,6 +742,26 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         
         return targetSpeed;
         
+    }
+
+    public void hit(Vector2 bulletVel, float damage) {
+        health -= damage;
+
+        if (health <= 0){
+            die(bulletVel);
+        }
+
+    }
+
+    public void die(Vector2 bulletVel) {
+
+        queueFree();
+        bulletHolder.addChild(((FloorGun) ObjectPool.get(myGun.floorClass)).init(position.x,position.y,this.vel.x,this.vel.y));
+
+        for (TimeParticle t : ParticleMaker.makeBloodyParticlesFromSprite(getChild("sprite",TextureEntity.class),bulletVel)){
+            bulletHolder.addChild(t);
+        }
+
     }
 
     @Override

@@ -117,7 +117,11 @@ public class ThrownGun extends MovementNode implements TimeRewindInterface {
 
         returnArr.clear();
 
-        returnArr.add(this.getClass());
+        returnArr.add((ArrayList<Object>) ObjectPool.get(ArrayList.class)); //0
+        ((ArrayList)returnArr.get(0)).clear();
+        ((ArrayList)returnArr.get(0)).add(this.getClass());
+        ((ArrayList)returnArr.get(0)).add(this.getParent());
+
         returnArr.add(new Vector2(position));
         returnArr.add(new Vector2(vel));
         returnArr.add(damage);
