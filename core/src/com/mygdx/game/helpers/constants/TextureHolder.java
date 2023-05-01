@@ -27,5 +27,7 @@ public class TextureHolder {
 
     public static Texture revolver = new Texture("revolverForNow.png");
 
+    public static Texture whitePixel = new Texture("whitePixel.png");
+
 
 }

@@ -36,6 +36,12 @@ public class TimeRewindRoot extends Root{
 
     private int playBackStage = 0;
 
+    public boolean isSaveFrame() {
+        return saveFrame;
+    }
+
+    boolean saveFrame = true;
+
     String nextScene = "";
 
     public TimeRewindRoot init(){
@@ -95,7 +101,11 @@ public class TimeRewindRoot extends Root{
 
                 if (time > lastSaveTime + (1f / 60f - 1f / 600f)) {
                     saveNodes();
+                    saveFrame = true;
                     lastSaveTime = time;
+                }
+                else{
+                    saveFrame = false;
                 }
 
             } else {

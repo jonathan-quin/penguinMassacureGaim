@@ -42,8 +42,12 @@ public class Elf extends MovementNode implements TimeRewindInterface {
 
     public void hit(Vector2 vel, float damage) {
         health -= damage;
-        if (health <= 0) queueFree();
-        bulletHolder.addChild(((FloorGun) ObjectPool.get(myGun.floorClass)).init(position.x,position.y,vel.x,vel.y));
+
+        if (health <= 0){
+            queueFree();
+            bulletHolder.addChild(((FloorGun) ObjectPool.get(myGun.floorClass)).init(position.x,position.y,vel.x,vel.y));
+        }
+
     }
 
 

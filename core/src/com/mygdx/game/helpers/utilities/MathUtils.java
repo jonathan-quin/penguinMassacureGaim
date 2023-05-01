@@ -7,6 +7,12 @@ public class MathUtils {
         return 0;
     }
 
+    public static double moveTowardsNum(double num, double targetNum, double amount){
+        if (num > targetNum) return Math.max(num-amount,targetNum);
+        if (num < targetNum) return Math.min(num+amount,targetNum);
+        return targetNum;
+    }
+
     public static double differenceBetweenAngles(double Angle, double Bngle){
 
         Angle = (Angle % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);

@@ -22,8 +22,8 @@ public class TextureEntity extends Node {
         return myColor;
     }
 
-    public void myColor(Color myColor) {
-        this.myColor = myColor;
+    public void setMyColor(Color myColor) {
+        this.myColor.set(myColor);
     }
 
     public Color myColor;
@@ -43,6 +43,7 @@ public class TextureEntity extends Node {
         if (image != null)
         sprite = (new PoolableSprite()).init(image);
         this.offset = new Vector2(offsetX,offsetY);
+        myColor = new Color(0,0,0,0);
     }
 
     public TextureEntity init(Texture image, float posX, float posY,float offsetX,float offsetY){
@@ -50,7 +51,7 @@ public class TextureEntity extends Node {
 
         visible = true;
 
-        myColor = Color.WHITE;
+        myColor.set( Color.WHITE );
 
         if (sprite == null) {
             sprite = (new PoolableSprite()).init(image);

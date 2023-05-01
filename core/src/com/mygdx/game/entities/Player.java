@@ -148,7 +148,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
             beDead(delta);
         }
         else{
-            ((TextureEntity) getChild("sprite")).myColor(Color.WHITE);
+            ((TextureEntity) getChild("sprite")).setMyColor(Color.WHITE);
         }
 
         float tempVelY = vel.y;
@@ -158,6 +158,16 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
         takeDebugInputs();
         Globals.cameraOffset.set(position);
+
+
+
+        if (myRoot instanceof TimeRewindRoot && ((TimeRewindRoot) myRoot).isSaveFrame()) {
+            bulletHolder.addChild(ObjectPool.get(TimeParticle.class).init(ObjectPool.getGarbage(Vector2.class).set(0, 0), toRadians(2) * 60, rotation, 2, 0, ObjectPool.getGarbage(Vector2.class).set(0, 0), 0.1, 70, 0.8, true, Color.WHITE, Color.BLUE, 0.2, 0.2));
+            ((Particle) bulletHolder.lastChild()).setMaskLayers(getMaskLayers(LayerNames.WALLS), getMaskLayers());
+            ((Particle) bulletHolder.lastChild()).position.set(position);
+        }
+
+
 
     }
 
@@ -184,7 +194,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
         rotation = 90;
         ((TextureEntity) getChild("sprite")).setRotation(rotation);
         ((TextureEntity) getChild("sprite")).setFlip(false,false);
-        ((TextureEntity) getChild("sprite")).myColor(Color.RED);
+        ((TextureEntity) getChild("sprite")).setMyColor(Color.RED);
         vel.x = lerp(vel.x,0,0.1f);
         vel.y -= GRAVITY * delta;
     }
