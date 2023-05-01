@@ -136,9 +136,9 @@ public class Particle extends MovementNode {
 
                 if (paint){
                     getParent().addChild(ObjectPool.get(Paint.class).init(position.x,position.y,targetColor));
-                    System.out.println("old " +tempVel);
-                    System.out.println("new " +newVel);
-                    System.out.println(testMove(tempVel));
+//                    System.out.println("old " +tempVel);
+//                    System.out.println("new " +newVel);
+//                    System.out.println(testMove(tempVel));
                     queueFree();
                 }
 

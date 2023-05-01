@@ -16,6 +16,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import static com.badlogic.gdx.math.MathUtils.lerp;
+import static com.badlogic.gdx.math.MathUtils.sin;
 import static com.mygdx.game.helpers.constants.Globals.gameSpeed;
 import static com.mygdx.game.helpers.constants.Globals.sceneJustChanged;
 
@@ -121,7 +122,7 @@ public class TimeRewindRoot extends Root{
                     loadNodes();
                     lastSaveTime = time;
                 }else{
-                    playBack(time - 1);
+                    playBack(time * 60 -2);
                 }
 
 
@@ -274,10 +275,14 @@ public class TimeRewindRoot extends Root{
 
     public void playBack(double time){
 
+
+
         if ((int) time == past.size()){
             playBack((int)time);
             return;
         }
+
+        System.out.println("Time: " + time + " past: " + past.size());
 
         for (Node n : groups.getNodesInGroup("rewind")) {
 
@@ -285,14 +290,13 @@ public class TimeRewindRoot extends Root{
         }
 
         ArrayList<ArrayList<Object>> currentFrame;
-        ArrayList<ArrayList<Object>> futureFrame;
 
 
 
         currentFrame = past.get((int) time + 1);
 
         float timeAfter = (float) (time - ((int) time));
-
+        System.out.println(timeAfter);
 
         for (ArrayList<Object> currentNode : currentFrame) {
 
