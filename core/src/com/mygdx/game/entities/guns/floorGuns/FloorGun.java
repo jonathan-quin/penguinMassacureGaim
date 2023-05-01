@@ -107,9 +107,13 @@ public class FloorGun extends MovementNode implements TimeRewindInterface {
 
         returnArr.clear();
 
-        returnArr.add(this.getClass());
-        returnArr.add(ObjectPool.get(Vector2.class).set(position));
-        returnArr.add(ObjectPool.get(Vector2.class).set(vel));
+        returnArr.add((ArrayList<Object>) ObjectPool.get(ArrayList.class)); //0
+        ((ArrayList)returnArr.get(0)).clear();
+        ((ArrayList)returnArr.get(0)).add(this.getClass());
+        ((ArrayList)returnArr.get(0)).add(this.getParent());
+
+        returnArr.add(new Vector2(position));
+        returnArr.add(new Vector2(vel));
         returnArr.add((float) sprite.getRotation());
 
         return returnArr;

@@ -162,7 +162,11 @@ public class Elf extends MovementNode implements TimeRewindInterface {
 
         returnArr.clear();
 
-        returnArr.add(this.getClass()); //0
+        returnArr.add((ArrayList<Object>) ObjectPool.get(ArrayList.class)); //0
+        ((ArrayList)returnArr.get(0)).clear();
+        ((ArrayList)returnArr.get(0)).add(this.getClass());
+        ((ArrayList)returnArr.get(0)).add(this.getParent());
+
         returnArr.add(ObjectPool.get(Vector2.class).set(position)); //1
         returnArr.add(ObjectPool.get(Vector2.class).set(vel)); //2
         returnArr.add(myGun.getClass()); //3

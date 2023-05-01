@@ -156,6 +156,7 @@ public class AABB {
                 }
 
             }
+
             if (bottomIntXpos > pos.x - (half.x + paddingX) && bottomIntXpos < pos.x + (half.x + paddingX)) {
 
                 float tempX = bottomIntXpos;
@@ -216,6 +217,7 @@ public class AABB {
             System.out.println("started at: " + lineStart);
             System.out.println("ended at: " + returnVector);
             System.out.println("tried to go: " + offset);
+            System.out.println("offset: " + offset);
             System.out.println("start is on edge? " + edgeContainsPoint(lineStart,paddingX,paddingY) );
             System.out.println("count: " + count);
         }

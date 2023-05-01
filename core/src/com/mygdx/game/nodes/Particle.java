@@ -10,6 +10,7 @@ import com.mygdx.game.nodes.MovementNode;
 
 import java.util.ArrayList;
 
+import static com.badlogic.gdx.math.MathUtils.lerp;
 import static com.mygdx.game.helpers.utilities.MathUtils.moveTowardsNum;
 
 
@@ -43,7 +44,7 @@ public class Particle extends MovementNode {
     protected double lerpToColor; //changes the color to target color by this percent of the difference
     protected double moveToColor; //changes the color to target color by this number
 
-    private TextureEntity sprite;
+    protected TextureEntity sprite;
 
     public void ready(){
 
@@ -92,6 +93,8 @@ public class Particle extends MovementNode {
         this.moveToColor = moveToColor;
         this.bounce = bounce;
 
+
+
         return this;
 
     }
@@ -101,8 +104,9 @@ public class Particle extends MovementNode {
         lifeSpan -= delta;
         if (lifeSpan < 0) queueFree();
 
-        vel.scl((float) ((float) damping * 60 * delta));
-        vel.y -= gravity;
+        vel.set(lerp(vel.x, (float) 0, (float) (damping*60*delta)),lerp(vel.y, (float) 0, (float) (damping*60*delta)));
+
+        vel.y -= delta * gravity;
         vel.add((float) (accel.x * delta), (float) (accel.y * delta));
 
         rotation += rotationVel * delta;
@@ -120,7 +124,6 @@ public class Particle extends MovementNode {
             Vector2 newVel = moveAndSlide(tempVel,delta);
 
             if (!MathUtils.isEqual(newVel.x,tempVel.x, 0.01F)){
-                System.out.println("hey");
                 vel.x *= -bounce;
             }
             if (!MathUtils.isEqual(newVel.y,tempVel.y, 0.01F)){

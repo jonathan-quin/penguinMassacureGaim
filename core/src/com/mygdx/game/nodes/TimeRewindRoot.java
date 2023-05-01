@@ -204,21 +204,24 @@ public class TimeRewindRoot extends Root{
 
         for (ArrayList<Object> currentNode : lastFrame) {
 
-            Object obj = ObjectPool.get((Class) currentNode.get(0));
+            Object obj = ObjectPool.get((Class) ((ArrayList) currentNode.get(0)).get(0));
 
             ((TimeRewindInterface) obj).init();
 
-            add(obj);
+            ((Node)((ArrayList) currentNode.get(0)).get(1)).addChild((Node) obj);
+
+
 
             ((Node) obj).updateGlobalPosition();
 
             ((TimeRewindInterface) obj).load(currentNode.toArray());
 
             if (!holding){
-                for (int i = currentNode.size() - 1; i > 0; i--) {
-                    ObjectPool.removeBackwards(currentNode.get(i));
-                }
+//                for (int i = currentNode.size() - 1; i > 0; i--) {
+//                    ObjectPool.removeBackwards(currentNode.get(i));
+//                }
                 ObjectPool.removeBackwards(currentNode);
+                ObjectPool.removeBackwards(currentNode.get(0));
             }
 
         }
@@ -246,11 +249,11 @@ public class TimeRewindRoot extends Root{
 
         for (ArrayList<Object> currentNode : currentFrame) {
 
-            Object obj = ObjectPool.get((Class) currentNode.get(0));
+            Object obj = ObjectPool.get((Class) ((ArrayList) currentNode.get(0)).get(0));
 
             ((TimeRewindInterface) obj).init();
 
-            add(obj);
+            ((Node)((ArrayList) currentNode.get(0)).get(1)).addChild((Node) obj);
 
             ((Node) obj).updateGlobalPosition();
 
@@ -271,9 +274,11 @@ public class TimeRewindRoot extends Root{
 
             for (ArrayList<Object> currentNode : frame) {
 
-                for (int i = currentNode.size() - 1; i > 0; i--) {
-                    ObjectPool.removeBackwards(currentNode.get(i));
-                }
+//                for (int i = currentNode.size() - 1; i > 0; i--) {
+//                    ObjectPool.removeBackwards(currentNode.get(i));
+//                }
+
+                ObjectPool.removeBackwards(currentNode.get(0));
 
                 ObjectPool.removeBackwards(currentNode);
 

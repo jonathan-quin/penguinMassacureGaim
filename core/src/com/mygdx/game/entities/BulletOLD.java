@@ -84,8 +84,8 @@ public class BulletOLD extends MovementNode implements TimeRewindInterface {
         returnArr.clear();
 
         returnArr.add(this.getClass());
-        returnArr.add(ObjectPool.get(Vector2.class).set(position));
-        returnArr.add(ObjectPool.get(Vector2.class).set(vel));
+        returnArr.add(new Vector2(position));
+        returnArr.add(new Vector2(vel));
 
         return returnArr;
     }

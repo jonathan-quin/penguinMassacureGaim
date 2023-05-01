@@ -162,7 +162,9 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
 
         if (myRoot instanceof TimeRewindRoot && ((TimeRewindRoot) myRoot).isSaveFrame()) {
-            bulletHolder.addChild(ObjectPool.get(TimeParticle.class).init(ObjectPool.getGarbage(Vector2.class).set(0, 0), toRadians(2) * 60, rotation, 2, 0, ObjectPool.getGarbage(Vector2.class).set(0, 0), 0.1, 70, 0.8, true, Color.WHITE, Color.BLUE, 0.2, 0.2));
+            //bulletHolder.addChild(ObjectPool.get(TimeParticle.class).init(ObjectPool.getGarbage(Vector2.class).set(0, 0), toRadians(2) * 60, rotation, 2, 0, ObjectPool.getGarbage(Vector2.class).set(0, 0), 0.1, 70, 0.8, true, Color.WHITE, Color.BLUE, 0.2, 0.2));
+            bulletHolder.addChild(ObjectPool.get(TimeParticle.class).init(ObjectPool.getGarbage(Vector2.class).set(vel).scl(-1), toRadians(2) * 60, rotation, 1, 400, ObjectPool.getGarbage(Vector2.class).set(0, 0), 0.1, 0, 0.8, true, Color.WHITE, Color.RED, 3, 0.2));
+
             ((Particle) bulletHolder.lastChild()).setMaskLayers(getMaskLayers(LayerNames.WALLS), getMaskLayers());
             ((Particle) bulletHolder.lastChild()).position.set(position);
         }
@@ -290,9 +292,13 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
         returnArr.clear();
 
-        returnArr.add(this.getClass()); //0
-        returnArr.add(ObjectPool.get(Vector2.class).set(position)); //1
-        returnArr.add(ObjectPool.get(Vector2.class).set(vel)); //2
+        returnArr.add((ArrayList<Object>) ObjectPool.get(ArrayList.class)); //0
+        ((ArrayList)returnArr.get(0)).clear();
+        ((ArrayList)returnArr.get(0)).add(this.getClass());
+        ((ArrayList)returnArr.get(0)).add(this.getParent());
+
+        returnArr.add(new Vector2(position)); //1
+        returnArr.add(new Vector2(vel)); //2
         returnArr.add(rotation); //3
         returnArr.add(health); //4
 
