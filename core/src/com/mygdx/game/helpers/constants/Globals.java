@@ -14,7 +14,7 @@ public class Globals {
     public static OrthographicCamera camera;
     public static MapRenderer mapRenderer;
 
-    public static boolean showCollision = true;
+    public static boolean showCollision = false;
     public static boolean aiIgnore = false;
 
     public static boolean sceneJustChanged = true;

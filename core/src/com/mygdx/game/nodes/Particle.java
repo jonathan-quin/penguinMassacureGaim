@@ -101,6 +101,8 @@ public class Particle extends MovementNode {
 
     public void update(double delta){
 
+        updateGlobalPosition();
+
         System.out.println(vel + " " + this);
 
         lifeSpan -= delta;
@@ -136,7 +138,7 @@ public class Particle extends MovementNode {
             }
 
         } else {
-            position.add(tempVel);
+            position.add(tempVel.scl((float) delta));
         }
 
         color.lerp(targetColor, (float) ((float) lerpToColor * delta));
