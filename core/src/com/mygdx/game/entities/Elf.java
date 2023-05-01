@@ -9,10 +9,9 @@ import com.mygdx.game.helpers.constants.Globals;
 import com.mygdx.game.helpers.constants.LayerNames;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TextureHolder;
-import com.mygdx.game.helpers.utilities.MathUtils;
+import com.mygdx.game.helpers.utilities.MathUtilsCustom;
 import com.mygdx.game.helpers.utilities.ParticleMaker;
 import com.mygdx.game.helpers.utilities.TimeRewindInterface;
-import com.mygdx.game.helpers.utilities.Utils;
 import com.mygdx.game.nodes.*;
 
 import java.util.ArrayList;
@@ -160,6 +159,7 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         ((ArrayList)returnArr.get(0)).clear();
         ((ArrayList)returnArr.get(0)).add(this.getClass());
         ((ArrayList)returnArr.get(0)).add(this.getParent());
+        ((ArrayList)returnArr.get(0)).add(lastSave);
 
         returnArr.add(ObjectPool.get(Vector2.class).set(position)); //1
         returnArr.add(ObjectPool.get(Vector2.class).set(vel)); //2
@@ -177,7 +177,14 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         returnArr.add((Double) myGun.rotation); //9
         returnArr.add((Integer)health); // 10
 
+        lastSave = returnArr;
         return returnArr;
+    }
+
+    ArrayList<Object> lastSave = null;
+    @Override
+    public void setLastSave(ArrayList<Object> save) {
+        lastSave = save;
     }
 
     @Override
@@ -344,7 +351,7 @@ public class Elf extends MovementNode implements TimeRewindInterface {
                     state = State.CHASE;
                 }
 
-                if (MathUtils.isEqualApprox(vel.x,0,0.1) || MathUtils.isEqualApprox(globalPosition.x,lastPlayerPos.x,4)){
+                if (MathUtilsCustom.isEqualApprox(vel.x,0,0.1) || MathUtilsCustom.isEqualApprox(globalPosition.x,lastPlayerPos.x,4)){
                     state = State.WANDER;
                 }
 
@@ -745,8 +752,10 @@ public class Elf extends MovementNode implements TimeRewindInterface {
     }
 
     public void hit(Vector2 bulletVel, float damage) {
-        health -= damage;
 
+        if (health <= 0) return;
+
+        health -= damage;
         if (health <= 0){
             die(bulletVel);
         }

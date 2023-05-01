@@ -87,11 +87,19 @@ public class TimeVortex extends StaticNode implements TimeRewindInterface {
         ((ArrayList)returnArr.get(0)).clear();
         ((ArrayList)returnArr.get(0)).add(this.getClass());
         ((ArrayList)returnArr.get(0)).add(this.getParent());
+        ((ArrayList)returnArr.get(0)).add(lastSave);
 
         returnArr.add(ObjectPool.get(Vector2.class).set(position)); //1
         returnArr.add(ObjectPool.get(Vector2.class).set(vel)); //2
 
+        lastSave = returnArr;
         return returnArr;
+    }
+
+    ArrayList<Object> lastSave = null;
+    @Override
+    public void setLastSave(ArrayList<Object> save) {
+        lastSave = save;
     }
 
     @Override

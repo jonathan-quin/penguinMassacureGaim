@@ -57,6 +57,7 @@ public class TimeParticle extends Particle implements TimeRewindInterface {
         ((ArrayList)a.get(0)).clear();
         ((ArrayList)a.get(0)).add(this.getClass());
         ((ArrayList)a.get(0)).add(this.getParent());
+        ((ArrayList)a.get(0)).add(lastSave);
 
         a.add(new Vector2(position)); //1
         a.add(new Vector2(vel)); //2
@@ -81,6 +82,7 @@ public class TimeParticle extends Particle implements TimeRewindInterface {
             a.add(null);
         }
 
+        lastSave = a;
         return a;
     }
 
@@ -109,5 +111,11 @@ public class TimeParticle extends Particle implements TimeRewindInterface {
         sprite.setRotation(rotation);
 
         return null;
+    }
+
+    ArrayList<Object> lastSave = null;
+    @Override
+    public void setLastSave(ArrayList<Object> save) {
+        lastSave = save;
     }
 }

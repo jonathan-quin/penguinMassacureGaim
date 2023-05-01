@@ -2,9 +2,12 @@ package com.mygdx.game.nodes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.helpers.constants.Globals;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.SceneHandler;
+import com.mygdx.game.helpers.utilities.MathUtilsCustom;
 import com.mygdx.game.helpers.utilities.TimeRewindInterface;
 
 import java.lang.reflect.Field;
@@ -12,6 +15,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
+import static com.badlogic.gdx.math.MathUtils.lerp;
 import static com.mygdx.game.helpers.constants.Globals.gameSpeed;
 import static com.mygdx.game.helpers.constants.Globals.sceneJustChanged;
 
@@ -63,9 +67,9 @@ public class TimeRewindRoot extends Root{
 
             if (!nextGameSpeedChanged){
                 if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-                    Globals.gameSpeed = 0.1;
+                    Globals.gameSpeed = lerp((float) gameSpeed,0.1f,0.2f);
                 } else {
-                    Globals.gameSpeed = 1;
+                    Globals.gameSpeed = lerp((float) gameSpeed,1f,0.3f);
                 }
             }
             else{
@@ -116,6 +120,8 @@ public class TimeRewindRoot extends Root{
                 if (time < lastSaveTime - 1f / 60f + 1f / 600f) {
                     loadNodes();
                     lastSaveTime = time;
+                }else{
+                    playBack(time - 1);
                 }
 
 
@@ -210,7 +216,7 @@ public class TimeRewindRoot extends Root{
 
             ((Node)((ArrayList) currentNode.get(0)).get(1)).addChild((Node) obj);
 
-
+            ((TimeRewindInterface) obj).setLastSave((ArrayList<Object>) ((ArrayList) currentNode.get(0)).get(2));
 
             ((Node) obj).updateGlobalPosition();
 
@@ -257,7 +263,72 @@ public class TimeRewindRoot extends Root{
 
             ((Node) obj).updateGlobalPosition();
 
+
+
             ((TimeRewindInterface) obj).load(currentNode.toArray());
+
+        }
+
+
+    }
+
+    public void playBack(double time){
+
+        if ((int) time == past.size()){
+            playBack((int)time);
+            return;
+        }
+
+        for (Node n : groups.getNodesInGroup("rewind")) {
+
+            n.free();
+        }
+
+        ArrayList<ArrayList<Object>> currentFrame;
+        ArrayList<ArrayList<Object>> futureFrame;
+
+
+
+        currentFrame = past.get((int) time + 1);
+
+        float timeAfter = (float) (time - ((int) time));
+
+
+        for (ArrayList<Object> currentNode : currentFrame) {
+
+            Object obj = ObjectPool.get((Class) ((ArrayList) currentNode.get(0)).get(0));
+
+            ((TimeRewindInterface) obj).init();
+
+            ((Node)((ArrayList) currentNode.get(0)).get(1)).addChild((Node) obj);
+
+            ((Node) obj).updateGlobalPosition();
+
+
+
+
+            Object[] currentArray = currentNode.toArray();
+            Object[] beforeArray =  ((ArrayList)((ArrayList) currentNode.get(0)).get(2)).toArray();
+
+            Object[] newArray = new Object[currentArray.length];
+
+            for (int i = 0; i < currentArray.length; i++){
+                newArray[i] = beforeArray[i];
+
+                if (beforeArray[i] instanceof Double){
+                    newArray[i] = MathUtilsCustom.lerpD((Double) beforeArray[i], (Double) currentArray[i],timeAfter);
+                }
+                else if (beforeArray[i] instanceof Float){
+                    newArray[i] = lerp((Float) beforeArray[i], (Float) currentArray[i],timeAfter);
+                }
+                else if (beforeArray[i] instanceof Vector2){
+                    ((Vector2) newArray[i]).x = lerp(((Vector2) beforeArray[i]).x, ((Vector2) currentArray[i]).x,timeAfter);
+                    ((Vector2) newArray[i]).y = lerp(((Vector2) beforeArray[i]).y, ((Vector2) currentArray[i]).y,timeAfter);
+                }
+
+            }
+
+            ((TimeRewindInterface) obj).load(newArray);
 
         }
 

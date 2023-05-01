@@ -48,7 +48,7 @@ public class ParticleMaker {
                             0,
                             0,
                             0.8,
-                            false,
+                            true,
                             tempColor,
                             Color.RED,
                             + Math.random(),
@@ -60,9 +60,11 @@ public class ParticleMaker {
                     int xFlip = sprite.getFlipX() ? 1 : -1;
                     part.position.add(texture.getWidth() / 2 * xFlip, texture.getHeight() / 2);
                     part.position.sub(x  * xFlip, y);
-                    //part.setMaskLayers(ColliderObject.getMaskLayers(LayerNames.WALLS),ColliderObject.getMaskLayers());
+                    part.setMaskLayers(ColliderObject.getMaskLayers(LayerNames.WALLS),ColliderObject.getMaskLayers());
 
-                    System.out.println(part.vel);
+                    part.paint = (Math.random()> 0.5);
+
+                    //System.out.println(part.vel);
                 }
 
 

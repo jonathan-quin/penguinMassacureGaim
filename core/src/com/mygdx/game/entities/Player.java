@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
 import com.mygdx.game.entities.guns.penguinGuns.PenguinGun;
 import com.mygdx.game.helpers.constants.*;
-import com.mygdx.game.helpers.utilities.MathUtils;
+import com.mygdx.game.helpers.utilities.MathUtilsCustom;
 import com.mygdx.game.helpers.utilities.TimeRewindInterface;
 import com.mygdx.game.helpers.utilities.Utils;
 import com.mygdx.game.nodes.*;
@@ -41,6 +41,8 @@ public class Player extends MovementNode implements TimeRewindInterface {
     private Raycast ray;
 
     boolean dead = false;
+
+    public ArrayList<Object> lastSave = null;
 
     public PenguinGun getGun() {
         return myGun;
@@ -138,6 +140,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
                         for (GenericBullet bullet : myGun.shoot()) {
                             bulletHolder.addChild(bullet);
                         }
+                        vel.add(ObjectPool.get(Vector2.class).set(-1,0).rotateRad((float) myGun.rotation).scl((float) myGun.recoil));
                     }
                 }
             }
@@ -246,8 +249,8 @@ public class Player extends MovementNode implements TimeRewindInterface {
         }
         else{
             rotation = rotation % 360;
-            rotation += MathUtils.differenceBetweenAngles(Math.toRadians(rotation),0) * 30 * 60 * delta;
-            rotation = MathUtils.moveTowardsZero(rotation,0.1);
+            rotation += MathUtilsCustom.differenceBetweenAngles(Math.toRadians(rotation),0) * 30 * 60 * delta;
+            rotation = MathUtilsCustom.moveTowardsZero(rotation,0.1);
 
         }
 
@@ -296,6 +299,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
         ((ArrayList)returnArr.get(0)).clear();
         ((ArrayList)returnArr.get(0)).add(this.getClass());
         ((ArrayList)returnArr.get(0)).add(this.getParent());
+        ((ArrayList)returnArr.get(0)).add(lastSave);
 
         returnArr.add(new Vector2(position)); //1
         returnArr.add(new Vector2(vel)); //2
@@ -319,6 +323,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
             returnArr.add(null);//10
         }
 
+        lastSave = returnArr;
         return returnArr;
     }
 
@@ -353,6 +358,11 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
 
         return null;
+    }
+
+    @Override
+    public void setLastSave(ArrayList<Object> save) {
+        lastSave = save;
     }
 
     @Override

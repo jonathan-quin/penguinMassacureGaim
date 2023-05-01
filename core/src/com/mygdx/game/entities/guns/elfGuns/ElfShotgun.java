@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.Elf;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
 import com.mygdx.game.entities.guns.floorGuns.FloorRevolver;
+import com.mygdx.game.entities.guns.floorGuns.FloorShotgun;
 import com.mygdx.game.helpers.constants.ObjectPool;
 
 public class ElfShotgun extends ElfGun {
@@ -21,13 +22,13 @@ public class ElfShotgun extends ElfGun {
         aimSpeed = 0.04;
         Math.toDegrees(1.5);
 
-        tex = new Texture("penguinForNow.png");
-        texOffset = new Vector2(0,0);
+        tex = new Texture("edg32Shotgun.png");
+        texOffset = new Vector2(10,0);
 
         timeUntilNextShot = 0;
         fireRate = 0.5;
 
-        floorClass = FloorRevolver.class;
+        floorClass = FloorShotgun.class;
     }
 
     protected GenericBullet[] getBullets(Vector2 pos) {

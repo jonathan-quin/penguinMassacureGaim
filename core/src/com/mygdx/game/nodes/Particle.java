@@ -3,15 +3,11 @@ package com.mygdx.game.nodes;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.entities.Paint;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TextureHolder;
-import com.mygdx.game.helpers.utilities.Utils;
-import com.mygdx.game.nodes.MovementNode;
 
-import java.util.ArrayList;
-
-import static com.badlogic.gdx.math.MathUtils.lerp;
-import static com.mygdx.game.helpers.utilities.MathUtils.moveTowardsNum;
+import static com.mygdx.game.helpers.utilities.MathUtilsCustom.moveTowardsNum;
 
 
 public class Particle extends MovementNode {
@@ -44,6 +40,10 @@ public class Particle extends MovementNode {
     protected double lerpToColor; //changes the color to target color by this percent of the difference
     protected double moveToColor; //changes the color to target color by this number
 
+    public boolean paint = false;
+
+    protected boolean firstFrame = true;
+
     protected TextureEntity sprite;
 
     public void ready(){
@@ -52,7 +52,7 @@ public class Particle extends MovementNode {
 
         sprite = (TextureEntity) lastChild();
 
-        addChild(ObjectPool.get(CollisionShape.class).init(0.5F,0.5f,0,0));
+        addChild(ObjectPool.get(CollisionShape.class).init(0.5f,0.5f,0,0));
 
         addToGroup("rewind");
 
@@ -93,7 +93,8 @@ public class Particle extends MovementNode {
         this.moveToColor = moveToColor;
         this.bounce = bounce;
 
-
+        firstFrame = true;
+        paint = false;
 
         return this;
 
@@ -103,7 +104,7 @@ public class Particle extends MovementNode {
 
         updateGlobalPosition();
 
-        System.out.println(vel + " " + this);
+        //System.out.println(vel + " " + this);
 
         lifeSpan -= delta;
         if (lifeSpan < 0) queueFree();
@@ -122,23 +123,38 @@ public class Particle extends MovementNode {
 
         tempVel.add(forwardVel);
 
-        if (collide){
+        if (collide ){
 
-
+            lastCollided = false;
+            lastCollider = null;
 
             Vector2 newVel = moveAndSlide(tempVel,delta);
 
-            if (lastCollided){
-                if (!MathUtils.isEqual(newVel.x, tempVel.x, 0.001F)) {
+            if (lastCollided && !newVel.epsilonEquals(vel, 0.1F)){
+
+
+
+                if (paint){
+                    getParent().addChild(ObjectPool.get(Paint.class).init(position.x,position.y,targetColor));
+                    System.out.println("old " +tempVel);
+                    System.out.println("new " +newVel);
+                    System.out.println(testMove(tempVel));
+                    queueFree();
+                }
+
+                firstFrame = false;
+
+                if (!MathUtils.isEqual(newVel.x, tempVel.x, 0.01F)) {
                     vel.x *= -bounce;
                 }
-                if (!MathUtils.isEqual(newVel.y, tempVel.y, 0.001F)) {
+                if (!MathUtils.isEqual(newVel.y, tempVel.y, 0.01F)) {
                     vel.y *= -bounce;
                 }
             }
 
         } else {
             position.add(tempVel.scl((float) delta));
+            firstFrame = false;
         }
 
         color.lerp(targetColor, (float) ((float) lerpToColor * delta));

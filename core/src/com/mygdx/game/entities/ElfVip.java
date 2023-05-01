@@ -4,15 +4,12 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
 import com.mygdx.game.entities.guns.elfGuns.ElfGun;
-import com.mygdx.game.helpers.constants.Globals;
 import com.mygdx.game.helpers.constants.LayerNames;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TextureHolder;
-import com.mygdx.game.helpers.utilities.MathUtils;
+import com.mygdx.game.helpers.utilities.MathUtilsCustom;
 import com.mygdx.game.helpers.utilities.TimeRewindInterface;
 import com.mygdx.game.nodes.*;
-
-import java.util.ArrayList;
 
 import static com.badlogic.gdx.math.MathUtils.lerp;
 import static java.lang.Math.abs;
@@ -231,7 +228,7 @@ public class ElfVip extends Elf implements TimeRewindInterface {
                     state = Elf.State.CHASE;
                 }
 
-                if (MathUtils.isEqualApprox(vel.x,0,0.1) || MathUtils.isEqualApprox(globalPosition.x,lastPlayerPos.x,4)){
+                if (MathUtilsCustom.isEqualApprox(vel.x,0,0.1) || MathUtilsCustom.isEqualApprox(globalPosition.x,lastPlayerPos.x,4)){
                     state = Elf.State.WANDER;
                 }
 

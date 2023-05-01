@@ -106,4 +106,9 @@ public class BulletOLD extends MovementNode implements TimeRewindInterface {
         updateGlobalPosition();
         return null;
     }
+
+    @Override
+    public void setLastSave(ArrayList<Object> save) {
+
+    }
 }

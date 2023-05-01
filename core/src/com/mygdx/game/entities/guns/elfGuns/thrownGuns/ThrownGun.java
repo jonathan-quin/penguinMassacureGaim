@@ -121,11 +121,14 @@ public class ThrownGun extends MovementNode implements TimeRewindInterface {
         ((ArrayList)returnArr.get(0)).clear();
         ((ArrayList)returnArr.get(0)).add(this.getClass());
         ((ArrayList)returnArr.get(0)).add(this.getParent());
+        ((ArrayList)returnArr.get(0)).add(lastSave);
 
         returnArr.add(new Vector2(position));
         returnArr.add(new Vector2(vel));
         returnArr.add(damage);
+        returnArr.add(deadFrames);
 
+        lastSave = returnArr;
         return returnArr;
     }
 
@@ -141,9 +144,18 @@ public class ThrownGun extends MovementNode implements TimeRewindInterface {
         this.position.set((Vector2) vars[1]);
         this.vel.set((Vector2) vars[2]);
         this.damage = ((float) vars[3]);
+        this.deadFrames = (double) vars[4];
 
         sprite.setRotation(vel.angleDeg());
         updateGlobalPosition();
+
         return null;
     }
+
+    ArrayList<Object> lastSave = null;
+    @Override
+    public void setLastSave(ArrayList<Object> save) {
+        lastSave = save;
+    }
+
 }
