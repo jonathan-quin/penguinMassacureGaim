@@ -62,6 +62,8 @@ public class FloorGun extends MovementNode implements TimeRewindInterface {
 
         vel.set(velX, velY);
 
+        lastSave = null;
+
 
         return this;
     }

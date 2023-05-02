@@ -33,6 +33,7 @@ public class Paint extends Node implements TimeRewindInterface {
     public Paint init(float x, float y, Color color){
         init(x,y);
         myColor.set(color);
+        lastSave = null;
 
         return this;
     }
@@ -59,14 +60,16 @@ public class Paint extends Node implements TimeRewindInterface {
     @Override
     public <T> T init() {
         init(0,0,Color.WHITE);
+
+        lastSave = null;
         return null;
     }
 
     @Override
     public <T> T load(Object... vars) {
         position.set((Vector2) vars[1]);
-
         myColor.set((Color) vars[2]);
+
         sprite.setMyColor(myColor);
         return null;
     }

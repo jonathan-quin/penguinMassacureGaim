@@ -53,6 +53,7 @@ public class PenguinGun extends Node {
     }
 
     public void update(double delta){
+
 //        aimAt(globalPosition, Utils.getGlobalMousePosition());
 //
 //        if (canShoot() && Gdx.input.isTouched()) {

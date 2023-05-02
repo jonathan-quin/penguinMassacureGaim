@@ -40,7 +40,7 @@ public class TimeParticle extends Particle implements TimeRewindInterface {
         this.moveToColor = moveToColor;
         this.bounce = bounce;
 
-
+        lastSave = null;
 
         return this;
 

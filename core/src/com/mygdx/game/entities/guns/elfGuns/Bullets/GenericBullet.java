@@ -3,9 +3,11 @@ package com.mygdx.game.entities.guns.elfGuns.Bullets;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.Elf;
 import com.mygdx.game.entities.Player;
+import com.mygdx.game.entities.TimeParticle;
 import com.mygdx.game.helpers.constants.LayerNames;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TextureHolder;
+import com.mygdx.game.helpers.utilities.ParticleMaker;
 import com.mygdx.game.helpers.utilities.TimeRewindInterface;
 import com.mygdx.game.helpers.utilities.Utils;
 import com.mygdx.game.nodes.CollisionShape;
@@ -51,6 +53,8 @@ public class GenericBullet extends MovementNode implements TimeRewindInterface {
 
         this.damage = damage;
 
+        lastSave = null;
+
         return this;
     }
 
@@ -64,15 +68,15 @@ public class GenericBullet extends MovementNode implements TimeRewindInterface {
 
         if (lastCollided){
             if (lastCollider.isOnLayer(LayerNames.WALLS)){
-                queueFree();
+                die();
             }
             if (lastCollider.isOnLayer(LayerNames.PLAYER)){
                 ((Player) lastCollider).hit(vel,damage);
-                queueFree();
+                die();
             }
             if (lastCollider.isOnLayer(LayerNames.ELVES)){
                 ((Elf) lastCollider).hit(vel,damage);
-                queueFree();
+                die();
             }
         }
 
@@ -81,6 +85,14 @@ public class GenericBullet extends MovementNode implements TimeRewindInterface {
         }
 
     }
+
+    public void die(){
+        queueFree();
+        for (TimeParticle t : ParticleMaker.makeDisapearingParticles(sprite, vel)) {
+            getParent().addChild(t);
+        }
+    }
+
 
 
     public void free(){
@@ -119,6 +131,7 @@ public class GenericBullet extends MovementNode implements TimeRewindInterface {
     @Override
     public GenericBullet init() {
         init(0,0,0,0,0);
+        lastSave = null;
         return  this;
     }
 

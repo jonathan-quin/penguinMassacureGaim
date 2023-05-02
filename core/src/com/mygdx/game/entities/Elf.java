@@ -250,6 +250,8 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         health = maxHealth;
         vel.set(0,0);
 
+        lastSave = null;
+
         return this;
     }
 

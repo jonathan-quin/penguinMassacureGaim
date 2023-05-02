@@ -87,6 +87,12 @@ public class TimeRewindRoot extends Root{
             boolean shouldRewind = Gdx.input.isKeyPressed(Input.Keys.SPACE) && !sceneJustChanged;
 
             if (shouldRewind){
+
+//                if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+//                    trimPast();
+//
+//                };
+
                 nextGameSpeedChanged = false;
                 if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
                     Globals.gameSpeed = 0.1;
@@ -118,11 +124,17 @@ public class TimeRewindRoot extends Root{
 
                 time -= Gdx.graphics.getDeltaTime() * gameSpeed;
 
+                double distanceToNextFrame = (time - (lastSaveTime - 1f / 60f + 1f / 600f)) * 60;
+
+               // System.out.println(distanceToNextFrame);
+
                 if (time < lastSaveTime - 1f / 60f + 1f / 600f) {
-                    loadNodes();
+                    trimPast();
+                    playBack((past.size()-1) + 0);
+
                     lastSaveTime = time;
                 }else{
-                    playBack(time * 60 -2);
+                    playBack((past.size()-1) + distanceToNextFrame);
                 }
 
 
@@ -239,6 +251,35 @@ public class TimeRewindRoot extends Root{
 
     }
 
+    public void trimPast() {
+
+
+
+
+        ArrayList<ArrayList<Object>> lastFrame;
+
+        boolean holding =  past.size() <= 2;
+
+        if (!holding) {
+            lastFrame = past.remove(past.size() - 1);
+
+            for (ArrayList<Object> currentNode : lastFrame) {
+
+                ObjectPool.removeBackwards(currentNode);
+                ObjectPool.removeBackwards(currentNode.get(0));
+
+            }
+
+            ObjectPool.removeBackwards(lastFrame);
+        }
+
+
+
+
+
+
+    }
+
     public void playBack(int frame){
         for (Node n : groups.getNodesInGroup("rewind")) {
 
@@ -261,6 +302,7 @@ public class TimeRewindRoot extends Root{
             ((TimeRewindInterface) obj).init();
 
             ((Node)((ArrayList) currentNode.get(0)).get(1)).addChild((Node) obj);
+            ((TimeRewindInterface) obj).setLastSave((ArrayList<Object>) ((ArrayList) currentNode.get(0)).get(2));
 
             ((Node) obj).updateGlobalPosition();
 
@@ -278,11 +320,11 @@ public class TimeRewindRoot extends Root{
 
 
         if ((int) time == past.size()){
-            playBack((int)time);
+            playBack(past.size()-1);
             return;
         }
 
-        System.out.println("Time: " + time + " past: " + past.size());
+        //System.out.println("Time: " + time + " past: " + past.size());
 
         for (Node n : groups.getNodesInGroup("rewind")) {
 
@@ -293,39 +335,65 @@ public class TimeRewindRoot extends Root{
 
 
 
-        currentFrame = past.get((int) time + 1);
+        currentFrame = past.get((int) time);
 
         float timeAfter = (float) (time - ((int) time));
         System.out.println(timeAfter);
 
         for (ArrayList<Object> currentNode : currentFrame) {
 
+            ArrayList<Object> getPast =  ((ArrayList)((ArrayList) currentNode.get(0)).get(2));
+
+//            if (getPast == null){
+//                continue;
+//            }
+
             Object obj = ObjectPool.get((Class) ((ArrayList) currentNode.get(0)).get(0));
 
             ((TimeRewindInterface) obj).init();
 
             ((Node)((ArrayList) currentNode.get(0)).get(1)).addChild((Node) obj);
+            ((TimeRewindInterface) obj).setLastSave((ArrayList<Object>) ((ArrayList) currentNode.get(0)).get(2));
 
             ((Node) obj).updateGlobalPosition();
 
-
+            if (getPast == null){
+                ((TimeRewindInterface) obj).load(currentNode.toArray());
+                continue;
+            }
 
 
             Object[] currentArray = currentNode.toArray();
-            Object[] beforeArray =  ((ArrayList)((ArrayList) currentNode.get(0)).get(2)).toArray();
 
-            Object[] newArray = new Object[currentArray.length];
+            Object[] beforeArray =  getPast.toArray();;
 
-            for (int i = 0; i < currentArray.length; i++){
+//            if (beforeArray.length != currentArray.length){
+//                System.out.println("THEY'RE NOT EQUAL");
+//                for (Object i : beforeArray){
+//                    System.out.println(i);
+//                }
+//                System.out.println();
+//                for (Object i : currentArray){
+//                    System.out.println(i);
+//                }
+//            }
+
+            Object[] newArray = new Object[beforeArray.length];
+
+            for (int i = 0; i < beforeArray.length; i++){
                 newArray[i] = beforeArray[i];
 
                 if (beforeArray[i] instanceof Double){
+                    if (currentArray[i] != null)
                     newArray[i] = MathUtilsCustom.lerpD((Double) beforeArray[i], (Double) currentArray[i],timeAfter);
                 }
                 else if (beforeArray[i] instanceof Float){
+                    if (currentArray[i] != null)
                     newArray[i] = lerp((Float) beforeArray[i], (Float) currentArray[i],timeAfter);
                 }
                 else if (beforeArray[i] instanceof Vector2){
+                    if (currentArray[i] != null)
+                    newArray[i] = new Vector2(0,0);
                     ((Vector2) newArray[i]).x = lerp(((Vector2) beforeArray[i]).x, ((Vector2) currentArray[i]).x,timeAfter);
                     ((Vector2) newArray[i]).y = lerp(((Vector2) beforeArray[i]).y, ((Vector2) currentArray[i]).y,timeAfter);
                 }

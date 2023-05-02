@@ -4,10 +4,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.Elf;
 import com.mygdx.game.entities.Player;
+import com.mygdx.game.entities.TimeParticle;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
 import com.mygdx.game.helpers.constants.LayerNames;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TextureHolder;
+import com.mygdx.game.helpers.utilities.ParticleMaker;
 import com.mygdx.game.helpers.utilities.TimeRewindInterface;
 import com.mygdx.game.helpers.utilities.Utils;
 import com.mygdx.game.nodes.CollisionShape;
@@ -61,6 +63,8 @@ public class ThrownGun extends MovementNode implements TimeRewindInterface {
 
         deadFrames = maxDeadFrames;
 
+        lastSave = null;
+
         return this;
     }
 
@@ -82,25 +86,34 @@ public class ThrownGun extends MovementNode implements TimeRewindInterface {
 
         sprite.setRotation(vel.angleDeg());
 
-        if (deadFrames >= -0.1)
+        if (deadFrames >= 0)
         deadFrames -= delta;
 
-        if (lastCollided && deadFrames < 0) {
+        if (lastCollided ) {
             if (lastCollider.isOnLayer(LayerNames.WALLS)) {
-                queueFree();
+                die();
             }
-            if (lastCollider.isOnLayer(LayerNames.PLAYER)) {
+            if (lastCollider.isOnLayer(LayerNames.PLAYER) && deadFrames <= 0) {
                 ((Player) lastCollider).hit(vel, damage);
-                queueFree();
+                die();
             }
-            if (lastCollider.isOnLayer(LayerNames.ELVES)) {
+             if (lastCollider.isOnLayer(LayerNames.ELVES)) {
                 ((Elf) lastCollider).hit(vel, damage);
-                queueFree();
+                 die();
             }
+
+
         }
 
 
 
+    }
+
+    public void die(){
+        queueFree();
+        for (TimeParticle t : ParticleMaker.makeDisapearingParticles(sprite, vel)) {
+            getParent().addChild(t);
+        }
     }
 
 

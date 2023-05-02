@@ -6,9 +6,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
+import com.mygdx.game.entities.guns.floorGuns.FloorGun;
 import com.mygdx.game.entities.guns.penguinGuns.PenguinGun;
 import com.mygdx.game.helpers.constants.*;
 import com.mygdx.game.helpers.utilities.MathUtilsCustom;
+import com.mygdx.game.helpers.utilities.ParticleMaker;
 import com.mygdx.game.helpers.utilities.TimeRewindInterface;
 import com.mygdx.game.helpers.utilities.Utils;
 import com.mygdx.game.nodes.*;
@@ -26,7 +28,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
     private int health;
 
-    private final int maxHealth = 1000000000;
+    private final int maxHealth = 100;
 
     private final float JUMPFORCE = 240;
 
@@ -82,6 +84,8 @@ public class Player extends MovementNode implements TimeRewindInterface {
         dead = false;
 
         myGun = null;
+
+        lastSave = null;
 
         return this;
     }
@@ -193,13 +197,17 @@ public class Player extends MovementNode implements TimeRewindInterface {
         myGun.setRotation(rotation);
         myGun.ammoLeft = ammoLeft;
         myGun.timeUntilNextShot = timeUntilNextShot;
+        myGun.setFlip();
     }
 
     public void beDead(double delta){
         rotation = 90;
-        ((TextureEntity) getChild("sprite")).setRotation(rotation);
-        ((TextureEntity) getChild("sprite")).setFlip(false,false);
-        ((TextureEntity) getChild("sprite")).setMyColor(Color.RED);
+
+        ((TextureEntity) getChild("sprite")).setMyColor(new Color(0,0,0,0));
+
+        removeChild(myGun);
+        myGun = null;
+
         vel.x = lerp(vel.x,0,0.1f);
         vel.y -= GRAVITY * delta;
     }
@@ -323,6 +331,8 @@ public class Player extends MovementNode implements TimeRewindInterface {
             returnArr.add(null);//10
         }
 
+        returnArr.add(getChild("sprite",TextureEntity.class).getFlipY()); //11
+
         lastSave = returnArr;
         return returnArr;
     }
@@ -337,7 +347,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
         TextureEntity sprite = ((TextureEntity) getChild("sprite"));
 
-        sprite.setFlip((boolean) vars[5],false);
+        sprite.setFlip((boolean) vars[5],(boolean) vars[11]);
 
         if ((boolean) vars[5]) {
             sprite.setRotation(rotation);
@@ -375,12 +385,32 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
 
 
-    public void hit(Vector2 vel, float damage) {
-        health -= damage;
+    public void hit(Vector2 bulletVel, float damage) {
 
+        if (health <= 0) return;
+
+        health -= damage;
         if (health <= 0){
-            dead = true;
+            die(bulletVel);
         }
 
     }
+
+    public void die(Vector2 bulletVel) {
+
+        dead = true;
+        lastSave.set(6,true);
+        for (TimeParticle t : ParticleMaker.makeBloodyParticlesFromSprite(getChild("sprite",TextureEntity.class),bulletVel)){
+            bulletHolder.addChild(t);
+        }
+
+        if (myGun != null) {
+            for (TimeParticle t : ParticleMaker.makeDisapearingParticles(myGun.getChild("gunSprite", TextureEntity.class), bulletVel)) {
+                bulletHolder.addChild(t);
+            }
+        }
+
+    }
+
+
 }

@@ -7,6 +7,7 @@ import com.mygdx.game.entities.Paint;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TextureHolder;
 
+import static com.badlogic.gdx.math.MathUtils.lerp;
 import static com.mygdx.game.helpers.utilities.MathUtilsCustom.moveTowardsNum;
 
 
@@ -109,7 +110,7 @@ public class Particle extends MovementNode {
         lifeSpan -= delta;
         if (lifeSpan < 0) queueFree();
 
-        //vel.set(lerp(vel.x, (float) 0, (float) (damping*60*delta)),lerp(vel.y, (float) 0, (float) (damping*60*delta)));
+        vel.set(lerp(vel.x, (float) 0, (float) (damping*60*delta)),lerp(vel.y, (float) 0, (float) (damping*60*delta)));
 
         vel.y -= delta * gravity;
 
