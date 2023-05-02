@@ -47,7 +47,7 @@ public class GenericBullet extends MovementNode implements TimeRewindInterface {
 
     public GenericBullet init(float posX, float posY, float velX, float velY, float damage){
 
-        super.init(posX,posY,getMaskLayers(LayerNames.WALLS,LayerNames.ELVES,LayerNames.PLAYER),getMaskLayers());
+        super.init(posX,posY,getMaskLayers(LayerNames.WALLS,LayerNames.ELVES,LayerNames.PLAYER),getMaskLayers(LayerNames.BULLETS));
 
         vel.set(velX,velY);
 
@@ -72,6 +72,10 @@ public class GenericBullet extends MovementNode implements TimeRewindInterface {
             }
             if (lastCollider.isOnLayer(LayerNames.PLAYER)){
                 ((Player) lastCollider).hit(vel,damage);
+                die();
+            }
+            if (lastCollider.isOnLayer(LayerNames.ELVES)){
+                ((Elf) lastCollider).hit(vel,damage);
                 die();
             }
             if (lastCollider.isOnLayer(LayerNames.ELVES)){

@@ -39,6 +39,8 @@ public class TimeRewindRoot extends Root{
     boolean playBack = false;
     int playBackFrame = 0;
 
+    int framesSinceLastRewind = 0;
+
     private int playBackStage = 0;
 
     public boolean isSaveFrame() {
@@ -62,6 +64,7 @@ public class TimeRewindRoot extends Root{
 
     public void update(){
 
+        framesSinceLastRewind++;
 
         if (!playBack){
 
@@ -70,8 +73,19 @@ public class TimeRewindRoot extends Root{
                 if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
                     Globals.gameSpeed = lerp((float) gameSpeed,0.1f,0.2f);
                 } else {
-                    Globals.gameSpeed = lerp((float) gameSpeed,1f,0.3f);
+                    if (framesSinceLastRewind < 60){
+                        Globals.gameSpeed = lerp((float) gameSpeed,1f,0.05f);
+                    }
+                    else{
+                        Globals.gameSpeed = lerp((float) gameSpeed,1f,0.3f);
+                    }
+
                 }
+
+                if (framesSinceLastRewind < 30){
+                    gameSpeed = 0.05;
+                }
+
             }
             else{
                 gameSpeed = nextGameSpeed;
@@ -84,21 +98,25 @@ public class TimeRewindRoot extends Root{
             }
 
 
-            boolean shouldRewind = Gdx.input.isKeyPressed(Input.Keys.SPACE) && !sceneJustChanged;
+            boolean shouldRewind = Gdx.input.isKeyPressed(Input.Keys.R) && !sceneJustChanged;
 
             if (shouldRewind){
-
+                framesSinceLastRewind = 0;
 //                if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
 //                    trimPast();
 //
 //                };
 
                 nextGameSpeedChanged = false;
+
+                //Globals.gameSpeed = lerp((float) gameSpeed,0.05f,0.05f);
+
                 if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
                     Globals.gameSpeed = 0.1;
                 } else {
                     Globals.gameSpeed = 1;
                 }
+
             }
 
             if (!shouldRewind) {
@@ -166,6 +184,7 @@ public class TimeRewindRoot extends Root{
                 case 2:
                 {
                     playBack(playBackFrame);
+                    //delete(playBackFrame);
                     playBackFrame++;
                     if (playBackFrame > past.size() - 1) {
                         SceneHandler.setCurrentScene(nextScene);
@@ -253,9 +272,6 @@ public class TimeRewindRoot extends Root{
 
     public void trimPast() {
 
-
-
-
         ArrayList<ArrayList<Object>> lastFrame;
 
         boolean holding =  past.size() <= 2;
@@ -273,9 +289,23 @@ public class TimeRewindRoot extends Root{
             ObjectPool.removeBackwards(lastFrame);
         }
 
+    }
+
+    public void delete(int frame) {
+
+        ArrayList<ArrayList<Object>> lastFrame;
 
 
+        lastFrame = past.remove(frame);
 
+        for (ArrayList<Object> currentNode : lastFrame) {
+
+            ObjectPool.remove(currentNode);
+            ObjectPool.remove(currentNode.get(0));
+
+        }
+
+        ObjectPool.remove(lastFrame);
 
 
     }
@@ -314,6 +344,8 @@ public class TimeRewindRoot extends Root{
 
 
     }
+
+
 
     public void playBack(double time){
 
@@ -381,7 +413,7 @@ public class TimeRewindRoot extends Root{
             Object[] newArray = new Object[beforeArray.length];
 
             for (int i = 0; i < beforeArray.length; i++){
-                newArray[i] = beforeArray[i];
+                newArray[i] = currentArray[i];
 
                 if (beforeArray[i] instanceof Double){
                     if (currentArray[i] != null)
@@ -396,6 +428,9 @@ public class TimeRewindRoot extends Root{
                     newArray[i] = new Vector2(0,0);
                     ((Vector2) newArray[i]).x = lerp(((Vector2) beforeArray[i]).x, ((Vector2) currentArray[i]).x,timeAfter);
                     ((Vector2) newArray[i]).y = lerp(((Vector2) beforeArray[i]).y, ((Vector2) currentArray[i]).y,timeAfter);
+                }
+                else if (beforeArray[i] instanceof Boolean){
+                    newArray[i] = currentArray[i];
                 }
 
             }
@@ -412,8 +447,9 @@ public class TimeRewindRoot extends Root{
         rootNode = null;
         gameSpeed = 1;
 
-        for (ArrayList<ArrayList<Object>> frame : past){
+        for (int i = past.size()-1; i > 0; i--){
 
+            ArrayList<ArrayList<Object>> frame = past.get(i);
 
             for (ArrayList<Object> currentNode : frame) {
 

@@ -90,7 +90,7 @@ public class PenguinGun extends Node {
 
         double difference = differenceBetweenAngles(rotation,getTargetRotation(globalPosition,target));
 
-        rotation = rotation + difference * aimSpeed * 60 * delta;
+        rotation = rotation + difference * aimSpeed ;//* 60 * delta;
 
         if (abs(difference)>fixedAimSpeed) {
             rotation = rotation + signum(difference) * fixedAimSpeed * 60 * delta;

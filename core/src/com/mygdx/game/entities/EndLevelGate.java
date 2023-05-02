@@ -62,6 +62,8 @@ public class EndLevelGate extends StaticNode {
     public void update(double delta) {
         super.update(delta);
 
+         updateVIPStatus();
+
         if (open)
             getFirstCollision(ObjectPool.getGarbage(Vector2.class).set(0,0));
 
@@ -98,6 +100,20 @@ public class EndLevelGate extends StaticNode {
 
 
         }
+
+    public void updateVIPStatus(){
+
+        if (!Globals.lobbyDoorsOpen.containsKey(doorName)){
+            open = getGroupHander().getNodesInGroup("VIP").size() == 0;
+            //System.out.println("found myself " + doorName);
+
+        }
+
+        getChild("open",TextureEntity.class).setVisible(open);
+        getChild("closed",TextureEntity.class).setVisible(!open);
+
+
+    }
 
 
 }

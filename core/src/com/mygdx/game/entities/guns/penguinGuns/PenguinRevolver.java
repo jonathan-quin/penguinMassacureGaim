@@ -21,7 +21,7 @@ public class PenguinRevolver extends PenguinGun{
         fixedAimSpeed = Math.toDegrees(6);
 
 
-        startingAmmo = 3;
+        startingAmmo = 300;
         ammoLeft = startingAmmo;
 
         recoil = 100;
@@ -30,7 +30,7 @@ public class PenguinRevolver extends PenguinGun{
         texOffset = new Vector2(3,-3.5f);
 
         timeUntilNextShot = 0;
-        fireRate = 1.2;
+        fireRate = 2;
 
         throwClass = ThrownRevolver.class;
 

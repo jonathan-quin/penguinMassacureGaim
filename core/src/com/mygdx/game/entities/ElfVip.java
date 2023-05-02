@@ -45,6 +45,7 @@ public class ElfVip extends Elf implements TimeRewindInterface {
         bulletHolder = getRootNode().getChild("bulletHolder");
 
         addToGroup("rewind");
+        addToGroup("VIP");
 
         addChild(ObjectPool.get(TextureEntity.class).init(TextureHolder.elfVipTexture,0f,4f,0,0));
         lastChild().setName("sprite");

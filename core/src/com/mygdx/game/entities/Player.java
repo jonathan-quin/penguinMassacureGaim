@@ -227,9 +227,9 @@ public class Player extends MovementNode implements TimeRewindInterface {
         if (Gdx.input.isKeyPressed(Input.Keys.A)) targetSpeed.x -= MAXSPEED;
         if (Gdx.input.isKeyPressed(Input.Keys.D)) targetSpeed.x += MAXSPEED;
 
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) vel.y -= 100;
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) vel.y -= 10;
 
-        if (Gdx.input.isKeyPressed(Input.Keys.W) && onFloor) vel.y = JUMPFORCE;
+        if ((Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.SPACE)) && onFloor) vel.y = JUMPFORCE;
 
 
         vel.x  = (float) lerp(vel.x,targetSpeed.x, ACCEL * delta);
@@ -246,7 +246,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
             rotation += rotationChange;
 
-            if (myGun != null){
+            if (false && myGun != null){
                 if (sprite.getFlipX()) {
                     myGun.rotation += toRadians(rotationChange);
                 } else {
@@ -399,7 +399,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
     public void die(Vector2 bulletVel) {
 
         dead = true;
-        lastSave.set(6,true);
+        //lastSave.set(6,true);
         for (TimeParticle t : ParticleMaker.makeBloodyParticlesFromSprite(getChild("sprite",TextureEntity.class),bulletVel)){
             bulletHolder.addChild(t);
         }
