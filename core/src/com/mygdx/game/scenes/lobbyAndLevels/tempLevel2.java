@@ -17,7 +17,7 @@ public class tempLevel2 extends TimeRewindRoot {
 
     public void open(){
 
-        rootNode = poolGet(Node.class);
+        rootNode = poolGet(Node.class).init(0,0);
         rootNode.setMyRoot(this);
 
         add(ObjectPool.get(Node.class).init(0,0));
