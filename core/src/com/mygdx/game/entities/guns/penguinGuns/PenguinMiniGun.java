@@ -43,7 +43,7 @@ public class PenguinMiniGun extends PenguinGun{
 
         float damage = 100;
         float bulletFromPlayer = 30;
-        float bulletSpeed = 350;
+        float bulletSpeed = 700;
 
         Vector2 newDir = ObjectPool.getGarbage(Vector2.class).set(bulletSpeed,0);
         newDir.rotateRad((float) rotation);

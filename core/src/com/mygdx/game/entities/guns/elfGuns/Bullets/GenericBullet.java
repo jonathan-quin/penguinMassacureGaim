@@ -55,7 +55,7 @@ public class GenericBullet extends MovementNode implements TimeRewindInterface {
         lastChild().setName("shape");
 
         addChild((ObjectPool.get(StaticNode.class)).init(0,0,getMaskLayers(LayerNames.BULLETS),getMaskLayers(LayerNames.BULLETS)));
-        lastChild().addChild((ObjectPool.get(CollisionShape.class)).init(5, 5, 0, 0));
+        lastChild().addChild((ObjectPool.get(CollisionShape.class)).init(3.5F, 3.5F, 0, 0));
         bulletDetect = (StaticNode) lastChild();
 
         addChild((ObjectPool.get(StaticNode.class)).init(0,0,getMaskLayers(LayerNames.THROWNGUNS),getMaskLayers()));

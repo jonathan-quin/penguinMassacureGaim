@@ -105,6 +105,7 @@ public class SceneHandler {
 
 
         camera.position.set(Globals.cameraOffset,camera.position.z);
+        System.out.println(Globals.cameraOffset);
         camera.update();
 
         batch.setProjectionMatrix(camera.combined);

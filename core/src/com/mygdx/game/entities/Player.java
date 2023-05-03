@@ -165,7 +165,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
         takeDebugInputs();
         Globals.cameraOffset.set(position);
-
+        //System.out.println(Globals.cameraOffset);
 
 
         if (false && myRoot instanceof TimeRewindRoot && ((TimeRewindRoot) myRoot).isSaveFrame()) {

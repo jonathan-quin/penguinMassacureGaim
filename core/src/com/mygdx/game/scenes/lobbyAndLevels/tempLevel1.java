@@ -19,7 +19,8 @@ public class tempLevel1 extends TimeRewindRoot {
         rootNode = poolGet(Node.class);
         rootNode.setMyRoot(this);
 
-
+        add(ObjectPool.get(Node.class).init(0,-380));
+        last().addChild(ObjectPool.get(ParalaxBackground.class).init(0,0, TextureHolder.georgeParalaxMountainsAndTrees));
 
         add(ObjectPool.get(Node.class).init(0,0));
 

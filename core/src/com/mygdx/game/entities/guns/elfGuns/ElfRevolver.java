@@ -32,7 +32,7 @@ public class ElfRevolver extends ElfGun {
 
         float damage = 100;
         float bulletFromPlayer = 17;
-        float bulletSpeed = 300;
+        float bulletSpeed = 500;
 
         Vector2 newDir = ObjectPool.getGarbage(Vector2.class).set(bulletSpeed,0);
         newDir.rotateRad((float) rotation);

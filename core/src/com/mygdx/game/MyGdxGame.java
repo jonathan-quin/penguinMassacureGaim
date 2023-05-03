@@ -40,8 +40,7 @@ public class MyGdxGame extends ApplicationAdapter {
 //		System.out.println("before");
 //		ObjectPool.printTotal();
 
-		ScreenUtils.clear(0.921f, 0.55f, 0.96f, 1);
-
+		ScreenUtils.clear(new Color(44f/256,232f/256,245f/256,1));
 
 
 		SceneHandler.update();

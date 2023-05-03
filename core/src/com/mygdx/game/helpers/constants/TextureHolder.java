@@ -34,4 +34,9 @@ public class TextureHolder {
     public static Texture whitePixel = new Texture("whitePixel.png");
 
 
+    public static Texture paralaxMountainsAndTrees = new Texture("paralaxBackGroundTrees.png");
+
+    public static Texture georgeParalaxMountainsAndTrees = new Texture("georgesMountainParalax.png");
+
+
 }

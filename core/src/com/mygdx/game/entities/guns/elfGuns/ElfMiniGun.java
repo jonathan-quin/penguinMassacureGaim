@@ -12,7 +12,7 @@ public class ElfMiniGun extends ElfGun {
     public void init(){
         moveSpeed = 100;
         distanceMin = 200;
-        distanceMax = 300;
+        distanceMax = 700;
 
         rotation = 0;
 

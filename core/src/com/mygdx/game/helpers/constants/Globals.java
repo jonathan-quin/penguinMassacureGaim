@@ -15,7 +15,7 @@ public class Globals {
     public static MapRenderer mapRenderer;
 
     public static boolean showCollision = false;
-    public static boolean aiIgnore = true;
+    public static boolean aiIgnore = false;
 
     public static boolean sceneJustChanged = true;
 

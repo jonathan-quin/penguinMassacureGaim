@@ -35,7 +35,7 @@ public class ElfShotgun extends ElfGun {
 
         float damage = 100;
         float bulletFromPlayer = 19;
-        float bulletSpeed = 250;
+        float bulletSpeed = 400;
 
         int numBullets = 5;
         int spread = 30;
