@@ -2,14 +2,14 @@ package com.mygdx.game.entities.guns.penguinGuns;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
+import com.mygdx.game.entities.guns.elfGuns.thrownGuns.ThrownMiniGun;
 import com.mygdx.game.entities.guns.elfGuns.thrownGuns.ThrownRevolver;
-import com.mygdx.game.entities.guns.elfGuns.thrownGuns.ThrownShotgun;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TextureHolder;
 
-public class PenguinShotgun extends PenguinGun{
+public class PenguinMiniGun extends PenguinGun{
 
-    public PenguinShotgun init(){
+    public PenguinMiniGun init(){
 
         super.init();
 
@@ -21,18 +21,18 @@ public class PenguinShotgun extends PenguinGun{
         fixedAimSpeed = Math.toDegrees(6);
 
 
-        startingAmmo = 2;
+        startingAmmo = 40;
         ammoLeft = startingAmmo;
 
-        recoil = 500;
+        recoil = 60;
 
-        tex = TextureHolder.shotgun;
-        texOffset = new Vector2(12,-3.5f);
+        tex = TextureHolder.miniGun;
+        texOffset = new Vector2(13,-0.5f);
 
         timeUntilNextShot = 0;
-        fireRate = 1.2;
+        fireRate = 20;
 
-        throwClass = ThrownShotgun.class;
+        throwClass = ThrownMiniGun.class;
 
         updateGlobalPosition();
 
@@ -42,11 +42,8 @@ public class PenguinShotgun extends PenguinGun{
     protected GenericBullet[] getBullets(Vector2 pos) {
 
         float damage = 100;
-        float bulletFromPlayer = 19;
-        float bulletSpeed = 250;
-
-        int numBullets = 5;
-        int spread = 30;
+        float bulletFromPlayer = 30;
+        float bulletSpeed = 350;
 
         Vector2 newDir = ObjectPool.getGarbage(Vector2.class).set(bulletSpeed,0);
         newDir.rotateRad((float) rotation);
@@ -54,19 +51,13 @@ public class PenguinShotgun extends PenguinGun{
         Vector2 startOffset = ObjectPool.getGarbage(Vector2.class).set(newDir).nor().scl(bulletFromPlayer).add(pos);
 
 
-        GenericBullet[] returnArr = new GenericBullet[numBullets];
+        GenericBullet[] returnArr = new GenericBullet[1];
 
-        newDir.rotateRad((float) (Math.toRadians(spread)/-2));
-
-        for (int i = 0; i < numBullets; i++){
-            returnArr[i] = ObjectPool.get( GenericBullet.class ).init(startOffset.x, startOffset.y,newDir.x, newDir.y, damage);
-            returnArr[i].deadFramesPlayer = true;
-            newDir.rotateRad((float) (Math.toRadians(spread)/numBullets));
-        }
-
+        returnArr[0] = ObjectPool.get( GenericBullet.class );
+        returnArr[0].init(startOffset.x, startOffset.y,newDir.x, newDir.y, damage);
+        returnArr[0].deadFramesPlayer = true;
 
         return returnArr;
     }
-
 
 }

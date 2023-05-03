@@ -3,6 +3,7 @@ package com.mygdx.game.scenes.lobbyAndLevels;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.*;
 import com.mygdx.game.entities.guns.elfGuns.ElfCrackShotgun;
+import com.mygdx.game.entities.guns.elfGuns.ElfMiniGun;
 import com.mygdx.game.entities.guns.elfGuns.ElfRevolver;
 import com.mygdx.game.entities.guns.elfGuns.ElfShotgun;
 import com.mygdx.game.entities.guns.penguinGuns.PenguinRevolver;
@@ -33,7 +34,7 @@ public class tempLevel1 extends TimeRewindRoot {
         add(poolGet(Elf.class).init(144.0f , -416.0f ,ObjectPool.get(ElfShotgun.class)));
         add(poolGet(Elf.class).init(96.0f , -576.0f ,ObjectPool.get(ElfRevolver.class)));
         add(poolGet(Elf.class).init(752.0f , -576.0f ,ObjectPool.get(ElfRevolver.class)));
-        add(poolGet(Elf.class).init(960.0f , -496.0f ,ObjectPool.get(ElfRevolver.class)));
+        add(poolGet(Elf.class).init(960.0f , -496.0f ,ObjectPool.get(ElfMiniGun.class)));
         add(poolGet(Elf.class).init(128.0f , -416.0f ,ObjectPool.get(ElfRevolver.class)));
         add(poolGet(Elf.class).init(400.0f , -496.0f ,ObjectPool.get(ElfRevolver.class)));
 

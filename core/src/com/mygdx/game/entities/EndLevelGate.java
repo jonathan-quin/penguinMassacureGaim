@@ -1,14 +1,18 @@
 package com.mygdx.game.entities;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.helpers.constants.*;
+import com.mygdx.game.helpers.utilities.TimeRewindInterface;
 import com.mygdx.game.nodes.CollisionShape;
 import com.mygdx.game.nodes.StaticNode;
 import com.mygdx.game.nodes.TextureEntity;
 import com.mygdx.game.nodes.TimeRewindRoot;
 
-public class EndLevelGate extends StaticNode {
+import java.util.ArrayList;
+
+public class EndLevelGate extends StaticNode implements TimeRewindInterface {
 
     public String nextScene = "";
 
@@ -49,13 +53,15 @@ public class EndLevelGate extends StaticNode {
 
         addChild( ObjectPool.get(CollisionShape.class).init(8,16,0,-16));
 
-
+        lastSave = null;
 
         return this;
     }
 
     public void ready(){
+
         addToGroup("icePlatform");
+        addToGroup("rewind");
     }
 
     @Override
@@ -113,6 +119,55 @@ public class EndLevelGate extends StaticNode {
         getChild("closed",TextureEntity.class).setVisible(!open);
 
 
+    }
+
+    @Override
+    public ArrayList<Object> save() {
+        ArrayList<Object> a = (ArrayList<Object>) ObjectPool.get(ArrayList.class);
+
+        a.clear();
+
+        a.add((ArrayList<Object>) ObjectPool.get(ArrayList.class)); //0
+        ((ArrayList)a.get(0)).clear();
+        ((ArrayList)a.get(0)).add(this.getClass());
+        ((ArrayList)a.get(0)).add(this.getParent());
+        ((ArrayList)a.get(0)).add(lastSave);
+
+        a.add(new Vector2(position)); //1
+        a.add(open);
+        a.add(nextScene);
+        a.add(openWhenEntered);
+
+        lastSave = a;
+        return a;
+    }
+
+    @Override
+    public <T> T init() {
+        init(0,0,"","","");
+
+        lastSave = null;
+        return null;
+    }
+
+    @Override
+    public <T> T load(Object... vars) {
+        position.set((Vector2) vars[1]);
+        open = (boolean) vars[2];
+
+        getChild("open",TextureEntity.class).setVisible(open);
+        getChild("closed",TextureEntity.class).setVisible(!open);
+
+        nextScene = (String) vars[3];
+        openWhenEntered = (String) vars[4];
+
+        return null;
+    }
+
+    ArrayList<Object> lastSave = null;
+    @Override
+    public void setLastSave(ArrayList<Object> save) {
+        lastSave = save;
     }
 
 

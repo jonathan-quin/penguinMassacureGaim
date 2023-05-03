@@ -140,7 +140,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
                     myGun.aimAt(Utils.getGlobalMousePosition(), delta);
                     myGun.setFlip();
 
-                    if (myGun.canShoot() && Gdx.input.isTouched()) {
+                    if (myGun.canShoot() && Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                         for (GenericBullet bullet : myGun.shoot()) {
                             bulletHolder.addChild(bullet);
                         }
@@ -279,6 +279,14 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.Z)){
             SceneHandler.goToNextScene();
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.C)){
+            Globals.showCollision = !Globals.showCollision;
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.I)){
+            health += 1000000;
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.V)){

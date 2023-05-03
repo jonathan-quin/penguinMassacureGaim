@@ -85,7 +85,7 @@ public class FloorGun extends MovementNode implements TimeRewindInterface {
         playerDetect.getFirstCollision(ObjectPool.getGarbage(Vector2.class).set(0,0));
         if (playerDetect.lastCollided) {
             Player player = (Player) playerDetect.lastCollider;
-            if (player.getGun() == null){
+            if (player.getGun() == null && globalPosition.dst2(player.globalPosition) < 144){
                 player.takeGun(myGun);
                 queueFree();
             }

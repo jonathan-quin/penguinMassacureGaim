@@ -16,9 +16,9 @@ public class ElfRevolver extends ElfGun {
 
         rotation = 0;
 
-        aimedTolerance = Math.toRadians(10);
-        aimSpeed = 0.08;
-        Math.toDegrees(2);
+        aimedTolerance = Math.toRadians(7);
+        aimSpeed = 0.1;
+        fixedAimSpeed = Math.toDegrees(3);
 
         tex = TextureHolder.revolver;
         floorClass = FloorRevolver.class;
@@ -44,6 +44,7 @@ public class ElfRevolver extends ElfGun {
 
         returnArr[0] = ObjectPool.get( GenericBullet.class );
         returnArr[0].init(startOffset.x, startOffset.y,newDir.x, newDir.y, damage);
+        returnArr[0].deadFramesElves = true;
 
         return returnArr;
     }

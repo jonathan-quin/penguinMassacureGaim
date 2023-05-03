@@ -29,6 +29,8 @@ public class TextureHolder {
 
     public static Texture shotgun = new Texture("edg32Shotgun.png");
 
+    public static Texture miniGun = new Texture("miniGun.png");
+
     public static Texture whitePixel = new Texture("whitePixel.png");
 
 

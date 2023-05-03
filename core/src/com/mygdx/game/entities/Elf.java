@@ -96,6 +96,10 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         lastChild().setName("playerLOS");
         ((Raycast)lastChild()).makeDirtyOnUpdate = false;
 
+        addChild( ObjectPool.get(Raycast.class).init(0,0,0,0,false,getMaskLayers(LayerNames.ELVES)) );
+        lastChild().setName("elfCheck");
+        ((Raycast)lastChild()).makeDirtyOnUpdate = false;
+
         addChild( ObjectPool.get(Raycast.class).init(0,36,0,0,false,getMaskLayers(LayerNames.WALLS)) );
         lastChild().setName("playerLOS2");
         ((Raycast)lastChild()).makeDirtyOnUpdate = false;
@@ -143,6 +147,7 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         getChild("roofCast",Raycast.class).makeDirtyOnUpdate = false;
         getChild("leftGapJump",Raycast.class).makeDirtyOnUpdate = false;
         getChild("rightGapJump",Raycast.class).makeDirtyOnUpdate = false;
+        getChild("elfCheck",Raycast.class).makeDirtyOnUpdate = false;
 
         //ray = (Raycast) getNewestChild();
 
@@ -224,6 +229,7 @@ public class Elf extends MovementNode implements TimeRewindInterface {
                 getChild("question",TextureEntity.class).setVisible(true);
                 break;
             case ATTACK:
+            case REPOSITION:
             case CHASE:
                 getChild("exclaim",TextureEntity.class).setVisible(true);
                 getChild("question",TextureEntity.class).setVisible(false);
@@ -271,6 +277,7 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         getChild("roofCast",Raycast.class).dirty = true;
         getChild("leftGapJump",Raycast.class).dirty = true;
         getChild("rightGapJump",Raycast.class).dirty = true;
+        getChild("elfCheck",Raycast.class).dirty = true;
 
         vel.y -= gravity * delta;
         boolean onFloor = testMove(0,-1);
@@ -285,6 +292,8 @@ public class Elf extends MovementNode implements TimeRewindInterface {
             case WANDER:
 
                 Vector2 targetVel = ObjectPool.getGarbage(Vector2.class).set(0,0);
+
+                myGun.aimAt(ObjectPool.getGarbage(Vector2.class).set(0,0),ObjectPool.getGarbage(Vector2.class).set(vel).scl(5),delta);
 
                 getChild("exclaim",TextureEntity.class).setVisible(false);
                 getChild("question",TextureEntity.class).setVisible(false);
@@ -360,6 +369,13 @@ public class Elf extends MovementNode implements TimeRewindInterface {
                 break;
             case ATTACK:
 
+                getChild("sprite",TextureEntity.class).setFlip((player.globalPosition.x > globalPosition.x),false);
+
+                if (!hasStraightShot()){
+                    state = State.REPOSITION;
+                    break;
+                }
+
                 getChild("exclaim",TextureEntity.class).setVisible(true);
                 getChild("question",TextureEntity.class).setVisible(false);
 
@@ -384,6 +400,8 @@ public class Elf extends MovementNode implements TimeRewindInterface {
                 double targetSpeedX = 0;
                 if (tooClose) targetSpeedX = moveTowardsPoint(player.globalPosition,onFloor,tooClose);
 
+                if (!onFloor && willJumpOffLedge((float) targetSpeedX)) targetSpeedX = 0;
+
                 vel.x = lerp(vel.x, (float) (targetSpeedX * myGun.moveSpeed), (float) (wanderAccel * delta));
 
                 vel.set( moveAndSlide(vel,delta) );
@@ -391,12 +409,79 @@ public class Elf extends MovementNode implements TimeRewindInterface {
 
                 break;
 
+            case REPOSITION:
+
+                getChild("sprite",TextureEntity.class).setFlip((player.globalPosition.x > globalPosition.x),false);
+
+                getChild("exclaim",TextureEntity.class).setVisible(true);
+                getChild("question",TextureEntity.class).setVisible(false);
+
+                myGun.aimAt(globalPosition,player.globalPosition,delta);
+
+               if (onFloor) jump(48);
+
+                double playerDistance2 = globalPosition.dst2((player.globalPosition));
+
+                boolean tooClose2 = (playerDistance2) < Math.pow(myGun.distanceMin,2);
+
+                double targetSpeedX2 = 0;
+                if (tooClose2) targetSpeedX = moveTowardsPoint(player.globalPosition,onFloor,tooClose2);
+
+                if (!onFloor && willJumpOffLedge((float) targetSpeedX2)) targetSpeedX2 = 0;
+
+                vel.x = lerp(vel.x, (float) (targetSpeedX2 * myGun.moveSpeed), (float) (wanderAccel * delta));
+
+                vel.set( moveAndSlide(vel,delta) );
+
+                if (hasStraightShot()){
+                    state = State.ATTACK;
+                }
+
+                if (!canSeePlayer()){
+                    state = State.SEARCH;
+                }
+
+
+                break;
 
 
 
 
         }
 
+
+    }
+
+    public boolean hasStraightShot(){
+
+        Raycast elfCheck = getChild("elfCheck",Raycast.class);
+        elfCheck.dirty = true;
+        Raycast randCast = getChild("randCast",Raycast.class);
+        randCast.dirty = true;
+
+        Vector2 playerDir = ObjectPool.getGarbage(Vector2.class).set(player.globalPosition).sub(globalPosition).scl(1,1).nor();
+
+        elfCheck.position .set( ObjectPool.getGarbage(Vector2.class).set(playerDir).scl(20));
+        elfCheck.setCast(ObjectPool.getGarbage(Vector2.class).set(playerDir).scl(100));
+
+        randCast.setCast(ObjectPool.getGarbage(Vector2.class).set(player.globalPosition).sub(globalPosition));
+        if (randCast.isColliding()){
+            return false;
+        }
+
+
+        if (elfCheck.isColliding()) return false;
+        elfCheck.dirty = true;
+
+        elfCheck.position.y += 10;
+        if (elfCheck.isColliding()) return false;
+        elfCheck.dirty = true;
+
+        elfCheck.position.y += 30;
+        if (elfCheck.isColliding()) return false;
+        elfCheck.dirty = true;
+
+        return true;
 
     }
 
@@ -660,7 +745,7 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         randCast.dirty = true;
         
         direction =  (point.x < globalPosition.x) ? Direction.LEFT : Direction.RIGHT;
-        getChild("sprite",TextureEntity.class).setFlip((point.x > globalPosition.x),false);
+
         
         if (away){
             direction = (direction == Direction.RIGHT) ? Direction.LEFT : Direction.RIGHT;
@@ -751,6 +836,16 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         
         return targetSpeed;
         
+    }
+
+    public boolean willJumpOffLedge(float speed){
+        Raycast leftLedge = getChild("leftLedgeDetect",Raycast.class);
+        Raycast rightLedge = getChild("rightLedgeDetect",Raycast.class);
+
+        if (speed < 0 && !leftLedge.isColliding()) return true;
+        if (speed > 0 && !rightLedge.isColliding()) return true;
+
+        return false;
     }
 
     public void hit(Vector2 bulletVel, float damage) {

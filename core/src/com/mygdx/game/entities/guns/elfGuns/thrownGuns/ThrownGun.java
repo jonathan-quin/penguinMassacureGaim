@@ -40,7 +40,7 @@ public class ThrownGun extends MovementNode implements TimeRewindInterface {
         super();
         vel = new Vector2(0, 0);
         damage = 100;
-        setMaskLayers(getMaskLayers(LayerNames.WALLS), getMaskLayers());
+        setMaskLayers(getMaskLayers(LayerNames.WALLS), getMaskLayers(LayerNames.THROWNGUNS));
 
     }
 
@@ -52,12 +52,13 @@ public class ThrownGun extends MovementNode implements TimeRewindInterface {
         lastChild().setName("shape");
 
         addToGroup("rewind");
+
         sprite.setRotation(vel.angleDeg());
     }
 
     public ThrownGun init(float posX, float posY, float velX, float velY) {
 
-        super.init(posX, posY, getMaskLayers(LayerNames.WALLS, LayerNames.ELVES, LayerNames.PLAYER), getMaskLayers());
+        super.init(posX, posY, getMaskLayers(LayerNames.WALLS, LayerNames.ELVES, LayerNames.PLAYER), getMaskLayers(LayerNames.THROWNGUNS));
 
         vel.set(velX, velY);
 
@@ -80,14 +81,22 @@ public class ThrownGun extends MovementNode implements TimeRewindInterface {
 
     public void update(double delta) {
 
+        if (deadFrames >= 0){
+            deadFrames -= delta;
+            setMaskLayers(getMaskLayers(LayerNames.WALLS, LayerNames.ELVES, LayerNames.PLAYER), getMaskLayers(LayerNames.THROWNGUNS));
+        }
+        else{
+            setMaskLayers(getMaskLayers(LayerNames.WALLS, LayerNames.ELVES), getMaskLayers(LayerNames.THROWNGUNS));
+        }
+
+
         vel.y -= gravity * delta;
 
         moveAndSlide(vel, (float) delta);
 
         sprite.setRotation(vel.angleDeg());
 
-        if (deadFrames >= 0)
-        deadFrames -= delta;
+
 
         if (lastCollided ) {
             if (lastCollider.isOnLayer(LayerNames.WALLS)) {

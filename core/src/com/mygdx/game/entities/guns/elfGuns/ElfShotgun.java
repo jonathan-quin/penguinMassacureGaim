@@ -20,7 +20,7 @@ public class ElfShotgun extends ElfGun {
 
         aimedTolerance = Math.toRadians(10);
         aimSpeed = 0.04;
-        Math.toDegrees(1.5);
+        fixedAimSpeed = Math.toDegrees(1.5);
 
         tex = new Texture("edg32Shotgun.png");
         texOffset = new Vector2(10,0);
@@ -52,6 +52,7 @@ public class ElfShotgun extends ElfGun {
 
         for (int i = 0; i < numBullets; i++){
             returnArr[i] = ObjectPool.get( GenericBullet.class ).init(startOffset.x, startOffset.y,newDir.x, newDir.y, damage);
+            returnArr[i].deadFramesElves = true;
             newDir.rotateRad((float) (Math.toRadians(spread)/numBullets));
         }
 

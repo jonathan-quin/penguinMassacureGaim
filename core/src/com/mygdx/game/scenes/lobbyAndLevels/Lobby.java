@@ -2,6 +2,7 @@ package com.mygdx.game.scenes.lobbyAndLevels;
 
 import com.mygdx.game.entities.EndLevelGate;
 import com.mygdx.game.entities.Player;
+import com.mygdx.game.entities.guns.penguinGuns.PenguinMiniGun;
 import com.mygdx.game.entities.guns.penguinGuns.PenguinRevolver;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TileMapHolder;
@@ -26,7 +27,7 @@ public class Lobby extends Root {
 
 
         add(poolGet(Player.class).init(496.0f , -400.0f));
-        ((Player) last()).takeGun(PenguinRevolver.class);
+        ((Player) last()).takeGun(PenguinMiniGun.class);
 
 
 
