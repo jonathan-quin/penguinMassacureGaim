@@ -107,6 +107,10 @@ public class ElfVip extends Elf implements TimeRewindInterface {
         lastChild().setName("randCast");
         ((Raycast)lastChild()).makeDirtyOnUpdate = false;
 
+        addChild( ObjectPool.get(Raycast.class).init(0,0,0,0,false,getMaskLayers(LayerNames.ELVES)) );
+        lastChild().setName("elfCheck");
+        ((Raycast)lastChild()).makeDirtyOnUpdate = false;
+
 
         getChild("rightLedgeDetect",Raycast.class).makeDirtyOnUpdate = false;
         getChild("rightNoJump",Raycast.class).makeDirtyOnUpdate = false;
@@ -119,6 +123,7 @@ public class ElfVip extends Elf implements TimeRewindInterface {
         getChild("roofCast",Raycast.class).makeDirtyOnUpdate = false;
         getChild("leftGapJump",Raycast.class).makeDirtyOnUpdate = false;
         getChild("rightGapJump",Raycast.class).makeDirtyOnUpdate = false;
+        getChild("elfCheck",Raycast.class).makeDirtyOnUpdate = false;
 
         //ray = (Raycast) getNewestChild();
 
@@ -141,6 +146,7 @@ public class ElfVip extends Elf implements TimeRewindInterface {
         getChild("roofCast",Raycast.class).dirty = true;
         getChild("leftGapJump",Raycast.class).dirty = true;
         getChild("rightGapJump",Raycast.class).dirty = true;
+        getChild("elfCheck",Raycast.class).dirty = true;
 
         vel.y -= gravity * delta;
         boolean onFloor = testMove(0,-1);
@@ -156,6 +162,8 @@ public class ElfVip extends Elf implements TimeRewindInterface {
 
                 Vector2 targetVel = ObjectPool.getGarbage(Vector2.class).set(0,0);
 
+                myGun.aimAt(ObjectPool.getGarbage(Vector2.class).set(0,0),ObjectPool.getGarbage(Vector2.class).set(vel).scl(5),delta);
+
                 getChild("exclaim",TextureEntity.class).setVisible(false);
                 getChild("question",TextureEntity.class).setVisible(false);
 
@@ -163,7 +171,7 @@ public class ElfVip extends Elf implements TimeRewindInterface {
 
 
 
-                targetVel.x = (direction == Elf.Direction.LEFT) ? -wanderSpeed : wanderSpeed;
+                targetVel.x = (direction == Direction.LEFT) ? -wanderSpeed : wanderSpeed;
 
 
                 vel.x = lerp(vel.x,targetVel.x, (float) (wanderAccel * delta));
@@ -172,7 +180,7 @@ public class ElfVip extends Elf implements TimeRewindInterface {
 
 
                 if (canSeePlayer()){
-                    state = Elf.State.CHASE;
+                    state = State.CHASE;
                 }
 
                 break;
@@ -186,9 +194,9 @@ public class ElfVip extends Elf implements TimeRewindInterface {
 
                 double playerDistSQR = globalPosition.dst2((player.globalPosition));
 
-                boolean away = (playerDistSQR) < Math.pow(myGun.distanceMin,2);
+                boolean away = true;
 
-                double targetX = moveTowardsPoint(player.globalPosition,onFloor,true);
+                double targetX = moveTowardsPoint(player.globalPosition,onFloor,away);
 
                 vel.x = lerp(vel.x, (float) (targetX * myGun.moveSpeed), (float) (wanderAccel * delta));
 
@@ -197,17 +205,11 @@ public class ElfVip extends Elf implements TimeRewindInterface {
                 lastPlayerPos.set( player.globalPosition);
 
                 if (!canSeePlayer()){
-                    state = Elf.State.SEARCH;
+                    state = State.SEARCH;
                 }
 
-                myGun.aimAt(globalPosition,player.globalPosition,delta);
-
-                if (myGun.canShoot(globalPosition,player.globalPosition) && playerDistSQR < 1.2*(myGun.distanceMax*myGun.distanceMax)){
-
-                    for (GenericBullet bullet : myGun.shoot(ObjectPool.getGarbage(Vector2.class).set(globalPosition).sub(0,-2))){
-                        bulletHolder.addChild(bullet);
-                    }
-
+                if (playerDistSQR < Math.pow(myGun.distanceMax * 1.2, 2)){
+                    state = State.ATTACK;
                 }
 
 
@@ -226,16 +228,90 @@ public class ElfVip extends Elf implements TimeRewindInterface {
                 vel.set( moveAndSlide(vel,delta) );
 
                 if (canSeePlayer()){
-                    state = Elf.State.CHASE;
+                    state = State.CHASE;
                 }
 
                 if (MathUtilsCustom.isEqualApprox(vel.x,0,0.1) || MathUtilsCustom.isEqualApprox(globalPosition.x,lastPlayerPos.x,4)){
-                    state = Elf.State.WANDER;
+                    state = State.WANDER;
                 }
 
                 break;
+            case ATTACK:
+
+                getChild("sprite",TextureEntity.class).setFlip((player.globalPosition.x > globalPosition.x),false);
+
+                if (!hasStraightShot()){
+                    state = State.REPOSITION;
+                    break;
+                }
+
+                getChild("exclaim",TextureEntity.class).setVisible(true);
+                getChild("question",TextureEntity.class).setVisible(false);
+
+                myGun.aimAt(globalPosition,player.globalPosition,delta);
+
+                if (myGun.canShoot(globalPosition,player.globalPosition)){
+
+                    for (GenericBullet bullet : myGun.shoot(ObjectPool.getGarbage(Vector2.class).set(globalPosition).sub(0,-2))){
+                        bulletHolder.addChild(bullet);
+                    }
+
+                }
+
+                if (!canSeePlayer()){
+                    state = State.SEARCH;
+                }
+
+                double playerDistance = globalPosition.dst2((player.globalPosition));
+
+                boolean tooClose = (playerDistance) < Math.pow(myGun.distanceMin,2);
+
+                double targetSpeedX = 0;
+                if (tooClose) targetSpeedX = moveTowardsPoint(player.globalPosition,onFloor,tooClose);
+
+                if (!onFloor && willJumpOffLedge((float) targetSpeedX)) targetSpeedX = 0;
+
+                vel.x = lerp(vel.x, (float) (targetSpeedX * myGun.moveSpeed), (float) (wanderAccel * delta));
+
+                vel.set( moveAndSlide(vel,delta) );
 
 
+                break;
+
+            case REPOSITION:
+
+                getChild("sprite",TextureEntity.class).setFlip((player.globalPosition.x > globalPosition.x),false);
+
+                getChild("exclaim",TextureEntity.class).setVisible(true);
+                getChild("question",TextureEntity.class).setVisible(false);
+
+                myGun.aimAt(globalPosition,player.globalPosition,delta);
+
+                if (onFloor) jump(48);
+
+                double playerDistance2 = globalPosition.dst2((player.globalPosition));
+
+                boolean tooClose2 = (playerDistance2) < Math.pow(myGun.distanceMin,2);
+
+                double targetSpeedX2 = 0;
+                if (tooClose2) targetSpeedX = moveTowardsPoint(player.globalPosition,onFloor,tooClose2);
+
+                if (!onFloor && willJumpOffLedge((float) targetSpeedX2)) targetSpeedX2 = 0;
+
+                vel.x = lerp(vel.x, (float) (targetSpeedX2 * myGun.moveSpeed), (float) (wanderAccel * delta));
+
+                vel.set( moveAndSlide(vel,delta) );
+
+                if (hasStraightShot()){
+                    state = State.ATTACK;
+                }
+
+                if (!canSeePlayer()){
+                    state = State.SEARCH;
+                }
+
+
+                break;
 
 
 

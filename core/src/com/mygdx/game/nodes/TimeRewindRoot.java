@@ -370,7 +370,7 @@ public class TimeRewindRoot extends Root{
         currentFrame = past.get((int) time);
 
         float timeAfter = (float) (time - ((int) time));
-        System.out.println(timeAfter);
+        //System.out.println(timeAfter);
 
         for (ArrayList<Object> currentNode : currentFrame) {
 

@@ -26,11 +26,11 @@ public class ParalaxBackground extends Node implements TimeRewindInterface {
     }
     public void ready(){
 
-        addChild(ObjectPool.get(TextureEntity.class).init(myTexture,-myTexture.getWidth(),0,0,0));
+        addChild(ObjectPool.get(TextureEntity.class).init(myTexture,-myTexture.getWidth() + 1,0,0,0));
 
         addChild(ObjectPool.get(TextureEntity.class).init(myTexture,0,0,0,0));
 
-        addChild(ObjectPool.get(TextureEntity.class).init(myTexture,myTexture.getWidth(),0,0,0));
+        addChild(ObjectPool.get(TextureEntity.class).init(myTexture,myTexture.getWidth() - 1,0,0,0));
 
         addToGroup("rewind");
 

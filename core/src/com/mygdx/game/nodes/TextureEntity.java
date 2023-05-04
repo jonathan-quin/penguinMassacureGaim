@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.helpers.constants.ObjectPool;
 
 
 public class TextureEntity extends Node {
@@ -62,13 +63,20 @@ public class TextureEntity extends Node {
 
         this.offset.set(offsetX,offsetY);
 
+        setScale(ObjectPool.getGarbage(Vector2.class).set(1,1));
+
         setRotation(0);
 
         return this;
     }
 
 
-
+    public void setScale(Vector2 scale){
+        setScale(scale.x,scale.y);
+    }
+    public void setScale(float x, float y){
+        sprite.setScale(x,y);
+    }
     public void setFlip(boolean flipX,boolean flipY)
     {
         sprite.setFlip(flipX,flipY);

@@ -462,7 +462,7 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         Vector2 playerDir = ObjectPool.getGarbage(Vector2.class).set(player.globalPosition).sub(globalPosition).scl(1,1).nor();
 
         elfCheck.position .set( ObjectPool.getGarbage(Vector2.class).set(playerDir).scl(20));
-        elfCheck.setCast(ObjectPool.getGarbage(Vector2.class).set(playerDir).scl(100));
+        elfCheck.setCast(ObjectPool.getGarbage(Vector2.class).set(playerDir).scl(globalPosition.dst(player.globalPosition)-20));
 
         randCast.setCast(ObjectPool.getGarbage(Vector2.class).set(player.globalPosition).sub(globalPosition));
         if (randCast.isColliding()){

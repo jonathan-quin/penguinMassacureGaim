@@ -21,7 +21,7 @@ public class ParticleMaker {
 
     public static ArrayList<TimeParticle> makeBloodyParticlesFromSprite(TextureEntity sprite, Vector2 vel){
 
-        System.out.println(vel);
+        //System.out.println(vel);
 
         Texture texture = sprite.sprite.getTexture();
 
@@ -89,7 +89,7 @@ public class ParticleMaker {
 
     public static ArrayList<TimeParticle> makeDisapearingParticles(TextureEntity sprite, Vector2 vel){
 
-        System.out.println(vel);
+        //System.out.println(vel);
 
         Texture texture = sprite.sprite.getTexture();
 

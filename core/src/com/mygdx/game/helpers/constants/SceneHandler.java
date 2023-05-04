@@ -118,9 +118,11 @@ public class SceneHandler {
         batch.end();
 
         Globals.globalShape.begin(ShapeRenderer.ShapeType.Filled);
-        if (Globals.showCollision){
+
+        if (true || Globals.showCollision){
             tempScene.debug();
         }
+
         Globals.globalShape.end();
 
 

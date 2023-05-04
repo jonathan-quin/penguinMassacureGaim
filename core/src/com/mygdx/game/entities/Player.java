@@ -304,6 +304,15 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
             System.out.println("add(poolGet(Elf.class).init(" + tempValue.x + "f , " + tempValue.y + "f ,ObjectPool.get(ElfRevolver.class)));" );
         }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.P)){
+            System.out.println(position);
+            System.out.println(globalPosition);
+            System.out.println(getParent().position);
+            System.out.println(getParent());
+        }
+
+
     }
 
     public ArrayList<Object> save(){
