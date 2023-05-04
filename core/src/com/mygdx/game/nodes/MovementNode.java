@@ -199,6 +199,11 @@ public class MovementNode extends ColliderObject {
 
     }
 
+    /**
+     *
+     * @param num
+     * @return returns true if {@code num} is within 0.01 of zero
+     */
     public boolean isZeroApprox(float num){
 
         return (num < 0.01 && num > -0.01);
