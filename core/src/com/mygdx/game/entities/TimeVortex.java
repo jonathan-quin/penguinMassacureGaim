@@ -57,6 +57,8 @@ public class TimeVortex extends StaticNode implements TimeRewindInterface {
     public void update(double delta) {
         super.update(delta);
 
+        getChild("sprite",TextureEntity.class).setRotation(vel.angleDeg());
+
         position.add((float) (vel.x * delta), (float) (vel.y * delta));
 
         getFirstCollision(ObjectPool.getGarbage(Vector2.class).set(0,0));
@@ -112,6 +114,9 @@ public class TimeVortex extends StaticNode implements TimeRewindInterface {
     public TimeVortex load(Object... vars) {
         this.position.set( (Vector2) vars[1]);
         this.vel.set( (Vector2) vars[2]);
+
+        getChild("sprite",TextureEntity.class).setRotation(vel.angleDeg());
+
         return null;
     }
 }

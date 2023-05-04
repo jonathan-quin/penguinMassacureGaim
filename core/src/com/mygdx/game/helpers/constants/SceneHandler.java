@@ -7,10 +7,7 @@ import com.mygdx.game.nodes.Root;
 import com.mygdx.game.scenes.TestScene;
 import com.mygdx.game.scenes.TestScene2;
 import com.mygdx.game.scenes.TimeRewindScene;
-import com.mygdx.game.scenes.lobbyAndLevels.Lobby;
-import com.mygdx.game.scenes.lobbyAndLevels.tempLevel1;
-import com.mygdx.game.scenes.lobbyAndLevels.tempLevel2;
-import com.mygdx.game.scenes.lobbyAndLevels.tempLevel3;
+import com.mygdx.game.scenes.lobbyAndLevels.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,9 +34,11 @@ public class SceneHandler {
         scenes.put("TimeRewindTest", new TimeRewindScene());
 
         scenes.put("Lobby", new Lobby());
-        scenes.put("Level1", new tempLevel1());
+        scenes.put("Level1", new Level1());
         scenes.put("Level2", new tempLevel2());
         scenes.put("Level3", new tempLevel3());
+
+        scenes.put("testscene4", new tempLevel1());
 
 
         batch = new SpriteBatch();

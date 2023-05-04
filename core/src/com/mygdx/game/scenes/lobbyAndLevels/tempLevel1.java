@@ -46,6 +46,7 @@ public class tempLevel1 extends TimeRewindRoot {
 
         add(poolGet(TimeVortex.class).init(-2400,0,ObjectPool.getGarbage(Vector2.class).set(60,0)));
 
+
     }
 
 }

@@ -285,6 +285,10 @@ public class Player extends MovementNode implements TimeRewindInterface {
             Globals.showCollision = !Globals.showCollision;
         }
 
+        if (Gdx.input.isKeyJustPressed(Input.Keys.O)){
+            Globals.aiIgnore = !Globals.aiIgnore;
+        }
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.I)){
             health += 1000000;
         }

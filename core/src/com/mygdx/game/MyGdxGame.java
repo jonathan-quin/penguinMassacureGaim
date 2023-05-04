@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.game.helpers.constants.Constants;
 import com.mygdx.game.helpers.constants.Globals;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.SceneHandler;
@@ -40,7 +41,7 @@ public class MyGdxGame extends ApplicationAdapter {
 //		System.out.println("before");
 //		ObjectPool.printTotal();
 
-		ScreenUtils.clear(new Color(44f/256,232f/256,245f/256,1));
+		ScreenUtils.clear(Constants.edg32Colors.dimSky);
 
 
 		SceneHandler.update();
