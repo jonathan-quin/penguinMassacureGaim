@@ -3,6 +3,7 @@ package com.mygdx.game.nodes;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.helpers.constants.Globals;
 import com.mygdx.game.helpers.constants.ObjectPool;
+import com.mygdx.game.nodes.collisionShapeHelpers.SweepInfo;
 
 import java.util.ArrayList;
 
@@ -42,7 +43,7 @@ public class MovementNode extends ColliderObject {
 
         difference.set(position.x - prevPos.x, position.y - prevPos.y);
 
-        if ( !difference.epsilonEquals(scaledDistance,0.001f) ){
+        if ( lastCollided ){
             ColliderObject tempCollider = lastCollider;
 
             updateParentPos();
@@ -174,7 +175,11 @@ public class MovementNode extends ColliderObject {
         updateGlobalPosition();
         updateParentPos();
 
-        return sweepTestArray(((Vector2) ObjectPool.getGarbage(Vector2.class)).set(x,y),myRoot.getCollidersInLayers(mask)).collides;
+        SweepInfo info = sweepTestArray(((Vector2) ObjectPool.getGarbage(Vector2.class)).set(x,y),myRoot.getCollidersInLayers(mask));
+
+        if (info == null) return false;
+
+        return info.collides;
     }
 
     public Vector2 move(Vector2 distance){

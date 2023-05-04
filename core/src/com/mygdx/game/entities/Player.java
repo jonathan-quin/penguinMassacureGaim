@@ -2,21 +2,22 @@ package com.mygdx.game.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
+import com.mygdx.game.entities.guns.floorGuns.FloorGun;
 import com.mygdx.game.entities.guns.penguinGuns.PenguinGun;
-import com.mygdx.game.entities.guns.penguinGuns.PenguinRevolver;
 import com.mygdx.game.helpers.constants.*;
-import com.mygdx.game.helpers.utilities.MathUtils;
+import com.mygdx.game.helpers.utilities.MathUtilsCustom;
+import com.mygdx.game.helpers.utilities.ParticleMaker;
 import com.mygdx.game.helpers.utilities.TimeRewindInterface;
 import com.mygdx.game.helpers.utilities.Utils;
 import com.mygdx.game.nodes.*;
 
 import java.util.ArrayList;
 
-import static java.lang.Math.PI;
-import static java.lang.Math.min;
+import static java.lang.Math.*;
 
 public class Player extends MovementNode implements TimeRewindInterface {
 
@@ -42,6 +43,12 @@ public class Player extends MovementNode implements TimeRewindInterface {
     private Raycast ray;
 
     boolean dead = false;
+
+    public ArrayList<Object> lastSave = null;
+
+    public PenguinGun getGun() {
+        return myGun;
+    }
 
     PenguinGun myGun;
 
@@ -77,6 +84,8 @@ public class Player extends MovementNode implements TimeRewindInterface {
         dead = false;
 
         myGun = null;
+
+        lastSave = null;
 
         return this;
     }
@@ -119,13 +128,23 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
 
             if (myGun != null){
-                myGun.updateTimeUntilNextShot(delta);
-                myGun.aimAt(Utils.getGlobalMousePosition(), delta);
-                myGun.setFlip();
 
-                if (myGun.canShoot() && Gdx.input.isTouched()) {
-                    for (GenericBullet bullet : myGun.shoot()) {
-                        bulletHolder.addChild(bullet);
+                if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)){
+                    bulletHolder.addChild(ObjectPool.get(myGun.throwClass).initThrow(globalPosition,Utils.getGlobalMousePosition()));
+                    removeChild(myGun);
+                    myGun = null;
+                }
+
+                else {
+                    myGun.updateTimeUntilNextShot(delta);
+                    myGun.aimAt(Utils.getGlobalMousePosition(), delta);
+                    myGun.setFlip();
+
+                    if (myGun.canShoot() && Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                        for (GenericBullet bullet : myGun.shoot()) {
+                            bulletHolder.addChild(bullet);
+                        }
+                        vel.add(ObjectPool.get(Vector2.class).set(-1,0).rotateRad((float) myGun.rotation).scl((float) myGun.recoil));
                     }
                 }
             }
@@ -135,39 +154,60 @@ public class Player extends MovementNode implements TimeRewindInterface {
         if (dead){
             beDead(delta);
         }
+        else{
+            ((TextureEntity) getChild("sprite")).setMyColor(Color.WHITE);
+        }
 
-
+        float tempVelY = vel.y;
         vel.set(moveAndSlide( vel,(float) delta) );
-
+        if (signum(tempVelY) != signum(vel.y)) vel.y = 0;
 
 
         takeDebugInputs();
         Globals.cameraOffset.set(position);
+        //System.out.println(Globals.cameraOffset);
+
+
+        if (false && myRoot instanceof TimeRewindRoot && ((TimeRewindRoot) myRoot).isSaveFrame()) {
+            //bulletHolder.addChild(ObjectPool.get(TimeParticle.class).init(ObjectPool.getGarbage(Vector2.class).set(0, 0), toRadians(2) * 60, rotation, 2, 0, ObjectPool.getGarbage(Vector2.class).set(0, 0), 0.1, 70, 0.8, true, Color.WHITE, Color.BLUE, 0.2, 0.2));
+            bulletHolder.addChild(ObjectPool.get(TimeParticle.class).init(ObjectPool.getGarbage(Vector2.class).set(vel).scl(-1), toRadians(2) * 60, rotation, 1, 400, ObjectPool.getGarbage(Vector2.class).set(0, 0), 0.1, 0, 0.8, true, Color.WHITE, Color.RED, 3, 0.2));
+
+            ((Particle) bulletHolder.lastChild()).setMaskLayers(getMaskLayers(LayerNames.WALLS), getMaskLayers());
+            ((Particle) bulletHolder.lastChild()).position.set(position);
+        }
+
+
 
     }
 
     public void takeGun(Class type){
-        if (type == null) return;
+        if (type == null || myGun != null) return;
 
         addChild( ((PenguinGun)ObjectPool.get(type)).init() );
         myGun = (PenguinGun) lastChild();
+        myGun.aimAt(Utils.getGlobalMousePosition(),10);
     }
 
     public void takeGun(Class type,double rotation,int ammoLeft,double timeUntilNextShot){
 
         if (type == null) return;
 
-        addChild( ((Node)ObjectPool.get(type)).init(0,0) );
+        addChild( ((PenguinGun)ObjectPool.get(type)).init() );
         myGun = (PenguinGun) lastChild();
         myGun.setRotation(rotation);
         myGun.ammoLeft = ammoLeft;
         myGun.timeUntilNextShot = timeUntilNextShot;
+        myGun.setFlip();
     }
 
     public void beDead(double delta){
         rotation = 90;
-        ((TextureEntity) getChild("sprite")).setRotation(rotation);
-        ((TextureEntity) getChild("sprite")).setFlip(false,false);
+
+        ((TextureEntity) getChild("sprite")).setMyColor(new Color(0,0,0,0));
+
+        removeChild(myGun);
+        myGun = null;
+
         vel.x = lerp(vel.x,0,0.1f);
         vel.y -= GRAVITY * delta;
     }
@@ -184,12 +224,12 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
         TextureEntity sprite = ((TextureEntity) getChild("sprite"));
 
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) targetSpeed.x -= MAXSPEED;
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) targetSpeed.x += MAXSPEED;
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) targetSpeed.x -= MAXSPEED;
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) targetSpeed.x += MAXSPEED;
 
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) vel.y -= 100;
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) vel.y -= 10;
 
-        if (Gdx.input.isKeyPressed(Input.Keys.UP) && onFloor) vel.y = JUMPFORCE;
+        if ((Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.SPACE)) && onFloor) vel.y = JUMPFORCE;
 
 
         vel.x  = (float) lerp(vel.x,targetSpeed.x, ACCEL * delta);
@@ -201,13 +241,24 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
         if (!onFloor){
             //rotation = rotation % 360;
-            rotation += (4 + min(10,rotation * 0.01)) * 60 * delta;
+
+            double rotationChange = (4 + min(10,rotation * 0.01)) * 60 * delta;
+
+            rotation += rotationChange;
+
+            if (false && myGun != null){
+                if (sprite.getFlipX()) {
+                    myGun.rotation += toRadians(rotationChange);
+                } else {
+                    myGun.rotation -= toRadians(rotationChange);
+                }
+            }
 
         }
         else{
             rotation = rotation % 360;
-            rotation += MathUtils.differenceBetweenAngles(Math.toRadians(rotation),0) * 30 * 60 * delta;
-            rotation = MathUtils.moveTowardsZero(rotation,0.1);
+            rotation += MathUtilsCustom.differenceBetweenAngles(Math.toRadians(rotation),0) * 30 * 60 * delta;
+            rotation = MathUtilsCustom.moveTowardsZero(rotation,0.1);
 
         }
 
@@ -224,17 +275,48 @@ public class Player extends MovementNode implements TimeRewindInterface {
     }
 
     public void takeDebugInputs(){
-        if (Gdx.input.isKeyJustPressed(Input.Keys.X)){
-            bulletHolder.addChild( ( (BulletOLD) ObjectPool.get( BulletOLD.class) ).init(globalPosition.x,globalPosition.y,vel.x*2,vel.y*2) );
-        }
+
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.Z)){
             SceneHandler.goToNextScene();
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.V)){
-            System.out.println(Utils.getGlobalMousePosition());
+        if (Gdx.input.isKeyJustPressed(Input.Keys.C)){
+            Globals.showCollision = !Globals.showCollision;
         }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.O)){
+            Globals.aiIgnore = !Globals.aiIgnore;
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.I)){
+            health += 1000000;
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.V)){
+
+            if (getRootNode().getChild("debugElf") == null){
+                getRootNode().addChild(ObjectPool.get(MouseFollowSprite.class).init(TextureHolder.elfTexture, 0, 0, 0, 0));
+                getRootNode().lastChild().setName("debugElf");
+            }
+
+            Vector2 tempValue = Utils.getGlobalMousePosition();
+
+            tempValue.set(16 * (int) (tempValue.x/16),16 * (int) (tempValue.y/16));
+
+            //add(poolGet(Elf.class).init(200,-180,ObjectPool.get(ElfRevolver.class)));
+
+            System.out.println("add(poolGet(Elf.class).init(" + tempValue.x + "f , " + tempValue.y + "f ,ObjectPool.get(ElfRevolver.class)));" );
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.P)){
+            System.out.println(position);
+            System.out.println(globalPosition);
+            System.out.println(getParent().position);
+            System.out.println(getParent());
+        }
+
+
     }
 
     public ArrayList<Object> save(){
@@ -242,9 +324,14 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
         returnArr.clear();
 
-        returnArr.add(this.getClass()); //0
-        returnArr.add(ObjectPool.get(Vector2.class).set(position)); //1
-        returnArr.add(ObjectPool.get(Vector2.class).set(vel)); //2
+        returnArr.add((ArrayList<Object>) ObjectPool.get(ArrayList.class)); //0
+        ((ArrayList)returnArr.get(0)).clear();
+        ((ArrayList)returnArr.get(0)).add(this.getClass());
+        ((ArrayList)returnArr.get(0)).add(this.getParent());
+        ((ArrayList)returnArr.get(0)).add(lastSave);
+
+        returnArr.add(new Vector2(position)); //1
+        returnArr.add(new Vector2(vel)); //2
         returnArr.add(rotation); //3
         returnArr.add(health); //4
 
@@ -265,6 +352,9 @@ public class Player extends MovementNode implements TimeRewindInterface {
             returnArr.add(null);//10
         }
 
+        returnArr.add(getChild("sprite",TextureEntity.class).getFlipY()); //11
+
+        lastSave = returnArr;
         return returnArr;
     }
 
@@ -278,7 +368,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
         TextureEntity sprite = ((TextureEntity) getChild("sprite"));
 
-        sprite.setFlip((boolean) vars[5],false);
+        sprite.setFlip((boolean) vars[5],(boolean) vars[11]);
 
         if ((boolean) vars[5]) {
             sprite.setRotation(rotation);
@@ -302,6 +392,11 @@ public class Player extends MovementNode implements TimeRewindInterface {
     }
 
     @Override
+    public void setLastSave(ArrayList<Object> save) {
+        lastSave = save;
+    }
+
+    @Override
 
 
     public void render(SpriteBatch batch){
@@ -311,12 +406,32 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
 
 
-    public void hit(Vector2 vel, float damage) {
-        health -= damage;
+    public void hit(Vector2 bulletVel, float damage) {
 
+        if (health <= 0) return;
+
+        health -= damage;
         if (health <= 0){
-            dead = true;
+            die(bulletVel);
         }
 
     }
+
+    public void die(Vector2 bulletVel) {
+
+        dead = true;
+        //lastSave.set(6,true);
+        for (TimeParticle t : ParticleMaker.makeBloodyParticlesFromSprite(getChild("sprite",TextureEntity.class),bulletVel)){
+            bulletHolder.addChild(t);
+        }
+
+        if (myGun != null) {
+            for (TimeParticle t : ParticleMaker.makeDisapearingParticles(myGun.getChild("gunSprite", TextureEntity.class), bulletVel)) {
+                bulletHolder.addChild(t);
+            }
+        }
+
+    }
+
+
 }

@@ -4,10 +4,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
 import com.mygdx.game.entities.guns.elfGuns.ElfGun;
+import com.mygdx.game.entities.guns.floorGuns.FloorGun;
+import com.mygdx.game.helpers.constants.Globals;
 import com.mygdx.game.helpers.constants.LayerNames;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TextureHolder;
-import com.mygdx.game.helpers.utilities.MathUtils;
+import com.mygdx.game.helpers.utilities.MathUtilsCustom;
+import com.mygdx.game.helpers.utilities.ParticleMaker;
 import com.mygdx.game.helpers.utilities.TimeRewindInterface;
 import com.mygdx.game.nodes.*;
 
@@ -19,32 +22,29 @@ import static java.lang.Math.toDegrees;
 
 public class Elf extends MovementNode implements TimeRewindInterface {
 
-    Player player;
+    protected Player player;
 
-    ElfGun myGun;
+    public ElfGun myGun;
 
-    Vector2 vel;
+    protected Vector2 vel;
 
-    int health;
-    final int maxHealth = 100;
+    protected int health;
+    protected final int maxHealth = 100;
 
-    private float wanderSpeed = 60;
+    protected  float wanderSpeed = 60;
 
-    private float searchSpeed = 80;
-    private float wanderAccel = 0.3f * 60;
+    protected  float searchSpeed = 80;
+    protected  float wanderAccel = 0.3f * 60;
 
-    private double gravity = 400;
+    protected  double gravity = 400;
 
-    private Vector2 lastPlayerPos;
-    private Node bulletHolder;
-
-    public void hit(Vector2 vel, float damage) {
-        health -= damage;
-        if (health <= 0) queueFree();
-    }
+    protected  Vector2 lastPlayerPos;
+    protected  Node bulletHolder;
 
 
-    enum State {
+
+
+    protected enum State {
         WANDER,
         CHASE,
         SEARCH,
@@ -52,12 +52,12 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         REPOSITION
     }
 
-    enum Direction {
+    protected enum Direction {
         LEFT,
         RIGHT
     }
-    State state = State.WANDER;
-    Direction direction = Direction.LEFT;
+    protected State state = State.WANDER;
+    protected Direction direction = Direction.LEFT;
 
     public Elf(){
         super();
@@ -94,6 +94,10 @@ public class Elf extends MovementNode implements TimeRewindInterface {
 
         addChild( ObjectPool.get(Raycast.class).init(0,4,0,0,false,getMaskLayers(LayerNames.WALLS)) );
         lastChild().setName("playerLOS");
+        ((Raycast)lastChild()).makeDirtyOnUpdate = false;
+
+        addChild( ObjectPool.get(Raycast.class).init(0,0,0,0,false,getMaskLayers(LayerNames.ELVES)) );
+        lastChild().setName("elfCheck");
         ((Raycast)lastChild()).makeDirtyOnUpdate = false;
 
         addChild( ObjectPool.get(Raycast.class).init(0,36,0,0,false,getMaskLayers(LayerNames.WALLS)) );
@@ -143,6 +147,7 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         getChild("roofCast",Raycast.class).makeDirtyOnUpdate = false;
         getChild("leftGapJump",Raycast.class).makeDirtyOnUpdate = false;
         getChild("rightGapJump",Raycast.class).makeDirtyOnUpdate = false;
+        getChild("elfCheck",Raycast.class).makeDirtyOnUpdate = false;
 
         //ray = (Raycast) getNewestChild();
 
@@ -155,7 +160,12 @@ public class Elf extends MovementNode implements TimeRewindInterface {
 
         returnArr.clear();
 
-        returnArr.add(this.getClass()); //0
+        returnArr.add((ArrayList<Object>) ObjectPool.get(ArrayList.class)); //0
+        ((ArrayList)returnArr.get(0)).clear();
+        ((ArrayList)returnArr.get(0)).add(this.getClass());
+        ((ArrayList)returnArr.get(0)).add(this.getParent());
+        ((ArrayList)returnArr.get(0)).add(lastSave);
+
         returnArr.add(ObjectPool.get(Vector2.class).set(position)); //1
         returnArr.add(ObjectPool.get(Vector2.class).set(vel)); //2
         returnArr.add(myGun.getClass()); //3
@@ -172,7 +182,14 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         returnArr.add((Double) myGun.rotation); //9
         returnArr.add((Integer)health); // 10
 
+        lastSave = returnArr;
         return returnArr;
+    }
+
+    ArrayList<Object> lastSave = null;
+    @Override
+    public void setLastSave(ArrayList<Object> save) {
+        lastSave = save;
     }
 
     @Override
@@ -212,6 +229,7 @@ public class Elf extends MovementNode implements TimeRewindInterface {
                 getChild("question",TextureEntity.class).setVisible(true);
                 break;
             case ATTACK:
+            case REPOSITION:
             case CHASE:
                 getChild("exclaim",TextureEntity.class).setVisible(true);
                 getChild("question",TextureEntity.class).setVisible(false);
@@ -238,6 +256,8 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         health = maxHealth;
         vel.set(0,0);
 
+        lastSave = null;
+
         return this;
     }
 
@@ -257,6 +277,7 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         getChild("roofCast",Raycast.class).dirty = true;
         getChild("leftGapJump",Raycast.class).dirty = true;
         getChild("rightGapJump",Raycast.class).dirty = true;
+        getChild("elfCheck",Raycast.class).dirty = true;
 
         vel.y -= gravity * delta;
         boolean onFloor = testMove(0,-1);
@@ -271,6 +292,8 @@ public class Elf extends MovementNode implements TimeRewindInterface {
             case WANDER:
 
                 Vector2 targetVel = ObjectPool.getGarbage(Vector2.class).set(0,0);
+
+                myGun.aimAt(ObjectPool.getGarbage(Vector2.class).set(0,0),ObjectPool.getGarbage(Vector2.class).set(vel).scl(5),delta);
 
                 getChild("exclaim",TextureEntity.class).setVisible(false);
                 getChild("question",TextureEntity.class).setVisible(false);
@@ -294,6 +317,8 @@ public class Elf extends MovementNode implements TimeRewindInterface {
                 break;
 
             case CHASE:
+
+                myGun.aimAt(globalPosition,player.globalPosition,delta);
 
                 getChild("exclaim",TextureEntity.class).setVisible(true);
                 getChild("question",TextureEntity.class).setVisible(false);
@@ -337,12 +362,19 @@ public class Elf extends MovementNode implements TimeRewindInterface {
                     state = State.CHASE;
                 }
 
-                if (MathUtils.isEqualApprox(vel.x,0,0.1) || MathUtils.isEqualApprox(globalPosition.x,lastPlayerPos.x,4)){
+                if (MathUtilsCustom.isEqualApprox(vel.x,0,0.1) || MathUtilsCustom.isEqualApprox(globalPosition.x,lastPlayerPos.x,4)){
                     state = State.WANDER;
                 }
 
                 break;
             case ATTACK:
+
+                getChild("sprite",TextureEntity.class).setFlip((player.globalPosition.x > globalPosition.x),false);
+
+                if (!hasStraightShot()){
+                    state = State.REPOSITION;
+                    break;
+                }
 
                 getChild("exclaim",TextureEntity.class).setVisible(true);
                 getChild("question",TextureEntity.class).setVisible(false);
@@ -368,6 +400,8 @@ public class Elf extends MovementNode implements TimeRewindInterface {
                 double targetSpeedX = 0;
                 if (tooClose) targetSpeedX = moveTowardsPoint(player.globalPosition,onFloor,tooClose);
 
+                if (!onFloor && willJumpOffLedge((float) targetSpeedX)) targetSpeedX = 0;
+
                 vel.x = lerp(vel.x, (float) (targetSpeedX * myGun.moveSpeed), (float) (wanderAccel * delta));
 
                 vel.set( moveAndSlide(vel,delta) );
@@ -375,6 +409,40 @@ public class Elf extends MovementNode implements TimeRewindInterface {
 
                 break;
 
+            case REPOSITION:
+
+                getChild("sprite",TextureEntity.class).setFlip((player.globalPosition.x > globalPosition.x),false);
+
+                getChild("exclaim",TextureEntity.class).setVisible(true);
+                getChild("question",TextureEntity.class).setVisible(false);
+
+                myGun.aimAt(globalPosition,player.globalPosition,delta);
+
+               if (onFloor) jump(48);
+
+                double playerDistance2 = globalPosition.dst2((player.globalPosition));
+
+                boolean tooClose2 = (playerDistance2) < Math.pow(myGun.distanceMin,2);
+
+                double targetSpeedX2 = 0;
+                if (tooClose2) targetSpeedX = moveTowardsPoint(player.globalPosition,onFloor,tooClose2);
+
+                if (!onFloor && willJumpOffLedge((float) targetSpeedX2)) targetSpeedX2 = 0;
+
+                vel.x = lerp(vel.x, (float) (targetSpeedX2 * myGun.moveSpeed), (float) (wanderAccel * delta));
+
+                vel.set( moveAndSlide(vel,delta) );
+
+                if (hasStraightShot()){
+                    state = State.ATTACK;
+                }
+
+                if (!canSeePlayer()){
+                    state = State.SEARCH;
+                }
+
+
+                break;
 
 
 
@@ -384,7 +452,42 @@ public class Elf extends MovementNode implements TimeRewindInterface {
 
     }
 
+    public boolean hasStraightShot(){
+
+        Raycast elfCheck = getChild("elfCheck",Raycast.class);
+        elfCheck.dirty = true;
+        Raycast randCast = getChild("randCast",Raycast.class);
+        randCast.dirty = true;
+
+        Vector2 playerDir = ObjectPool.getGarbage(Vector2.class).set(player.globalPosition).sub(globalPosition).scl(1,1).nor();
+
+        elfCheck.position .set( ObjectPool.getGarbage(Vector2.class).set(playerDir).scl(20));
+        elfCheck.setCast(ObjectPool.getGarbage(Vector2.class).set(playerDir).scl(globalPosition.dst(player.globalPosition)-20));
+
+        randCast.setCast(ObjectPool.getGarbage(Vector2.class).set(player.globalPosition).sub(globalPosition));
+        if (randCast.isColliding()){
+            return false;
+        }
+
+
+        if (elfCheck.isColliding()) return false;
+        elfCheck.dirty = true;
+
+        elfCheck.position.y += 10;
+        if (elfCheck.isColliding()) return false;
+        elfCheck.dirty = true;
+
+        elfCheck.position.y += 30;
+        if (elfCheck.isColliding()) return false;
+        elfCheck.dirty = true;
+
+        return true;
+
+    }
+
     public boolean canSeePlayer(){
+
+        if (Globals.aiIgnore) return false;
 
         if (state == State.WANDER) {
             switch (direction) {
@@ -642,7 +745,7 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         randCast.dirty = true;
         
         direction =  (point.x < globalPosition.x) ? Direction.LEFT : Direction.RIGHT;
-        getChild("sprite",TextureEntity.class).setFlip((point.x > globalPosition.x),false);
+
         
         if (away){
             direction = (direction == Direction.RIGHT) ? Direction.LEFT : Direction.RIGHT;
@@ -733,6 +836,38 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         
         return targetSpeed;
         
+    }
+
+    public boolean willJumpOffLedge(float speed){
+        Raycast leftLedge = getChild("leftLedgeDetect",Raycast.class);
+        Raycast rightLedge = getChild("rightLedgeDetect",Raycast.class);
+
+        if (speed < 0 && !leftLedge.isColliding()) return true;
+        if (speed > 0 && !rightLedge.isColliding()) return true;
+
+        return false;
+    }
+
+    public void hit(Vector2 bulletVel, float damage) {
+
+        if (health <= 0) return;
+
+        health -= damage;
+        if (health <= 0){
+            die(bulletVel);
+        }
+
+    }
+
+    public void die(Vector2 bulletVel) {
+
+        queueFree();
+        bulletHolder.addChild(((FloorGun) ObjectPool.get(myGun.floorClass)).init(position.x,position.y,this.vel.x,this.vel.y));
+
+        for (TimeParticle t : ParticleMaker.makeBloodyParticlesFromSprite(getChild("sprite",TextureEntity.class),bulletVel)){
+            bulletHolder.addChild(t);
+        }
+
     }
 
     @Override

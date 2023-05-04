@@ -156,6 +156,7 @@ public class AABB {
                 }
 
             }
+
             if (bottomIntXpos > pos.x - (half.x + paddingX) && bottomIntXpos < pos.x + (half.x + paddingX)) {
 
                 float tempX = bottomIntXpos;
@@ -211,11 +212,12 @@ public class AABB {
         //if (intercepts) System.out.println("intercepts: " + intercepts);
         returnInfo.resolves = false;
 
-        if (containsPoint(returnVector,paddingX,paddingY,0) && !edgeContainsPoint(returnVector,paddingX,paddingY)){
+        if (false && containsPoint(returnVector,paddingX,paddingY,0) && !edgeContainsPoint(returnVector,paddingX,paddingY)){
             System.out.println("WELL THAT'S A PROBLEM " + intercepts);
             System.out.println("started at: " + lineStart);
             System.out.println("ended at: " + returnVector);
             System.out.println("tried to go: " + offset);
+            System.out.println("offset: " + offset);
             System.out.println("start is on edge? " + edgeContainsPoint(lineStart,paddingX,paddingY) );
             System.out.println("count: " + count);
         }

@@ -1,10 +1,16 @@
 package com.mygdx.game.helpers.utilities;
 
-public class MathUtils {
+public class MathUtilsCustom {
     public static double moveTowardsZero(double num, double amount){
         if (num > 0) return Math.max(num-amount,0);
         if (num < 0) return Math.min(num+amount,0);
         return 0;
+    }
+
+    public static double moveTowardsNum(double num, double targetNum, double amount){
+        if (num > targetNum) return Math.max(num-amount,targetNum);
+        if (num < targetNum) return Math.min(num+amount,targetNum);
+        return targetNum;
     }
 
     public static double differenceBetweenAngles(double Angle, double Bngle){
@@ -27,6 +33,10 @@ public class MathUtils {
     public static boolean isEqualApprox(double a, double b, double tolerance){
         if (a + tolerance > b && a - tolerance < b) return true;
         return false;
+    }
+
+    static public double lerpD (double fromValue, double toValue, double progress) {
+        return fromValue + (toValue - fromValue) * progress;
     }
 
 

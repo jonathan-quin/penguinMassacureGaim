@@ -35,7 +35,7 @@ public class CollisionShape extends Node {
 
     }
 
-    public CollisionShape init(int sizeX, int sizeY, int posX, int posY){
+    public CollisionShape init(float sizeX, float sizeY, int posX, int posY){
         super.init(posX,posY);
 
         myColor = Constants.defaultCollisionShapeColor;

@@ -7,6 +7,7 @@ import com.mygdx.game.nodes.Root;
 import com.mygdx.game.scenes.TestScene;
 import com.mygdx.game.scenes.TestScene2;
 import com.mygdx.game.scenes.TimeRewindScene;
+import com.mygdx.game.scenes.lobbyAndLevels.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +32,13 @@ public class SceneHandler {
         scenes.put("TestScene", new TestScene());
         scenes.put("TestScene2", new TestScene2());
         scenes.put("TimeRewindTest", new TimeRewindScene());
+
+        scenes.put("Lobby", new Lobby());
+        scenes.put("Level1", new Level1());
+        scenes.put("Level2", new tempLevel2());
+        scenes.put("Level3", new tempLevel3());
+
+        scenes.put("testscene4", new tempLevel1());
 
 
         batch = new SpriteBatch();
@@ -75,6 +83,10 @@ public class SceneHandler {
         return currentSceneName;
     }
 
+    public static Root getCurrentRoot(){
+        return currentScene;
+    }
+
     public static void update(){
         
         boolean sceneWasChangedBeforeStart = Globals.sceneJustChanged;
@@ -92,6 +104,7 @@ public class SceneHandler {
 
 
         camera.position.set(Globals.cameraOffset,camera.position.z);
+
         camera.update();
 
         batch.setProjectionMatrix(camera.combined);
@@ -104,9 +117,11 @@ public class SceneHandler {
         batch.end();
 
         Globals.globalShape.begin(ShapeRenderer.ShapeType.Filled);
-        if (Globals.showCollision){
+
+        if (true || Globals.showCollision){
             tempScene.debug();
         }
+
         Globals.globalShape.end();
 
 
@@ -125,6 +140,8 @@ public class SceneHandler {
 //            ObjectPool.printTotal();
 //            ObjectPool.printObjectBreakdownInUse();
             tempScene.close();
+
+            currentScene.init();
             currentScene.open();
 
 

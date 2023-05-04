@@ -13,18 +13,30 @@ public class TextureHolder {
 
 
     public static Texture elfTexture = new Texture("elfForNow.png");
+    public static Texture elfVipTexture = new Texture("elf vip for now.png");
 
     public static Texture elfExclaim = new Texture("exclaim.png");
     public static Texture elfQuestion = new Texture("question.png");
 
 
     public static Texture endGate = new Texture("endLevelGate.png");
+    public static Texture endGateClosed = new Texture("endLevelGateClosed.png");
 
 
+    public static Texture timeVortex = new Texture("timeVortex.png");
+
+    public static Texture revolver = new Texture("revolverForNow.png");
+
+    public static Texture shotgun = new Texture("edg32Shotgun.png");
+
+    public static Texture miniGun = new Texture("miniGun.png");
+
+    public static Texture whitePixel = new Texture("whitePixel.png");
 
 
+    public static Texture paralaxMountainsAndTrees = new Texture("paralaxBackGroundTrees.png");
 
-
+    public static Texture georgeParalaxMountainsAndTrees = new Texture("georgesMountainParalax.png");
 
 
 }

@@ -2,8 +2,12 @@ package com.mygdx.game.nodes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.helpers.constants.Globals;
 import com.mygdx.game.helpers.constants.ObjectPool;
+import com.mygdx.game.helpers.constants.SceneHandler;
+import com.mygdx.game.helpers.utilities.MathUtilsCustom;
 import com.mygdx.game.helpers.utilities.TimeRewindInterface;
 
 import java.lang.reflect.Field;
@@ -11,7 +15,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
+import static com.badlogic.gdx.math.MathUtils.lerp;
+import static com.badlogic.gdx.math.MathUtils.sin;
 import static com.mygdx.game.helpers.constants.Globals.gameSpeed;
+import static com.mygdx.game.helpers.constants.Globals.sceneJustChanged;
 
 public class TimeRewindRoot extends Root{
 
@@ -20,44 +27,182 @@ public class TimeRewindRoot extends Root{
     double time = 0;
     double lastSaveTime = 0;
 
+    double nextGameSpeed = 1;
+
+    public void setNextGameSpeed(double nextGameSpeed) {
+        this.nextGameSpeed = nextGameSpeed;
+        nextGameSpeedChanged = true;
+    }
+
+    boolean nextGameSpeedChanged = false;
+
+    boolean playBack = false;
+    int playBackFrame = 0;
+
+    int framesSinceLastRewind = 0;
+
+    private int playBackStage = 0;
+
+    public boolean isSaveFrame() {
+        return saveFrame;
+    }
+
+    boolean saveFrame = true;
+
+    String nextScene = "";
+
+    public TimeRewindRoot init(){
+        playBack = false;
+        playBackFrame = 0;
+        lastSaveTime = 0;
+        time = 0;
+        nextScene = "";
+        playBackStage = 0;
+
+        return this;
+    }
+
     public void update(){
 
+        framesSinceLastRewind++;
 
-        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)){
-            Globals.gameSpeed = 0.1;
-        }
-        else{
-            Globals.gameSpeed = 1;
-        }
+        if (!playBack){
 
-        boolean shouldRewind = Gdx.input.isKeyPressed(Input.Keys.C);
 
-        if (!shouldRewind){
-            Globals.currentlyRewinding = false;
-            rootNode.updateCascade();
+            if (!nextGameSpeedChanged){
+                if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+                    Globals.gameSpeed = lerp((float) gameSpeed,0.1f,0.2f);
+                } else {
+                    if (framesSinceLastRewind < 60){
+                        Globals.gameSpeed = lerp((float) gameSpeed,1f,0.05f);
+                    }
+                    else{
+                        Globals.gameSpeed = lerp((float) gameSpeed,1f,0.3f);
+                    }
 
-            time += Gdx.graphics.getDeltaTime() * gameSpeed;
+                }
 
-            if (time > lastSaveTime + (1f/60f - 1f/600f)){
-                saveNodes();
-                lastSaveTime = time;
+                if (framesSinceLastRewind < 30){
+                    gameSpeed = 0.05;
+                }
+
+            }
+            else{
+                gameSpeed = nextGameSpeed;
+
+                if (nextGameSpeed != 0){
+
+                    nextGameSpeedChanged = false;
+                }
+
             }
 
+
+            boolean shouldRewind = Gdx.input.isKeyPressed(Input.Keys.R) && !sceneJustChanged;
+
+            if (shouldRewind){
+                framesSinceLastRewind = 0;
+//                if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+//                    trimPast();
+//
+//                };
+
+                nextGameSpeedChanged = false;
+
+                //Globals.gameSpeed = lerp((float) gameSpeed,0.05f,0.05f);
+
+                if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+                    Globals.gameSpeed = 0.1;
+                } else {
+                    Globals.gameSpeed = 1;
+                }
+
+            }
+
+            if (!shouldRewind) {
+                Globals.currentlyRewinding = false;
+
+                if (gameSpeed > 0.001){
+                    rootNode.updateCascade();
+                }
+
+                time += Gdx.graphics.getDeltaTime() * gameSpeed;
+
+                if (time > lastSaveTime + (1f / 60f - 1f / 600f)) {
+                    saveNodes();
+                    saveFrame = true;
+                    lastSaveTime = time;
+                }
+                else{
+                    saveFrame = false;
+                }
+
+            } else {
+                Globals.currentlyRewinding = true;
+
+                time -= Gdx.graphics.getDeltaTime() * gameSpeed;
+
+                double distanceToNextFrame = (time - (lastSaveTime - 1f / 60f + 1f / 600f)) * 60;
+
+               // System.out.println(distanceToNextFrame);
+
+                if (time < lastSaveTime - 1f / 60f + 1f / 600f) {
+                    trimPast();
+                    playBack((past.size()-1) + 0);
+
+                    lastSaveTime = time;
+                }else{
+                    playBack((past.size()-1) + distanceToNextFrame);
+                }
+
+
+            }
         }
         else{
-            Globals.currentlyRewinding = true;
+            switch (playBackStage){
+                case 0:
+                    {
+                    playBackStage++;
+                    playBackFrame = past.size() - 1;
+                    break;
+                    }
+                case 1:
+                {
+                    playBack(playBackFrame);
 
-            time -= Gdx.graphics.getDeltaTime() * gameSpeed;
+                    if (playBackFrame > 50){
+                        playBackFrame -= 4;
+                    }
 
-            if (time < lastSaveTime - 1f/60f + 1f/600f){
-                loadNodes();
-                lastSaveTime = time;
+                    playBackFrame--;
+
+                    if (playBackFrame < 2) {
+                        playBackStage++;
+                    }
+                    break;
+                }
+                case 2:
+                {
+                    playBack(playBackFrame);
+                    //delete(playBackFrame);
+                    playBackFrame++;
+                    if (playBackFrame > past.size() - 1) {
+                        SceneHandler.setCurrentScene(nextScene);
+                    }
+                    break;
+                }
+
             }
 
 
         }
 
 
+    }
+
+    public void playBackAndChangeScene(String nextScene){
+        this.nextScene = nextScene;
+        playBack = true;
     }
 
     public void saveNodes(){
@@ -77,6 +222,8 @@ public class TimeRewindRoot extends Root{
 
     public void loadNodes() {
 
+
+
         for (Node n : groups.getNodesInGroup("rewind")) {
 
             n.free();
@@ -95,21 +242,24 @@ public class TimeRewindRoot extends Root{
 
         for (ArrayList<Object> currentNode : lastFrame) {
 
-            Object obj = ObjectPool.get((Class) currentNode.get(0));
+            Object obj = ObjectPool.get((Class) ((ArrayList) currentNode.get(0)).get(0));
 
             ((TimeRewindInterface) obj).init();
 
-            add(obj);
+            ((Node)((ArrayList) currentNode.get(0)).get(1)).addChild((Node) obj);
+
+            ((TimeRewindInterface) obj).setLastSave((ArrayList<Object>) ((ArrayList) currentNode.get(0)).get(2));
 
             ((Node) obj).updateGlobalPosition();
 
             ((TimeRewindInterface) obj).load(currentNode.toArray());
 
             if (!holding){
-                for (int i = currentNode.size() - 1; i > 0; i--) {
-                    ObjectPool.removeBackwards(currentNode.get(i));
-                }
+//                for (int i = currentNode.size() - 1; i > 0; i--) {
+//                    ObjectPool.removeBackwards(currentNode.get(i));
+//                }
                 ObjectPool.removeBackwards(currentNode);
+                ObjectPool.removeBackwards(currentNode.get(0));
             }
 
         }
@@ -120,18 +270,194 @@ public class TimeRewindRoot extends Root{
 
     }
 
+    public void trimPast() {
+
+        ArrayList<ArrayList<Object>> lastFrame;
+
+        boolean holding =  past.size() <= 2;
+
+        if (!holding) {
+            lastFrame = past.remove(past.size() - 1);
+
+            for (ArrayList<Object> currentNode : lastFrame) {
+
+                ObjectPool.removeBackwards(currentNode);
+                ObjectPool.removeBackwards(currentNode.get(0));
+
+            }
+
+            ObjectPool.removeBackwards(lastFrame);
+        }
+
+    }
+
+    public void delete(int frame) {
+
+        ArrayList<ArrayList<Object>> lastFrame;
+
+
+        lastFrame = past.remove(frame);
+
+        for (ArrayList<Object> currentNode : lastFrame) {
+
+            ObjectPool.remove(currentNode);
+            ObjectPool.remove(currentNode.get(0));
+
+        }
+
+        ObjectPool.remove(lastFrame);
+
+
+    }
+
+    public void playBack(int frame){
+        for (Node n : groups.getNodesInGroup("rewind")) {
+
+            n.free();
+        }
+
+        ArrayList<ArrayList<Object>> currentFrame;
+
+
+
+
+        currentFrame = past.get(frame);
+
+
+
+        for (ArrayList<Object> currentNode : currentFrame) {
+
+            Object obj = ObjectPool.get((Class) ((ArrayList) currentNode.get(0)).get(0));
+
+            ((TimeRewindInterface) obj).init();
+
+            ((Node)((ArrayList) currentNode.get(0)).get(1)).addChild((Node) obj);
+            ((TimeRewindInterface) obj).setLastSave((ArrayList<Object>) ((ArrayList) currentNode.get(0)).get(2));
+
+            ((Node) obj).updateGlobalPosition();
+
+
+
+            ((TimeRewindInterface) obj).load(currentNode.toArray());
+
+        }
+
+
+    }
+
+
+
+    public void playBack(double time){
+
+
+
+        if ((int) time == past.size()){
+            playBack(past.size()-1);
+            return;
+        }
+
+        //System.out.println("Time: " + time + " past: " + past.size());
+
+        for (Node n : groups.getNodesInGroup("rewind")) {
+
+            n.free();
+        }
+
+        ArrayList<ArrayList<Object>> currentFrame;
+
+
+
+        currentFrame = past.get((int) time);
+
+        float timeAfter = (float) (time - ((int) time));
+        //System.out.println(timeAfter);
+
+        for (ArrayList<Object> currentNode : currentFrame) {
+
+            ArrayList<Object> getPast =  ((ArrayList)((ArrayList) currentNode.get(0)).get(2));
+
+//            if (getPast == null){
+//                continue;
+//            }
+
+            Object obj = ObjectPool.get((Class) ((ArrayList) currentNode.get(0)).get(0));
+
+            ((TimeRewindInterface) obj).init();
+
+            ((Node)((ArrayList) currentNode.get(0)).get(1)).addChild((Node) obj);
+            ((TimeRewindInterface) obj).setLastSave((ArrayList<Object>) ((ArrayList) currentNode.get(0)).get(2));
+
+            ((Node) obj).updateGlobalPosition();
+
+            if (getPast == null){
+                ((TimeRewindInterface) obj).load(currentNode.toArray());
+                continue;
+            }
+
+
+            Object[] currentArray = currentNode.toArray();
+
+            Object[] beforeArray =  getPast.toArray();;
+
+//            if (beforeArray.length != currentArray.length){
+//                System.out.println("THEY'RE NOT EQUAL");
+//                for (Object i : beforeArray){
+//                    System.out.println(i);
+//                }
+//                System.out.println();
+//                for (Object i : currentArray){
+//                    System.out.println(i);
+//                }
+//            }
+
+            Object[] newArray = new Object[beforeArray.length];
+
+            for (int i = 0; i < beforeArray.length; i++){
+                newArray[i] = currentArray[i];
+
+                if (beforeArray[i] instanceof Double){
+                    if (currentArray[i] != null)
+                    newArray[i] = MathUtilsCustom.lerpD((Double) beforeArray[i], (Double) currentArray[i],timeAfter);
+                }
+                else if (beforeArray[i] instanceof Float){
+                    if (currentArray[i] != null)
+                    newArray[i] = lerp((Float) beforeArray[i], (Float) currentArray[i],timeAfter);
+                }
+                else if (beforeArray[i] instanceof Vector2){
+                    if (currentArray[i] != null)
+                    newArray[i] = new Vector2(0,0);
+                    ((Vector2) newArray[i]).x = lerp(((Vector2) beforeArray[i]).x, ((Vector2) currentArray[i]).x,timeAfter);
+                    ((Vector2) newArray[i]).y = lerp(((Vector2) beforeArray[i]).y, ((Vector2) currentArray[i]).y,timeAfter);
+                }
+                else if (beforeArray[i] instanceof Boolean){
+                    newArray[i] = currentArray[i];
+                }
+
+            }
+
+            ((TimeRewindInterface) obj).load(newArray);
+
+        }
+
+
+    }
+
     public void close(){
         rootNode.free();
         rootNode = null;
+        gameSpeed = 1;
 
-        for (ArrayList<ArrayList<Object>> frame : past){
+        for (int i = past.size()-1; i > 0; i--){
 
+            ArrayList<ArrayList<Object>> frame = past.get(i);
 
             for (ArrayList<Object> currentNode : frame) {
 
-                for (int i = currentNode.size() - 1; i > 0; i--) {
-                    ObjectPool.removeBackwards(currentNode.get(i));
-                }
+//                for (int i = currentNode.size() - 1; i > 0; i--) {
+//                    ObjectPool.removeBackwards(currentNode.get(i));
+//                }
+
+                ObjectPool.removeBackwards(currentNode.get(0));
 
                 ObjectPool.removeBackwards(currentNode);
 
@@ -262,6 +588,7 @@ public class TimeRewindRoot extends Root{
         }
         return null;
     }
+
 
 
 

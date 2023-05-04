@@ -84,8 +84,8 @@ public class BulletOLD extends MovementNode implements TimeRewindInterface {
         returnArr.clear();
 
         returnArr.add(this.getClass());
-        returnArr.add(ObjectPool.get(Vector2.class).set(position));
-        returnArr.add(ObjectPool.get(Vector2.class).set(vel));
+        returnArr.add(new Vector2(position));
+        returnArr.add(new Vector2(vel));
 
         return returnArr;
     }
@@ -105,5 +105,10 @@ public class BulletOLD extends MovementNode implements TimeRewindInterface {
         sprite.setRotation(vel.angleDeg());
         updateGlobalPosition();
         return null;
+    }
+
+    @Override
+    public void setLastSave(ArrayList<Object> save) {
+
     }
 }

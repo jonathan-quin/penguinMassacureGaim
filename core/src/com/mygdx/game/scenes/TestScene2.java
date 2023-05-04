@@ -1,9 +1,14 @@
 package com.mygdx.game.scenes;
 
+import com.mygdx.game.entities.Elf;
+import com.mygdx.game.entities.ParalaxBackground;
 import com.mygdx.game.entities.Player;
 import com.mygdx.game.entities.SimpleIcePlatform;
+import com.mygdx.game.entities.guns.elfGuns.ElfRevolver;
+import com.mygdx.game.entities.guns.penguinGuns.PenguinMiniGun;
 import com.mygdx.game.entities.guns.penguinGuns.PenguinRevolver;
 import com.mygdx.game.helpers.constants.ObjectPool;
+import com.mygdx.game.helpers.constants.TextureHolder;
 import com.mygdx.game.nodes.Node;
 import com.mygdx.game.nodes.Root;
 
@@ -11,21 +16,26 @@ public class TestScene2 extends Root {
 
 
     public void open(){
-        rootNode = poolGet(Node.class);
+        rootNode = poolGet(Node.class).init(0,0);
         rootNode.setMyRoot(this);
+
+        add(ObjectPool.get(Node.class).init(0,0));
+        last().addChild(ObjectPool.get(ParalaxBackground.class).init(0,0, TextureHolder.paralaxMountainsAndTrees));
 
         add(ObjectPool.get(Node.class).init(0,0));
 
         last().setName("bulletHolder");
 
         add(poolGet(Player.class).init(220,300));
-        ((Player) last()).takeGun(PenguinRevolver.class);;
-
+        ((Player) last()).takeGun(PenguinMiniGun.class);;
 
         rootNode.addChild( ObjectPool.get(SimpleIcePlatform.class).init(110,100));
 
 
         //rootNode.addChild();
+
+        add(poolGet(Elf.class).init(-160.0f , 160.0f ,ObjectPool.get(ElfRevolver.class)));
+        add(poolGet(Elf.class).init(0.0f , 144.0f ,ObjectPool.get(ElfRevolver.class)));
 
         rootNode.addChild(ObjectPool.get(SimpleIcePlatform.class).init(100-96,100));
         rootNode.addChild(ObjectPool.get(SimpleIcePlatform.class).init(100-96-96,100));

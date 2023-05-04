@@ -129,7 +129,8 @@ public class Node {
 
         updateParentPos();
 
-        for (Node child: children){
+        for (int i = 0; i < children.size(); i++){
+            Node child = (Node) children.get(i);
             child.updateCascade();
         }
 

@@ -1,5 +1,6 @@
 package com.mygdx.game.nodes;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
@@ -12,11 +13,21 @@ public class TextureEntity extends Node {
 
    // Texture sprite;
 
-    Sprite sprite;
+    public Sprite sprite;
 
     public Vector2 offset;
 
     private boolean visible = true;
+
+    public Color getMyColor() {
+        return myColor;
+    }
+
+    public void setMyColor(Color myColor) {
+        this.myColor.set(myColor);
+    }
+
+    public Color myColor;
 
 
 
@@ -33,12 +44,15 @@ public class TextureEntity extends Node {
         if (image != null)
         sprite = (new PoolableSprite()).init(image);
         this.offset = new Vector2(offsetX,offsetY);
+        myColor = new Color(0,0,0,0);
     }
 
     public TextureEntity init(Texture image, float posX, float posY,float offsetX,float offsetY){
         super.init(posX,posY);
 
         visible = true;
+
+        myColor.set( Color.WHITE );
 
         if (sprite == null) {
             sprite = (new PoolableSprite()).init(image);
@@ -49,13 +63,20 @@ public class TextureEntity extends Node {
 
         this.offset.set(offsetX,offsetY);
 
+        setScale(ObjectPool.getGarbage(Vector2.class).set(1,1));
+
         setRotation(0);
 
         return this;
     }
 
 
-
+    public void setScale(Vector2 scale){
+        setScale(scale.x,scale.y);
+    }
+    public void setScale(float x, float y){
+        sprite.setScale(x,y);
+    }
     public void setFlip(boolean flipX,boolean flipY)
     {
         sprite.setFlip(flipX,flipY);
@@ -101,8 +122,12 @@ public class TextureEntity extends Node {
 
             sprite.setOrigin(sprite.getWidth() / 2 - offset.x, sprite.getHeight() / 2 - offset.y);
 
+            //batch.setColor(myColor);
+            sprite.setColor(myColor);
 
             sprite.draw(batch);
+            //batch.setColor(Color.WHITE);
+
         }
 
 
