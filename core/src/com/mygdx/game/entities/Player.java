@@ -103,6 +103,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
         bulletHolder = getRootNode().getChild("bulletHolder");
 
         addToGroup("rewind");
+        addToGroup("player");
 
         addChild(ObjectPool.get(TextureEntity.class).init(TextureHolder.penguinTexture,0f,1f,0,0));
         lastChild().setName("sprite");

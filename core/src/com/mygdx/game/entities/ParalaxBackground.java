@@ -47,7 +47,7 @@ public class ParalaxBackground extends Node implements TimeRewindInterface {
 
     public void update(double delta){
 
-        Vector2 newPos = ObjectPool.getGarbage(Vector2.class).set(Globals.cameraOffset.x,Globals.cameraOffset.y).scl(0.2F,0.2f);
+        Vector2 newPos = ObjectPool.getGarbage(Vector2.class).set(getGroupHander().getNodesInGroup("player").get(0).position).scl(0.2F,0.2f);
 
         position.set(newPos);
 
