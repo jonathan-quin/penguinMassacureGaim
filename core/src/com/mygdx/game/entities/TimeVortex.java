@@ -59,7 +59,9 @@ public class TimeVortex extends StaticNode implements TimeRewindInterface {
 
         getChild("sprite",TextureEntity.class).setRotation(vel.angleDeg());
 
-        position.add((float) (vel.x * delta), (float) (vel.y * delta));
+        position.add((float) (vel.x * delta), 0);
+
+        position.y = Globals.cameraOffset.y - Globals.cameraOffset.y % 64;
 
         getFirstCollision(ObjectPool.getGarbage(Vector2.class).set(0,0));
 
