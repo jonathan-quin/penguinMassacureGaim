@@ -2,14 +2,12 @@ package com.mygdx.game.scenes.lobbyAndLevels;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.*;
-import com.mygdx.game.entities.guns.elfGuns.ElfMiniGun;
 import com.mygdx.game.entities.guns.elfGuns.ElfRevolver;
 import com.mygdx.game.entities.guns.elfGuns.ElfShotgun;
 import com.mygdx.game.entities.guns.penguinGuns.PenguinRevolver;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TextureHolder;
 import com.mygdx.game.helpers.constants.TileMapHolder;
-import com.mygdx.game.helpers.constants.TileMapHolder2;
 import com.mygdx.game.nodes.Node;
 import com.mygdx.game.nodes.TileMapProcessor;
 import com.mygdx.game.nodes.TimeRewindRoot;
@@ -42,7 +40,7 @@ public class Level1 extends TimeRewindRoot {
 
 
 
-        add(poolGet(TileMapProcessor.class).init(TileMapHolder2.realLevel1));
+        add(poolGet(TileMapProcessor.class).init(TileMapHolder.realLevel1));
 
         add(poolGet(TimeVortex.class).init(-1970,0,ObjectPool.getGarbage(Vector2.class).set(60,0)));
         add(poolGet(TimeVortex.class).init(3000,0,ObjectPool.getGarbage(Vector2.class).set(-1,0)));

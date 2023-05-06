@@ -11,6 +11,9 @@ public class TextureHolder {
     public static Texture bulletTexture = new Texture("bullet.png");
     public static Texture smallBulletTexture = new Texture("chonkSmallBullet.png");
 
+    public static Texture greenBullet = new Texture("bulletGreenOutline.png");
+    public static Texture redBullet = new Texture("redBullet.png");
+
 
     public static Texture elfTexture = new Texture("elfForNow.png");
     public static Texture elfVipTexture = new Texture("elf vip for now.png");
@@ -25,11 +28,11 @@ public class TextureHolder {
 
     public static Texture timeVortex = new Texture("timeVortex.png");
 
-    public static Texture revolver = new Texture("revolverForNow.png");
+    public static Texture revolver = new Texture("revolverForNowRedOutline.png");
 
-    public static Texture shotgun = new Texture("edg32Shotgun.png");
+    public static Texture shotgun = new Texture("edg32ShotgunRedOutline.png");
 
-    public static Texture miniGun = new Texture("miniGun.png");
+    public static Texture miniGun = new Texture("miniGunRedOutline.png");
 
     public static Texture whitePixel = new Texture("whitePixel.png");
 

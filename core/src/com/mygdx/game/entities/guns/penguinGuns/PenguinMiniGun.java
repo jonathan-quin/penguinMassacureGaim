@@ -2,6 +2,7 @@ package com.mygdx.game.entities.guns.penguinGuns;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
+import com.mygdx.game.entities.guns.elfGuns.Bullets.PenguinBullet;
 import com.mygdx.game.entities.guns.elfGuns.thrownGuns.ThrownMiniGun;
 import com.mygdx.game.entities.guns.elfGuns.thrownGuns.ThrownRevolver;
 import com.mygdx.game.helpers.constants.ObjectPool;
@@ -53,7 +54,7 @@ public class PenguinMiniGun extends PenguinGun{
 
         GenericBullet[] returnArr = new GenericBullet[1];
 
-        returnArr[0] = ObjectPool.get( GenericBullet.class );
+        returnArr[0] = ObjectPool.get( PenguinBullet.class );
         returnArr[0].init(startOffset.x, startOffset.y,newDir.x, newDir.y, damage);
         returnArr[0].deadFramesPlayer = true;
 

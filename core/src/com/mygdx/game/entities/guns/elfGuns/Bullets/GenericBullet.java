@@ -1,5 +1,6 @@
 package com.mygdx.game.entities.guns.elfGuns.Bullets;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.Elf;
 import com.mygdx.game.entities.Player;
@@ -38,17 +39,21 @@ public class GenericBullet extends MovementNode implements TimeRewindInterface {
 
     public boolean deadFramesElves =  false;
     public boolean deadFramesPlayer = false;
+
+    public Texture myTexture;
+
     public GenericBullet(){
 
         super();
         vel = new Vector2(0,0);
         damage = 0;
         setMaskLayers( getMaskLayers(LayerNames.WALLS),getMaskLayers());
+        myTexture = TextureHolder.smallBulletTexture;
 
     }
 
     public void ready(){
-        addChild( ( ObjectPool.get(TextureEntity.class) ).init(TextureHolder.smallBulletTexture,0,0,0,0));
+        addChild( ( ObjectPool.get(TextureEntity.class) ).init(myTexture,0,0,0,0));
         sprite = (TextureEntity) lastChild();
 
         addChild( ( ObjectPool.get(CollisionShape.class)).init (4,4,0,0));

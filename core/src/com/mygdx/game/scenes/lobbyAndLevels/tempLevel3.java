@@ -9,7 +9,6 @@ import com.mygdx.game.entities.guns.elfGuns.ElfRevolver;
 import com.mygdx.game.entities.guns.penguinGuns.PenguinRevolver;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TileMapHolder;
-import com.mygdx.game.helpers.constants.TileMapHolder2;
 import com.mygdx.game.nodes.Node;
 import com.mygdx.game.nodes.TileMapProcessor;
 import com.mygdx.game.nodes.TimeRewindRoot;
@@ -43,7 +42,7 @@ public class tempLevel3 extends TimeRewindRoot {
         add(poolGet(Elf.class).init(560.0f , -928.0f ,ObjectPool.get(ElfRevolver.class)));
 
 
-        add(poolGet(TileMapProcessor.class).init(TileMapHolder2.tempLevel3));
+        add(poolGet(TileMapProcessor.class).init(TileMapHolder.tempLevel3));
 
         add(poolGet(TimeVortex.class).init(-2400,0,ObjectPool.getGarbage(Vector2.class).set(120,0)));
     }
