@@ -243,11 +243,11 @@ public class Elf extends MovementNode implements TimeRewindInterface {
     @Override
     public Elf init() {
 
-        init(0,0,null);
+        init(0,0,null,false);
         return this;
     }
 
-    public Elf init(float x, float y, ElfGun gun){
+    public Elf init(float x, float y, ElfGun gun, boolean facingLeft){
         super.init(x,y,getMaskLayers(LayerNames.WALLS),getMaskLayers(LayerNames.ELVES));
 
         this.myGun = gun;
@@ -257,6 +257,11 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         vel.set(0,0);
 
         lastSave = null;
+
+        if (facingLeft) direction = Direction.LEFT;
+        else direction = Direction.RIGHT;
+
+        state = State.WANDER;
 
         return this;
     }

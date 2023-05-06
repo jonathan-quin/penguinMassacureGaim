@@ -26,14 +26,14 @@ public class TimeRewindScene extends TimeRewindRoot {
         ((Player) last()).takeGun(PenguinRevolver.class);
 
 
-        add(poolGet(Elf.class).init(200,-180,ObjectPool.get(ElfRevolver.class)));
-        add(poolGet(Elf.class).init(500,-300,ObjectPool.get(ElfRevolver.class)));
-        add(poolGet(Elf.class).init(800,-80,ObjectPool.get(ElfRevolver.class)));
-        add(poolGet(Elf.class).init(600,-700,ObjectPool.get(ElfRevolver.class)));
+        add(poolGet(Elf.class).init(200,-180,ObjectPool.get(ElfRevolver.class),false));
+        add(poolGet(Elf.class).init(500,-300,ObjectPool.get(ElfRevolver.class),false));
+        add(poolGet(Elf.class).init(800,-80,ObjectPool.get(ElfRevolver.class),false));
+        add(poolGet(Elf.class).init(600,-700,ObjectPool.get(ElfRevolver.class),false));
 
-        add(poolGet(Elf.class).init(385,-142,ObjectPool.get(ElfRevolver.class)));
-        add(poolGet(Elf.class).init(850,-199,ObjectPool.get(ElfRevolver.class)));
-        add(poolGet(Elf.class).init(710,-281,ObjectPool.get(ElfRevolver.class)));
+        add(poolGet(Elf.class).init(385,-142,ObjectPool.get(ElfRevolver.class),false));
+        add(poolGet(Elf.class).init(850,-199,ObjectPool.get(ElfRevolver.class),false));
+        add(poolGet(Elf.class).init(710,-281,ObjectPool.get(ElfRevolver.class),false));
 
         add(poolGet(TileMapProcessor.class).init(TileMapHolder.biggerTestLevel));
 

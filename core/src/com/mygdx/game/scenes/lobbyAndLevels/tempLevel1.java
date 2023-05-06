@@ -31,13 +31,13 @@ public class tempLevel1 extends TimeRewindRoot {
         add(poolGet(Player.class).init(115,-260));
         ((Player) last()).takeGun(PenguinRevolver.class);
 
-        add(poolGet(ElfVip.class).init(704.0f , -448.0f ,ObjectPool.get(ElfShotgun.class)));
-        add(poolGet(Elf.class).init(144.0f , -416.0f ,ObjectPool.get(ElfShotgun.class)));
-        add(poolGet(Elf.class).init(96.0f , -576.0f ,ObjectPool.get(ElfRevolver.class)));
-        add(poolGet(Elf.class).init(752.0f , -576.0f ,ObjectPool.get(ElfRevolver.class)));
-        add(poolGet(Elf.class).init(960.0f , -496.0f ,ObjectPool.get(ElfMiniGun.class)));
-        add(poolGet(Elf.class).init(128.0f , -416.0f ,ObjectPool.get(ElfRevolver.class)));
-        add(poolGet(Elf.class).init(400.0f , -496.0f ,ObjectPool.get(ElfRevolver.class)));
+        add(poolGet(ElfVip.class).init(704.0f , -448.0f ,ObjectPool.get(ElfShotgun.class),false));
+        add(poolGet(Elf.class).init(144.0f , -416.0f ,ObjectPool.get(ElfShotgun.class),false));
+        add(poolGet(Elf.class).init(96.0f , -576.0f ,ObjectPool.get(ElfRevolver.class),false));
+        add(poolGet(Elf.class).init(752.0f , -576.0f ,ObjectPool.get(ElfRevolver.class),false));
+        add(poolGet(Elf.class).init(960.0f , -496.0f ,ObjectPool.get(ElfMiniGun.class),false));
+        add(poolGet(Elf.class).init(128.0f , -416.0f ,ObjectPool.get(ElfRevolver.class),false));
+        add(poolGet(Elf.class).init(400.0f , -496.0f ,ObjectPool.get(ElfRevolver.class),false));
 
 
 

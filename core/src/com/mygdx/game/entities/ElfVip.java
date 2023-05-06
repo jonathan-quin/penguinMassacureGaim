@@ -29,12 +29,12 @@ public class ElfVip extends Elf implements TimeRewindInterface {
     @Override
     public ElfVip init() {
 
-        init(0,0,null);
+        init(0,0,null,false);
         return this;
     }
 
-    public ElfVip init(float x, float y, ElfGun gun){
-        super.init(x,y,gun);
+    public ElfVip init(float x, float y, ElfGun gun,boolean facingLeft){
+        super.init(x,y,gun,facingLeft);
 
 
         return this;

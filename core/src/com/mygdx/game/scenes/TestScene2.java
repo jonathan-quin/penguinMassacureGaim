@@ -34,8 +34,8 @@ public class TestScene2 extends Root {
 
         //rootNode.addChild();
 
-        add(poolGet(Elf.class).init(-160.0f , 160.0f ,ObjectPool.get(ElfRevolver.class)));
-        add(poolGet(Elf.class).init(0.0f , 144.0f ,ObjectPool.get(ElfRevolver.class)));
+        add(poolGet(Elf.class).init(-160.0f , 160.0f ,ObjectPool.get(ElfRevolver.class),false));
+        add(poolGet(Elf.class).init(0.0f , 144.0f ,ObjectPool.get(ElfRevolver.class),false));
 
         rootNode.addChild(ObjectPool.get(SimpleIcePlatform.class).init(100-96,100));
         rootNode.addChild(ObjectPool.get(SimpleIcePlatform.class).init(100-96-96,100));
