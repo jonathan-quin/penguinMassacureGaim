@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.PenguinBullet;
 import com.mygdx.game.entities.guns.elfGuns.thrownGuns.ThrownMiniGun;
-import com.mygdx.game.entities.guns.elfGuns.thrownGuns.ThrownRevolver;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TextureHolder;
 
@@ -27,7 +26,7 @@ public class PenguinMiniGun extends PenguinGun{
 
         recoil = 60;
 
-        tex = TextureHolder.miniGun;
+        tex = TextureHolder.greenMiniGun;
         texOffset = new Vector2(13,-0.5f);
 
         timeUntilNextShot = 0;

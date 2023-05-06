@@ -20,7 +20,7 @@ import com.mygdx.game.nodes.TextureEntity;
 import java.util.ArrayList;
 
 import static java.lang.Math.PI;
-import static jdk.nashorn.internal.objects.NativeMath.abs;
+
 
 public class GenericBullet extends MovementNode implements TimeRewindInterface {
 

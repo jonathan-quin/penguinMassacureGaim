@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.ElfBullet;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
 import com.mygdx.game.entities.guns.floorGuns.FloorMiniGun;
-import com.mygdx.game.entities.guns.floorGuns.FloorRevolver;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TextureHolder;
 
@@ -21,7 +20,7 @@ public class ElfMiniGun extends ElfGun {
         aimSpeed = 0.1;
         fixedAimSpeed = Math.toDegrees(7);
 
-        tex = TextureHolder.miniGun;
+        tex = TextureHolder.redMiniGun;
         floorClass = FloorMiniGun.class;
         texOffset = new Vector2(13,-0.5f);
 

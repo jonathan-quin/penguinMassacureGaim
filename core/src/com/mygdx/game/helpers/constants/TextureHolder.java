@@ -28,11 +28,17 @@ public class TextureHolder {
 
     public static Texture timeVortex = new Texture("timeVortex.png");
 
-    public static Texture revolver = new Texture("revolverForNowRedOutline.png");
+    public static Texture redRevolver = new Texture("revolverForNowRedOutline.png");
 
-    public static Texture shotgun = new Texture("edg32ShotgunRedOutline.png");
+    public static Texture redShotgun = new Texture("edg32ShotgunRedOutline.png");
 
-    public static Texture miniGun = new Texture("miniGunRedOutline.png");
+    public static Texture redMiniGun = new Texture("miniGunRedOutline.png");
+
+    public static Texture greenRevolver = new Texture("revolverForNowGreenOutline.png");
+
+    public static Texture greenShotgun = new Texture("edg32ShotgunGreenOutline.png");
+
+    public static Texture greenMiniGun = new Texture("miniGunGreenOutline.png");
 
     public static Texture whitePixel = new Texture("whitePixel.png");
 

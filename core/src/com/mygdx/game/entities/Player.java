@@ -247,13 +247,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
             rotation += rotationChange;
 
-            if (false && myGun != null){
-                if (sprite.getFlipX()) {
-                    myGun.rotation += toRadians(rotationChange);
-                } else {
-                    myGun.rotation -= toRadians(rotationChange);
-                }
-            }
+
 
         }
         else{

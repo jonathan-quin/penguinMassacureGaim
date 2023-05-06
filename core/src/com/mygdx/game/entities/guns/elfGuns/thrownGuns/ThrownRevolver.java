@@ -6,7 +6,7 @@ public class ThrownRevolver extends ThrownGun {
 
     public ThrownRevolver(){
         mySize = 4;
-        myTex = TextureHolder.revolver;
+        myTex = TextureHolder.greenRevolver;
         throwSpeed = 400; //250;
         distanceFromPlayer = 4;
 

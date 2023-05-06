@@ -1,6 +1,5 @@
 package com.mygdx.game.entities.guns.elfGuns;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.ElfBullet;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
@@ -21,7 +20,7 @@ public class ElfRevolver extends ElfGun {
         aimSpeed = 0.1;
         fixedAimSpeed = Math.toDegrees(3);
 
-        tex = TextureHolder.revolver;
+        tex = TextureHolder.redRevolver;
         floorClass = FloorRevolver.class;
         texOffset = new Vector2(0,0);
 

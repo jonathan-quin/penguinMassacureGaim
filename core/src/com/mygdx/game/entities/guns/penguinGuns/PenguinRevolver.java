@@ -1,6 +1,5 @@
 package com.mygdx.game.entities.guns.penguinGuns;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.PenguinBullet;
@@ -27,7 +26,7 @@ public class PenguinRevolver extends PenguinGun{
 
         recoil = 100;
 
-        tex =TextureHolder.revolver;
+        tex =TextureHolder.greenRevolver;
         texOffset = new Vector2(3,-3.5f);
 
         timeUntilNextShot = 0;
