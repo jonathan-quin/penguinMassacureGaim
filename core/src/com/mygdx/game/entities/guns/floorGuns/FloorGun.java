@@ -49,7 +49,7 @@ public class FloorGun extends MovementNode implements TimeRewindInterface {
         lastChild().setName("shape");
 
         addChild((ObjectPool.get(StaticNode.class)).init(0,0,getMaskLayers(LayerNames.PLAYER),getMaskLayers()));
-        lastChild().addChild((ObjectPool.get(CollisionShape.class)).init(8, 4, 0, 2));
+        lastChild().addChild((ObjectPool.get(CollisionShape.class)).init(12, 12, 0, 2));
         playerDetect = (StaticNode) lastChild();
 
         addToGroup("rewind");
@@ -85,7 +85,7 @@ public class FloorGun extends MovementNode implements TimeRewindInterface {
         playerDetect.getFirstCollision(ObjectPool.getGarbage(Vector2.class).set(0,0));
         if (playerDetect.lastCollided) {
             Player player = (Player) playerDetect.lastCollider;
-            if (player.getGun() == null && globalPosition.dst2(player.globalPosition) < 144){
+            if (player.getGun() == null && globalPosition.dst2(player.globalPosition) < Math.pow(16,2)){
                 player.takeGun(myGun);
                 queueFree();
             }
