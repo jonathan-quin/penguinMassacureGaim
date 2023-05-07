@@ -23,7 +23,7 @@ public class Lobby extends Root {
         rootNode = poolGet(Node.class).init(0,0);
         rootNode.setMyRoot(this);
 
-        //add(ObjectPool.get(levelCreator.class).init());
+        add(ObjectPool.get(levelCreator.class).init());
 
         add(ObjectPool.get(Node.class).init(0,0));
         last().setName("bulletHolder");

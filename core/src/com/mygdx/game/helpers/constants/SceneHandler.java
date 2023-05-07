@@ -8,6 +8,7 @@ import com.mygdx.game.scenes.TestScene;
 import com.mygdx.game.scenes.TestScene2;
 import com.mygdx.game.scenes.TimeRewindScene;
 import com.mygdx.game.scenes.lobbyAndLevels.*;
+import com.mygdx.game.scenes.tutorials.tutorial1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,6 +38,8 @@ public class SceneHandler {
         scenes.put("Level1", new Level1());
         scenes.put("Level2", new tempLevel2());
         scenes.put("Level3", new tempLevel3());
+
+        scenes.put("tutorial1", new tutorial1());
 
         scenes.put("testscene4", new tempLevel1());
 
