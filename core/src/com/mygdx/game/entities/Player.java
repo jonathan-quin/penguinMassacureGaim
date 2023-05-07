@@ -297,21 +297,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
             health += 1000000;
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.V)){
 
-            if (getRootNode().getChild("debugSprite") == null){
-                getRootNode().addChild(ObjectPool.get(MouseFollowSprite.class).init(TextureHolder.elfTexture, 0, 0, 0, 0));
-                getRootNode().lastChild().setName("debugSprite");
-            }
-
-            Vector2 tempValue = Utils.getGlobalMousePosition();
-
-            tempValue.set(16 * (int) (tempValue.x/16),16 * (int) (tempValue.y/16));
-
-            //add(poolGet(Elf.class).init(200,-180,ObjectPool.get(ElfRevolver.class)));
-
-            System.out.println("add(poolGet(Elf.class).init(" + tempValue.x + "f , " + tempValue.y + "f ,ObjectPool.get(ElfRevolver.class)));" );
-        }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)){
             System.out.println(position);

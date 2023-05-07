@@ -166,8 +166,8 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         ((ArrayList)returnArr.get(0)).add(this.getParent());
         ((ArrayList)returnArr.get(0)).add(lastSave);
 
-        returnArr.add(ObjectPool.get(Vector2.class).set(position)); //1
-        returnArr.add(ObjectPool.get(Vector2.class).set(vel)); //2
+        returnArr.add(new Vector2(position)); //1
+        returnArr.add(new Vector2(vel)); //2
         returnArr.add(myGun.getClass()); //3
 
         returnArr.add(getChild("sprite",TextureEntity.class).getFlipX()); //4
@@ -175,7 +175,7 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         returnArr.add(direction == Direction.LEFT); //5
 
 
-        returnArr.add(ObjectPool.get(Vector2.class).set(lastPlayerPos)); //6
+        returnArr.add(new Vector2(lastPlayerPos)); //6
         returnArr.add(state); //7
 
         returnArr.add(myGun.timeUntilNextShot); //8
@@ -507,11 +507,14 @@ public class Elf extends MovementNode implements TimeRewindInterface {
             getChild("playerDetect").position.x = (globalPosition.x < player.globalPosition.x) ? 350 : - 350;
         }
 
-
-        getChild("playerDetect",ColliderObject.class).getFirstCollision(ObjectPool.getGarbage(Vector2.class).set(0,1));
-
+        getChild("playerDetect",ColliderObject.class).parentPosition.set(globalPosition);
+        getChild("playerDetect",ColliderObject.class).updateParentPos();
+        getChild("playerDetect",ColliderObject.class).getFirstCollision(ObjectPool.getGarbage(Vector2.class).set(0,0));
 
         boolean playerInSightBox = getChild("playerDetect",ColliderObject.class).lastCollided;
+
+
+        if (!playerInSightBox) return false;
 
         Raycast ray = (Raycast) getChild("playerLOS");
         ray.dirty = true;
@@ -519,7 +522,7 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         Raycast ray2 = (Raycast) getChild("playerLOS2");
         ray2.dirty = true;
 
-        if (!playerInSightBox) return false;
+
 
 
         ray.setCast(player.globalPosition.x - globalPosition.x,player.globalPosition.y - globalPosition.y);
