@@ -190,7 +190,7 @@ public class levelCreator extends Node {
                 gunSprite.setVisible(false);
 
                 if (place) {
-                    outputs.add("add(poolGet(EndLevelGate.class).init(" + tempValue.x + "f," + tempValue.y +"f,\"\",\"\",\"NEXTSCENE\"));");
+                    outputs.add("add(ObjectPool.get(Node.class).init(0,0));\n last().addChild(poolGet(EndLevelGate.class).init(" + tempValue.x + "f," + tempValue.y +"f,\"\",\"\",\"NEXTSCENE\"));");
                 }
 
                 break;

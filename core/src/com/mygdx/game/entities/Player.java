@@ -131,7 +131,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
             if (myGun != null && !Globals.sceneJustChanged){
 
                 if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)){
-                    bulletHolder.addChild(ObjectPool.get(myGun.throwClass).initThrow(globalPosition,Utils.getGlobalMousePosition()));
+                    bulletHolder.addChild(ObjectPool.get(myGun.throwClass).initThrow(globalPosition,Utils.getGlobalMousePosition(),vel));
                     removeChild(myGun);
                     myGun = null;
                 }

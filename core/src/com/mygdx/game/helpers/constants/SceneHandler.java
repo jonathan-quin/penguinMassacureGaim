@@ -7,6 +7,10 @@ import com.mygdx.game.nodes.Root;
 import com.mygdx.game.scenes.TestScene;
 import com.mygdx.game.scenes.TestScene2;
 import com.mygdx.game.scenes.TimeRewindScene;
+import com.mygdx.game.scenes.levelA2Z.levelA;
+import com.mygdx.game.scenes.levelA2Z.levelB;
+import com.mygdx.game.scenes.levelA2Z.levelC;
+import com.mygdx.game.scenes.levelA2Z.levelD;
 import com.mygdx.game.scenes.lobbyAndLevels.*;
 import com.mygdx.game.scenes.tutorials.*;
 import com.mygdx.game.scenes.tutorials.tutorial5;
@@ -31,6 +35,8 @@ public class SceneHandler {
     public static void ready(){
         scenes = new HashMap<>();
 
+
+
         scenes.put("TestScene", new TestScene());
         scenes.put("TestScene2", new TestScene2());
         scenes.put("TimeRewindTest", new TimeRewindScene());
@@ -40,12 +46,23 @@ public class SceneHandler {
         scenes.put("Level2", new tempLevel2());
         scenes.put("Level3", new tempLevel3());
 
+
+        scenes.put("levelA", new levelA());
+        scenes.put("levelB", new levelB());
+        scenes.put("levelC", new levelC());
+        scenes.put("levelD", new levelD());
+
         scenes.put("tutorial1", new tutorial1());
         scenes.put("tutorial2", new tutorial2());
         scenes.put("tutorial3", new tutorial3());
         scenes.put("tutorial4", new tutorial4());
         scenes.put("tutorial5", new tutorial5());
         scenes.put("tutorial6", new tutorial6());
+        scenes.put("tutorial7", new tutorial7());
+        scenes.put("tutorial8", new tutorial8());
+
+
+
 
         scenes.put("testscene4", new tempLevel1());
 

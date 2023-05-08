@@ -72,11 +72,14 @@ public class ThrownGun extends MovementNode implements TimeRewindInterface {
         return this;
     }
 
-    public ThrownGun initThrow(Vector2 start,Vector2 target){
+    public ThrownGun initThrow(Vector2 start,Vector2 target,Vector2 startVelocity){
+
         Vector2 startPos = ObjectPool.getGarbage(Vector2.class).set(start);
         startPos.add( ObjectPool.getGarbage(Vector2.class).set(target.x-start.x,target.y-start.y).nor().scl(distanceFromPlayer));
 
         Vector2 dir = ObjectPool.get(Vector2.class).set(target.x-start.x,target.y-start.y).nor().scl(throwSpeed);
+
+        dir.add(startVelocity.x/2, startVelocity.y/2);
 
         return init(startPos.x,startPos.y,dir.x,dir.y);
     }

@@ -3,6 +3,7 @@ package com.mygdx.game.scenes.tutorials;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.*;
 import com.mygdx.game.entities.guns.elfGuns.ElfRevolver;
+import com.mygdx.game.entities.guns.elfGuns.ElfShotgun;
 import com.mygdx.game.entities.guns.floorGuns.FloorRevolver;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.SceneHandler;
@@ -12,7 +13,7 @@ import com.mygdx.game.nodes.Node;
 import com.mygdx.game.nodes.TileMapProcessor;
 import com.mygdx.game.nodes.TimeRewindRoot;
 
-public class tutorial4 extends TimeRewindRoot {
+public class tutorial7 extends TimeRewindRoot {
 
     public void open(){
 
@@ -25,14 +26,15 @@ public class tutorial4 extends TimeRewindRoot {
         add(poolGet(TileMapProcessor.class).init(TileMapHolder.tutorial4));
 
         add(ObjectPool.get(Node.class).init(0,0));
-        last().addChild(poolGet(EndLevelGate.class).init(440.0f,16.0f,"","","tutorial7"));
+        last().addChild(poolGet(EndLevelGate.class).init(440.0f,16.0f,"","","tutorial5"));
 
         add(ObjectPool.get(Node.class).init(0,0));
         last().setName("bulletHolder");
 
         add(poolGet(Player.class).init(56.0f,0.0f));
 
-        add(poolGet(Elf.class).init(344.0f , 0.0f ,ObjectPool.get(ElfRevolver.class),true));
+        add(poolGet(Elf.class).init(344.0f , 0.0f ,ObjectPool.get(ElfShotgun.class),true));
+        add(poolGet(Elf.class).init(376.0f , 0.0f ,ObjectPool.get(ElfShotgun.class),true));
         add(poolGet(FloorRevolver.class).init(88.0f,-12.0f));
 
 

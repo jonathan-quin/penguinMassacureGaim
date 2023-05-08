@@ -216,26 +216,39 @@ public class ElfVip extends Elf implements TimeRewindInterface {
 
                 break;
 
-            case SEARCH:
+            case SEARCH: {
 
-                getChild("exclaim",TextureEntity.class).setVisible(false);
-                getChild("question",TextureEntity.class).setVisible(true);
+                getChild("exclaim", TextureEntity.class).setVisible(false);
+                getChild("question", TextureEntity.class).setVisible(true);
 
-                double targetX2 = moveTowardsPoint(lastPlayerPos,onFloor,true);
+                double targetX2;
+
+                if (onFloor) {
+                    targetX2 = moveTowardsPoint(lastPlayerPos, onFloor, true);
+                } else {
+                    targetX2 = 0;
+                }
+
+                Raycast randCast = getChild("randCast", Raycast.class);
+                randCast.dirty = true;
+                randCast.setCast(0, -64);
+                if (!onFloor && !randCast.isColliding()) vel.x *= 0.2 * 60 * delta;
+
 
                 vel.x = lerp(vel.x, (float) (targetX2 * searchSpeed), (float) (wanderAccel * delta));
 
-                vel.set( moveAndSlide(vel,delta) );
+                vel.set(moveAndSlide(vel, delta));
 
-                if (canSeePlayer()){
+                if (canSeePlayer()) {
                     state = State.CHASE;
                 }
 
-                if (MathUtilsCustom.isEqualApprox(vel.x,0,0.1) || MathUtilsCustom.isEqualApprox(globalPosition.x,lastPlayerPos.x,4)){
+                if (!repositionJump && (MathUtilsCustom.isEqualApprox(vel.x, 0, 0.1) || MathUtilsCustom.isEqualApprox(globalPosition.x, lastPlayerPos.x, 4))) {
                     state = State.WANDER;
                 }
 
                 break;
+            }
             case ATTACK:
 
                 getChild("sprite",TextureEntity.class).setFlip((player.globalPosition.x > globalPosition.x),false);
@@ -260,6 +273,12 @@ public class ElfVip extends Elf implements TimeRewindInterface {
 
                 if (!canSeePlayer()){
                     state = State.SEARCH;
+
+                    Raycast randCast = getChild("randCast",Raycast.class);
+                    randCast.dirty = true;
+                    randCast.setCast(0,-64);
+                    if (!onFloor && randCast.isColliding()) vel.x *= 0.2;
+
                 }
 
                 double playerDistance = globalPosition.dst2((player.globalPosition));
@@ -269,7 +288,10 @@ public class ElfVip extends Elf implements TimeRewindInterface {
                 double targetSpeedX = 0;
                 if (tooClose) targetSpeedX = moveTowardsPoint(player.globalPosition,onFloor,tooClose);
 
-                if (!onFloor && willJumpOffLedge((float) targetSpeedX)) targetSpeedX = 0;
+                if (!onFloor && willJumpOffLedge((float) targetSpeedX)){
+                    targetSpeedX = 0;
+                    vel.x = lerp(vel.x, (float) 0, (float) (0.2 * 60 * delta));
+                }
 
                 vel.x = lerp(vel.x, (float) (targetSpeedX * myGun.moveSpeed), (float) (wanderAccel * delta));
 
@@ -287,7 +309,10 @@ public class ElfVip extends Elf implements TimeRewindInterface {
 
                 myGun.aimAt(globalPosition,player.globalPosition,delta);
 
-                if (onFloor) jump(48);
+                if (onFloor) {
+                    jump(48);
+                    repositionJump = true;
+                }
 
                 double playerDistance2 = globalPosition.dst2((player.globalPosition));
 
@@ -296,7 +321,10 @@ public class ElfVip extends Elf implements TimeRewindInterface {
                 double targetSpeedX2 = 0;
                 if (tooClose2) targetSpeedX = moveTowardsPoint(player.globalPosition,onFloor,tooClose2);
 
-                if (!onFloor && willJumpOffLedge((float) targetSpeedX2)) targetSpeedX2 = 0;
+                if (!onFloor && willJumpOffLedge((float) targetSpeedX2)){
+                    targetSpeedX = 0;
+                    vel.x = lerp(vel.x, (float) 0, (float) (0.2 * 60 * delta));
+                }
 
                 vel.x = lerp(vel.x, (float) (targetSpeedX2 * myGun.moveSpeed), (float) (wanderAccel * delta));
 
