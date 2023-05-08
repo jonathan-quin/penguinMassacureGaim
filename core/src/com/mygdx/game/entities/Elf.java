@@ -39,6 +39,9 @@ public class Elf extends MovementNode implements TimeRewindInterface {
 
     protected  double gravity = 400;
 
+    protected boolean wanderJump = false;
+    protected double jumpXVelocity = 0;
+
     protected  Vector2 lastPlayerPos;
     protected  Node bulletHolder;
 
@@ -186,6 +189,8 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         returnArr.add((Integer)health); // 10
 
         returnArr.add(repositionJump);
+        returnArr.add(wanderJump);
+        returnArr.add(jumpXVelocity);
 
         lastSave = returnArr;
         return returnArr;
@@ -242,6 +247,8 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         }
 
         repositionJump = (boolean) vars[11];
+        wanderJump = (boolean) vars[12];
+        jumpXVelocity = (double) vars[13];
 
 
         return null;
@@ -279,6 +286,7 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         state = State.WANDER;
 
         repositionJump = false;
+        wanderJump = false;
 
         return this;
     }
@@ -304,7 +312,10 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         vel.y -= gravity * delta;
         boolean onFloor = testMove(0,-1);
 
-        if (onFloor) repositionJump = false;
+        if (onFloor){
+            repositionJump = false;
+            wanderJump = false;
+        }
 
 
         getChild("gunSprite",TextureEntity.class).setRotation(toDegrees(myGun.rotation));
@@ -565,6 +576,21 @@ public class Elf extends MovementNode implements TimeRewindInterface {
 
         vel.y = (float) Math.sqrt(abs(-2 * gravity * height));
 
+        if (state == State.WANDER){
+            wanderJump = true;
+
+            switch (direction){
+                case RIGHT:
+                    jumpXVelocity = wanderSpeed;
+                    break;
+                case LEFT:
+                    jumpXVelocity = -wanderSpeed;
+                    break;
+            }
+
+
+        }
+
     }
 
     public void turnAroundOrJumpV1(boolean onFloor){
@@ -655,6 +681,9 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         if (!onFloor && repositionJump){
            vel.x = 0;
             return;
+        }
+        if (!onFloor && wanderJump){
+            vel.x = (float) jumpXVelocity;
         }
 
         Raycast rightLedge = getChild("rightLedgeDetect",Raycast.class);
@@ -772,6 +801,11 @@ public class Elf extends MovementNode implements TimeRewindInterface {
             return 0;
 
         }
+
+        if (wanderJump){
+            vel.x = (float) jumpXVelocity;
+        }
+
 
         Raycast rightLedge = getChild("rightLedgeDetect",Raycast.class);
         Raycast rightGap = getChild("rightGapJump",Raycast.class);

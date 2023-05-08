@@ -164,7 +164,7 @@ public class levelCreator extends Node {
         boolean place = Gdx.input.isButtonJustPressed(Input.Buttons.LEFT);
         boolean remove = Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT);
 
-        if (Gdx.input.isButtonJustPressed(Input.Buttons.MIDDLE)) {
+        if (Gdx.input.isButtonJustPressed(Input.Buttons.MIDDLE) || Gdx.input.isKeyJustPressed(Input.Keys.T)) {
          specialState = !specialState;
         }
 

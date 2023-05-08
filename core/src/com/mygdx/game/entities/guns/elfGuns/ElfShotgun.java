@@ -25,7 +25,7 @@ public class ElfShotgun extends ElfGun {
         texOffset = new Vector2(10,0);
 
         timeUntilNextShot = 0;
-        fireRate = 0.5;
+        fireRate = 0.7;
 
         floorClass = FloorShotgun.class;
     }
@@ -37,7 +37,7 @@ public class ElfShotgun extends ElfGun {
         float bulletSpeed = 400;
 
         int numBullets = 5;
-        int spread = 30;
+        int spread = 45;
 
         Vector2 newDir = ObjectPool.getGarbage(Vector2.class).set(bulletSpeed,0);
         newDir.rotateRad((float) rotation);

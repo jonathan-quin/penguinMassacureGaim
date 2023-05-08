@@ -46,7 +46,7 @@ public class PenguinShotgun extends PenguinGun{
         float bulletSpeed = 400;
 
         int numBullets = 5;
-        int spread = 30;
+        int spread = 45;
 
         Vector2 newDir = ObjectPool.getGarbage(Vector2.class).set(bulletSpeed,0);
         newDir.rotateRad((float) rotation);

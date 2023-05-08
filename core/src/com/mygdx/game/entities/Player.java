@@ -214,6 +214,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
             newSpeed = 0;
         }
 
+        if (SceneHandler.getCurrentRoot() instanceof TimeRewindRoot )
         ((TimeRewindRoot)SceneHandler.getCurrentRoot()).setNextGameSpeed(newSpeed);
 
         vel.x = lerp(vel.x,0,0.1f);
