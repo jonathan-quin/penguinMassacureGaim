@@ -11,10 +11,7 @@ import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TextureHolder;
 import com.mygdx.game.helpers.utilities.TimeRewindInterface;
 import com.mygdx.game.helpers.utilities.Utils;
-import com.mygdx.game.nodes.CollisionShape;
-import com.mygdx.game.nodes.MovementNode;
-import com.mygdx.game.nodes.StaticNode;
-import com.mygdx.game.nodes.TextureEntity;
+import com.mygdx.game.nodes.*;
 
 import java.util.ArrayList;
 
@@ -118,6 +115,7 @@ public class FloorGun extends MovementNode implements TimeRewindInterface {
         returnArr.add(new Vector2(position));
         returnArr.add(new Vector2(vel));
         returnArr.add((float) sprite.getRotation());
+        returnArr.add(isInGroup(GroupHandler.QUEUEFREE));
 
         lastSave = returnArr;
         return returnArr;
@@ -140,9 +138,10 @@ public class FloorGun extends MovementNode implements TimeRewindInterface {
 
         this.position.set((Vector2) vars[1]);
         this.vel.set((Vector2) vars[2]);
-
-
         sprite.setRotation((Float) vars[3]);
+
+        if ((boolean) vars[4]) queueFree();
+
         updateGlobalPosition();
         return null;
     }

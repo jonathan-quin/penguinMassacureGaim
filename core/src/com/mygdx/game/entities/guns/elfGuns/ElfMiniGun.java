@@ -16,7 +16,7 @@ public class ElfMiniGun extends ElfGun {
 
         rotation = 0;
 
-        aimedTolerance = Math.toRadians(7);
+        aimedTolerance = Math.toRadians(14);
         aimSpeed = 0.1;
         fixedAimSpeed = Math.toDegrees(7);
 

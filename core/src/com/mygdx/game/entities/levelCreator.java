@@ -140,7 +140,7 @@ public class levelCreator extends Node {
         }
 
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP) || false){
             gunNumber += 1;
             if (gunNumber > 2) gunNumber = 0;
         }

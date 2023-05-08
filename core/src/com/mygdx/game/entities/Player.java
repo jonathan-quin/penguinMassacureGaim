@@ -128,7 +128,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
             takeMovementInput(onFloor,delta);
 
 
-            if (myGun != null){
+            if (myGun != null && !Globals.sceneJustChanged){
 
                 if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)){
                     bulletHolder.addChild(ObjectPool.get(myGun.throwClass).initThrow(globalPosition,Utils.getGlobalMousePosition()));
@@ -208,6 +208,13 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
         removeChild(myGun);
         myGun = null;
+
+        double newSpeed = Globals.gameSpeed/1.04;
+        if (Globals.gameSpeed < 0.01){
+            newSpeed = 0;
+        }
+
+        ((TimeRewindRoot)SceneHandler.getCurrentRoot()).setNextGameSpeed(newSpeed);
 
         vel.x = lerp(vel.x,0,0.1f);
         vel.y -= GRAVITY * delta;

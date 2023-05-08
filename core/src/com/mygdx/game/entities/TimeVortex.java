@@ -15,6 +15,10 @@ public class TimeVortex extends StaticNode implements TimeRewindInterface {
 
     Vector2 vel;
 
+    Vector2 targetVel;
+
+    double accel = 1;
+
 
     public TimeVortex(){
         this(0,0);
@@ -23,9 +27,14 @@ public class TimeVortex extends StaticNode implements TimeRewindInterface {
 
         super( x, y, getMaskLayers(LayerNames.PLAYER), getMaskLayers());
         vel = new Vector2(0,0);
+        targetVel = new Vector2(0,0);
     }
 
     public TimeVortex init(float x, float y,Vector2 vel){
+        return init(x,y,vel,vel,1);
+    }
+
+    public TimeVortex init(float x, float y,Vector2 vel,Vector2 targetVel,double accel){
 
         super.init( x, y, getMaskLayers(LayerNames.PLAYER), getMaskLayers());
 
@@ -36,7 +45,8 @@ public class TimeVortex extends StaticNode implements TimeRewindInterface {
 
 
         this.vel.set(vel);
-
+        this.targetVel.set(targetVel);
+        this.accel = accel;
 
 
 
@@ -56,6 +66,8 @@ public class TimeVortex extends StaticNode implements TimeRewindInterface {
     @Override
     public void update(double delta) {
         super.update(delta);
+
+        vel.lerp(targetVel, (float) (accel * 60 * delta));
 
         getChild("sprite",TextureEntity.class).setRotation(vel.angleDeg());
 
@@ -93,8 +105,14 @@ public class TimeVortex extends StaticNode implements TimeRewindInterface {
         ((ArrayList)returnArr.get(0)).add(this.getParent());
         ((ArrayList)returnArr.get(0)).add(lastSave);
 
-        returnArr.add(ObjectPool.get(Vector2.class).set(position)); //1
-        returnArr.add(ObjectPool.get(Vector2.class).set(vel)); //2
+        returnArr.add(new Vector2(position)); //1
+        returnArr.add(new Vector2(vel)); //2
+        returnArr.add(new Vector2(targetVel));
+        returnArr.add(accel);
+
+
+        returnArr.add((int) position.y);
+
 
         lastSave = returnArr;
         return returnArr;
@@ -116,6 +134,10 @@ public class TimeVortex extends StaticNode implements TimeRewindInterface {
     public TimeVortex load(Object... vars) {
         this.position.set( (Vector2) vars[1]);
         this.vel.set( (Vector2) vars[2]);
+        this.targetVel.set( (Vector2) vars[3]);
+        this.accel = (double) vars[4];
+
+        position.y = (int) vars[5];
 
         getChild("sprite",TextureEntity.class).setRotation(vel.angleDeg());
 

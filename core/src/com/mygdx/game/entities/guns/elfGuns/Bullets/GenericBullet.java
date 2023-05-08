@@ -150,7 +150,7 @@ public class GenericBullet extends MovementNode implements TimeRewindInterface {
             die();
         }
 
-        if (!Utils.is_on_screen(globalPosition,10,10)){
+        if (!Utils.is_on_screen(globalPosition,500,500)){
             queueFree();
         }
 

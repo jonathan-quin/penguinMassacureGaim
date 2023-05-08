@@ -55,9 +55,6 @@ public class TileMapProcessor extends ColliderObject{
     public void debug(){
 
 
-
-
-
     }
 
 

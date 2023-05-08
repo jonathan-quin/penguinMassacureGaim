@@ -396,6 +396,10 @@ public class Elf extends MovementNode implements TimeRewindInterface {
 
                 if (!canSeePlayer()){
                     state = State.SEARCH;
+                    Raycast randCast = getChild("randCast",Raycast.class);
+                    randCast.dirty = true;
+                    randCast.setCast(0,-64);
+                    if (!onFloor && randCast.isColliding()) vel.x *= 0.2;
                 }
 
                 double playerDistance = globalPosition.dst2((player.globalPosition));
