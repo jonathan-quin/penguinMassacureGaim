@@ -26,11 +26,11 @@ public class ParalaxBackground extends Node implements TimeRewindInterface {
     }
     public void ready(){
 
-        addChild(ObjectPool.get(TextureEntity.class).init(myTexture,-myTexture.getWidth() + 1,0,0,0));
+        addChild(ObjectPool.get(TextureEntity.class).init(myTexture,-myTexture.getWidth(),0,0,0));
 
         addChild(ObjectPool.get(TextureEntity.class).init(myTexture,0,0,0,0));
 
-        addChild(ObjectPool.get(TextureEntity.class).init(myTexture,myTexture.getWidth() - 1,0,0,0));
+        addChild(ObjectPool.get(TextureEntity.class).init(myTexture,myTexture.getWidth(),0,0,0));
 
         addToGroup("rewind");
 
@@ -47,15 +47,26 @@ public class ParalaxBackground extends Node implements TimeRewindInterface {
 
     public void update(double delta){
 
-        Vector2 newPos = ObjectPool.getGarbage(Vector2.class).set(Globals.cameraOffset.x,Globals.cameraOffset.y).scl(0.2F,0.2f);
+        Vector2 newPos  = ObjectPool.getGarbage(Vector2.class).set(0,0);
+
+        try{
+            newPos = ObjectPool.getGarbage(Vector2.class).set(getGroupHander().getNodesInGroup("player").get(0).position).scl(0.2F,0.2f);
+
+        }catch (Exception ex){
+
+        }
 
         position.set(newPos);
 
         for (Node child : children) {
             child = (TextureEntity) child;
-
+            ((TextureEntity) child).setScale(1F + (2f/myTexture.getWidth()),1);
             if (!Utils.is_on_screen(child.globalPosition.x,child.globalPosition.y,myTexture.getWidth(),100000)){
-                child.position.x += myTexture.getWidth() * 3 * signum(Globals.cameraOffset.x - child.globalPosition.x);
+
+                //float oldPos = Math.round(child.position.x/myTexture.getWidth()) * myTexture.getWidth();
+
+                child.position.x +=  myTexture.getWidth() * 3 * signum(Globals.cameraOffset.x - child.globalPosition.x);
+                //child.position.x -= signum(Globals.cameraOffset.x - child.globalPosition.x);
             }
         }
 
@@ -108,6 +119,9 @@ public class ParalaxBackground extends Node implements TimeRewindInterface {
 
         addChild(ObjectPool.get(TextureEntity.class).init(myTexture,myTexture.getWidth(),0,0,0));
 
+        for (Node child : children){
+            ((TextureEntity) child).setScale(1F + (2f/myTexture.getWidth()),1);
+        }
 
         children.get(0).position.x = (float) vars[3];
         children.get(1).position.x = (float) vars[4];

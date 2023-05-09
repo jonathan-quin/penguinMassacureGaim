@@ -1,12 +1,11 @@
 package com.mygdx.game.entities.guns.elfGuns;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.entities.Elf;
+import com.mygdx.game.entities.guns.elfGuns.Bullets.ElfBullet;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
-import com.mygdx.game.entities.guns.floorGuns.FloorRevolver;
 import com.mygdx.game.entities.guns.floorGuns.FloorShotgun;
 import com.mygdx.game.helpers.constants.ObjectPool;
+import com.mygdx.game.helpers.constants.TextureHolder;
 
 public class ElfShotgun extends ElfGun {
 
@@ -18,15 +17,15 @@ public class ElfShotgun extends ElfGun {
 
         rotation = 0;
 
-        aimedTolerance = Math.toRadians(10);
+        aimedTolerance = Math.toRadians(15);
         aimSpeed = 0.04;
         fixedAimSpeed = Math.toDegrees(1.5);
 
-        tex = new Texture("edg32Shotgun.png");
+        tex = TextureHolder.redShotgun;
         texOffset = new Vector2(10,0);
 
         timeUntilNextShot = 0;
-        fireRate = 0.5;
+        fireRate = 0.7;
 
         floorClass = FloorShotgun.class;
     }
@@ -38,7 +37,7 @@ public class ElfShotgun extends ElfGun {
         float bulletSpeed = 400;
 
         int numBullets = 5;
-        int spread = 30;
+        int spread = 45;
 
         Vector2 newDir = ObjectPool.getGarbage(Vector2.class).set(bulletSpeed,0);
         newDir.rotateRad((float) rotation);
@@ -51,7 +50,7 @@ public class ElfShotgun extends ElfGun {
         newDir.rotateRad((float) (Math.toRadians(spread)/-2));
 
         for (int i = 0; i < numBullets; i++){
-            returnArr[i] = ObjectPool.get( GenericBullet.class ).init(startOffset.x, startOffset.y,newDir.x, newDir.y, damage);
+            returnArr[i] = ObjectPool.get( ElfBullet.class ).init(startOffset.x, startOffset.y,newDir.x, newDir.y, damage);
             returnArr[i].deadFramesElves = true;
             newDir.rotateRad((float) (Math.toRadians(spread)/numBullets));
         }

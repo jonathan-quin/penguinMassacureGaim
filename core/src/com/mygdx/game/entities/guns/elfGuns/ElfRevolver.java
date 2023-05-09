@@ -1,7 +1,7 @@
 package com.mygdx.game.entities.guns.elfGuns;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.entities.guns.elfGuns.Bullets.ElfBullet;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
 import com.mygdx.game.entities.guns.floorGuns.FloorRevolver;
 import com.mygdx.game.helpers.constants.ObjectPool;
@@ -20,7 +20,7 @@ public class ElfRevolver extends ElfGun {
         aimSpeed = 0.1;
         fixedAimSpeed = Math.toDegrees(3);
 
-        tex = TextureHolder.revolver;
+        tex = TextureHolder.redRevolver;
         floorClass = FloorRevolver.class;
         texOffset = new Vector2(0,0);
 
@@ -42,7 +42,7 @@ public class ElfRevolver extends ElfGun {
 
         GenericBullet[] returnArr = new GenericBullet[1];
 
-        returnArr[0] = ObjectPool.get( GenericBullet.class );
+        returnArr[0] = ObjectPool.get( ElfBullet.class );
         returnArr[0].init(startOffset.x, startOffset.y,newDir.x, newDir.y, damage);
         returnArr[0].deadFramesElves = true;
 

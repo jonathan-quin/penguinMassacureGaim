@@ -8,7 +8,7 @@ public class FloorRevolver extends FloorGun{
     public FloorRevolver() {
         super();
         myGun = PenguinRevolver.class;
-        myTex = TextureHolder.revolver;
+        myTex = TextureHolder.greenRevolver;
     }
 
 }

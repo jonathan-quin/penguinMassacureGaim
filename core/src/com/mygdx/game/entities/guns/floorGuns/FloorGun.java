@@ -11,10 +11,7 @@ import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TextureHolder;
 import com.mygdx.game.helpers.utilities.TimeRewindInterface;
 import com.mygdx.game.helpers.utilities.Utils;
-import com.mygdx.game.nodes.CollisionShape;
-import com.mygdx.game.nodes.MovementNode;
-import com.mygdx.game.nodes.StaticNode;
-import com.mygdx.game.nodes.TextureEntity;
+import com.mygdx.game.nodes.*;
 
 import java.util.ArrayList;
 
@@ -49,7 +46,7 @@ public class FloorGun extends MovementNode implements TimeRewindInterface {
         lastChild().setName("shape");
 
         addChild((ObjectPool.get(StaticNode.class)).init(0,0,getMaskLayers(LayerNames.PLAYER),getMaskLayers()));
-        lastChild().addChild((ObjectPool.get(CollisionShape.class)).init(8, 4, 0, 2));
+        lastChild().addChild((ObjectPool.get(CollisionShape.class)).init(12, 12, 0, 2));
         playerDetect = (StaticNode) lastChild();
 
         addToGroup("rewind");
@@ -85,7 +82,7 @@ public class FloorGun extends MovementNode implements TimeRewindInterface {
         playerDetect.getFirstCollision(ObjectPool.getGarbage(Vector2.class).set(0,0));
         if (playerDetect.lastCollided) {
             Player player = (Player) playerDetect.lastCollider;
-            if (player.getGun() == null && globalPosition.dst2(player.globalPosition) < 144){
+            if (player.getGun() == null && globalPosition.dst2(player.globalPosition) < Math.pow(16,2)){
                 player.takeGun(myGun);
                 queueFree();
             }
@@ -118,6 +115,7 @@ public class FloorGun extends MovementNode implements TimeRewindInterface {
         returnArr.add(new Vector2(position));
         returnArr.add(new Vector2(vel));
         returnArr.add((float) sprite.getRotation());
+        returnArr.add(isInGroup(GroupHandler.QUEUEFREE));
 
         lastSave = returnArr;
         return returnArr;
@@ -140,9 +138,10 @@ public class FloorGun extends MovementNode implements TimeRewindInterface {
 
         this.position.set((Vector2) vars[1]);
         this.vel.set((Vector2) vars[2]);
-
-
         sprite.setRotation((Float) vars[3]);
+
+        if ((boolean) vars[4]) queueFree();
+
         updateGlobalPosition();
         return null;
     }

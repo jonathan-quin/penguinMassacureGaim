@@ -1,8 +1,8 @@
 package com.mygdx.game.entities.guns.penguinGuns;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
+import com.mygdx.game.entities.guns.elfGuns.Bullets.PenguinBullet;
 import com.mygdx.game.entities.guns.elfGuns.thrownGuns.ThrownRevolver;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TextureHolder;
@@ -26,7 +26,7 @@ public class PenguinRevolver extends PenguinGun{
 
         recoil = 100;
 
-        tex =TextureHolder.revolver;
+        tex =TextureHolder.greenRevolver;
         texOffset = new Vector2(3,-3.5f);
 
         timeUntilNextShot = 0;
@@ -53,7 +53,7 @@ public class PenguinRevolver extends PenguinGun{
 
         GenericBullet[] returnArr = new GenericBullet[1];
 
-        returnArr[0] = ObjectPool.get( GenericBullet.class );
+        returnArr[0] = ObjectPool.get( PenguinBullet.class );
         returnArr[0].init(startOffset.x, startOffset.y,newDir.x, newDir.y, damage);
         returnArr[0].deadFramesPlayer = true;
 

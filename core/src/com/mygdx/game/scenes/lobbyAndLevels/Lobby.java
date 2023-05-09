@@ -1,9 +1,15 @@
 package com.mygdx.game.scenes.lobbyAndLevels;
 
+import com.mygdx.game.entities.Elf;
 import com.mygdx.game.entities.EndLevelGate;
 import com.mygdx.game.entities.Player;
+import com.mygdx.game.entities.guns.elfGuns.ElfShotgun;
+import com.mygdx.game.entities.guns.floorGuns.FloorMiniGun;
+import com.mygdx.game.entities.guns.floorGuns.FloorRevolver;
+import com.mygdx.game.entities.guns.floorGuns.FloorShotgun;
 import com.mygdx.game.entities.guns.penguinGuns.PenguinMiniGun;
 import com.mygdx.game.entities.guns.penguinGuns.PenguinRevolver;
+import com.mygdx.game.entities.levelCreator;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TileMapHolder;
 import com.mygdx.game.nodes.Node;
@@ -17,6 +23,8 @@ public class Lobby extends Root {
         rootNode = poolGet(Node.class).init(0,0);
         rootNode.setMyRoot(this);
 
+        //add(ObjectPool.get(levelCreator.class).init());
+
         add(ObjectPool.get(Node.class).init(0,0));
         last().setName("bulletHolder");
 
@@ -24,6 +32,8 @@ public class Lobby extends Root {
         add(poolGet(EndLevelGate.class).init(440,-547,"lobby-Level2","","Level2"));
         add(poolGet(EndLevelGate.class).init(640,-547,"lobby-Level3","","Level3"));
 
+        add(poolGet(FloorRevolver.class).init(552.0f,-412.0f));
+        add(poolGet(FloorMiniGun.class).init(584.0f,-412.0f));
 
 
         add(poolGet(Player.class).init(496.0f , -400.0f));

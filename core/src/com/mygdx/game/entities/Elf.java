@@ -1,5 +1,6 @@
 package com.mygdx.game.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
@@ -16,9 +17,9 @@ import com.mygdx.game.nodes.*;
 
 import java.util.ArrayList;
 
+import static com.badlogic.gdx.math.MathUtils.degreesToRadians;
 import static com.badlogic.gdx.math.MathUtils.lerp;
-import static java.lang.Math.abs;
-import static java.lang.Math.toDegrees;
+import static java.lang.Math.*;
 
 public class Elf extends MovementNode implements TimeRewindInterface {
 
@@ -37,6 +38,9 @@ public class Elf extends MovementNode implements TimeRewindInterface {
     protected  float wanderAccel = 0.3f * 60;
 
     protected  double gravity = 400;
+
+    protected boolean wanderJump = false;
+    protected double jumpXVelocity = 0;
 
     protected  Vector2 lastPlayerPos;
     protected  Node bulletHolder;
@@ -154,6 +158,8 @@ public class Elf extends MovementNode implements TimeRewindInterface {
 
     }
 
+    boolean repositionJump = false;
+
     @Override
     public ArrayList<Object> save() {
         ArrayList<Object> returnArr = (ArrayList<Object>) ObjectPool.get(ArrayList.class);
@@ -166,8 +172,8 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         ((ArrayList)returnArr.get(0)).add(this.getParent());
         ((ArrayList)returnArr.get(0)).add(lastSave);
 
-        returnArr.add(ObjectPool.get(Vector2.class).set(position)); //1
-        returnArr.add(ObjectPool.get(Vector2.class).set(vel)); //2
+        returnArr.add(new Vector2(position)); //1
+        returnArr.add(new Vector2(vel)); //2
         returnArr.add(myGun.getClass()); //3
 
         returnArr.add(getChild("sprite",TextureEntity.class).getFlipX()); //4
@@ -175,12 +181,16 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         returnArr.add(direction == Direction.LEFT); //5
 
 
-        returnArr.add(ObjectPool.get(Vector2.class).set(lastPlayerPos)); //6
+        returnArr.add(new Vector2(lastPlayerPos)); //6
         returnArr.add(state); //7
 
         returnArr.add(myGun.timeUntilNextShot); //8
         returnArr.add((Double) myGun.rotation); //9
         returnArr.add((Integer)health); // 10
+
+        returnArr.add(repositionJump);
+        returnArr.add(wanderJump);
+        returnArr.add(jumpXVelocity);
 
         lastSave = returnArr;
         return returnArr;
@@ -236,6 +246,10 @@ public class Elf extends MovementNode implements TimeRewindInterface {
                 break;
         }
 
+        repositionJump = (boolean) vars[11];
+        wanderJump = (boolean) vars[12];
+        jumpXVelocity = (double) vars[13];
+
 
         return null;
     }
@@ -243,11 +257,11 @@ public class Elf extends MovementNode implements TimeRewindInterface {
     @Override
     public Elf init() {
 
-        init(0,0,null);
+        init(0,0,null,false);
         return this;
     }
 
-    public Elf init(float x, float y, ElfGun gun){
+    public Elf init(float x, float y, ElfGun gun, boolean facingLeft){
         super.init(x,y,getMaskLayers(LayerNames.WALLS),getMaskLayers(LayerNames.ELVES));
 
         this.myGun = gun;
@@ -257,6 +271,22 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         vel.set(0,0);
 
         lastSave = null;
+
+        if (facingLeft) direction = Direction.LEFT;
+        else direction = Direction.RIGHT;
+
+        if (gun != null){
+            if (facingLeft) {
+                gun.rotation = -PI / 2 - 30 * degreesToRadians;
+            } else {
+                gun.rotation = -PI / 2 + 30 * degreesToRadians;
+            }
+        }
+
+        state = State.WANDER;
+
+        repositionJump = false;
+        wanderJump = false;
 
         return this;
     }
@@ -281,6 +311,11 @@ public class Elf extends MovementNode implements TimeRewindInterface {
 
         vel.y -= gravity * delta;
         boolean onFloor = testMove(0,-1);
+
+        if (onFloor){
+            repositionJump = false;
+            wanderJump = false;
+        }
 
 
         getChild("gunSprite",TextureEntity.class).setRotation(toDegrees(myGun.rotation));
@@ -354,7 +389,11 @@ public class Elf extends MovementNode implements TimeRewindInterface {
 
                 double targetX2 = moveTowardsPoint(lastPlayerPos,onFloor,false);
 
+
+
                 vel.x = lerp(vel.x, (float) (targetX2 * searchSpeed), (float) (wanderAccel * delta));
+
+
 
                 vel.set( moveAndSlide(vel,delta) );
 
@@ -362,7 +401,7 @@ public class Elf extends MovementNode implements TimeRewindInterface {
                     state = State.CHASE;
                 }
 
-                if (MathUtilsCustom.isEqualApprox(vel.x,0,0.1) || MathUtilsCustom.isEqualApprox(globalPosition.x,lastPlayerPos.x,4)){
+                if (!repositionJump && (MathUtilsCustom.isEqualApprox(vel.x,0,0.1) || MathUtilsCustom.isEqualApprox(globalPosition.x,lastPlayerPos.x,4))){
                     state = State.WANDER;
                 }
 
@@ -418,7 +457,10 @@ public class Elf extends MovementNode implements TimeRewindInterface {
 
                 myGun.aimAt(globalPosition,player.globalPosition,delta);
 
-               if (onFloor) jump(48);
+               if (onFloor){
+                   repositionJump = true;
+                   jump(48);
+               }
 
                 double playerDistance2 = globalPosition.dst2((player.globalPosition));
 
@@ -448,6 +490,7 @@ public class Elf extends MovementNode implements TimeRewindInterface {
 
 
         }
+
 
 
     }
@@ -502,11 +545,14 @@ public class Elf extends MovementNode implements TimeRewindInterface {
             getChild("playerDetect").position.x = (globalPosition.x < player.globalPosition.x) ? 350 : - 350;
         }
 
-
-        getChild("playerDetect",ColliderObject.class).getFirstCollision(ObjectPool.getGarbage(Vector2.class).set(0,1));
-
+        getChild("playerDetect",ColliderObject.class).parentPosition.set(globalPosition);
+        getChild("playerDetect",ColliderObject.class).updateParentPos();
+        getChild("playerDetect",ColliderObject.class).getFirstCollision(ObjectPool.getGarbage(Vector2.class).set(0,0));
 
         boolean playerInSightBox = getChild("playerDetect",ColliderObject.class).lastCollided;
+
+
+        if (!playerInSightBox) return false;
 
         Raycast ray = (Raycast) getChild("playerLOS");
         ray.dirty = true;
@@ -514,7 +560,7 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         Raycast ray2 = (Raycast) getChild("playerLOS2");
         ray2.dirty = true;
 
-        if (!playerInSightBox) return false;
+
 
 
         ray.setCast(player.globalPosition.x - globalPosition.x,player.globalPosition.y - globalPosition.y);
@@ -529,6 +575,21 @@ public class Elf extends MovementNode implements TimeRewindInterface {
     public void jump(double height){
 
         vel.y = (float) Math.sqrt(abs(-2 * gravity * height));
+
+        if (state == State.WANDER){
+            wanderJump = true;
+
+            switch (direction){
+                case RIGHT:
+                    jumpXVelocity = wanderSpeed;
+                    break;
+                case LEFT:
+                    jumpXVelocity = -wanderSpeed;
+                    break;
+            }
+
+
+        }
 
     }
 
@@ -616,6 +677,14 @@ public class Elf extends MovementNode implements TimeRewindInterface {
     }
 
     public void turnAroundOrJumpV2Wander(boolean onFloor){
+
+        if (!onFloor && repositionJump){
+           vel.x = 0;
+            return;
+        }
+        if (!onFloor && wanderJump){
+            vel.x = (float) jumpXVelocity;
+        }
 
         Raycast rightLedge = getChild("rightLedgeDetect",Raycast.class);
         Raycast rightGap = getChild("rightGapJump",Raycast.class);
@@ -726,6 +795,17 @@ public class Elf extends MovementNode implements TimeRewindInterface {
     return speed is 1 to -1
      */
     public double moveTowardsPoint(Vector2 point, boolean onFloor, boolean away){
+
+        if (repositionJump){
+
+            return 0;
+
+        }
+
+        if (wanderJump){
+            vel.x = (float) jumpXVelocity;
+        }
+
 
         Raycast rightLedge = getChild("rightLedgeDetect",Raycast.class);
         Raycast rightGap = getChild("rightGapJump",Raycast.class);

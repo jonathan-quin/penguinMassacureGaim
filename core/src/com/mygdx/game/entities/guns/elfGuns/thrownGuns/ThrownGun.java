@@ -6,6 +6,7 @@ import com.mygdx.game.entities.Elf;
 import com.mygdx.game.entities.Player;
 import com.mygdx.game.entities.TimeParticle;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
+import com.mygdx.game.entities.guns.penguinGuns.PenguinGun;
 import com.mygdx.game.helpers.constants.LayerNames;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TextureHolder;
@@ -35,6 +36,8 @@ public class ThrownGun extends MovementNode implements TimeRewindInterface {
     public double deadFrames = 0;
     public double maxDeadFrames = 0.1;
 
+    public Class myGun;
+
     public ThrownGun() {
 
         super();
@@ -58,7 +61,7 @@ public class ThrownGun extends MovementNode implements TimeRewindInterface {
 
     public ThrownGun init(float posX, float posY, float velX, float velY) {
 
-        super.init(posX, posY, getMaskLayers(LayerNames.WALLS, LayerNames.ELVES, LayerNames.PLAYER), getMaskLayers(LayerNames.THROWNGUNS));
+        super.init(posX, posY, getMaskLayers(LayerNames.WALLS, LayerNames.ELVES), getMaskLayers(LayerNames.THROWNGUNS));
 
         vel.set(velX, velY);
 
@@ -69,11 +72,14 @@ public class ThrownGun extends MovementNode implements TimeRewindInterface {
         return this;
     }
 
-    public ThrownGun initThrow(Vector2 start,Vector2 target){
+    public ThrownGun initThrow(Vector2 start,Vector2 target,Vector2 startVelocity){
+
         Vector2 startPos = ObjectPool.getGarbage(Vector2.class).set(start);
         startPos.add( ObjectPool.getGarbage(Vector2.class).set(target.x-start.x,target.y-start.y).nor().scl(distanceFromPlayer));
 
         Vector2 dir = ObjectPool.get(Vector2.class).set(target.x-start.x,target.y-start.y).nor().scl(throwSpeed);
+
+        dir.add(startVelocity.x/1, startVelocity.y/1);
 
         return init(startPos.x,startPos.y,dir.x,dir.y);
     }
@@ -81,13 +87,13 @@ public class ThrownGun extends MovementNode implements TimeRewindInterface {
 
     public void update(double delta) {
 
-        if (deadFrames >= 0){
-            deadFrames -= delta;
-            setMaskLayers(getMaskLayers(LayerNames.WALLS, LayerNames.ELVES, LayerNames.PLAYER), getMaskLayers(LayerNames.THROWNGUNS));
-        }
-        else{
-            setMaskLayers(getMaskLayers(LayerNames.WALLS, LayerNames.ELVES), getMaskLayers(LayerNames.THROWNGUNS));
-        }
+//        if (deadFrames >= 0){
+//            deadFrames -= delta;
+//            setMaskLayers(getMaskLayers(LayerNames.WALLS, LayerNames.ELVES), getMaskLayers(LayerNames.THROWNGUNS));
+//        }
+//        else{
+//            setMaskLayers(getMaskLayers(LayerNames.WALLS, LayerNames.ELVES, LayerNames.PLAYER), getMaskLayers(LayerNames.THROWNGUNS));
+//        }
 
 
         vel.y -= gravity * delta;
@@ -102,10 +108,10 @@ public class ThrownGun extends MovementNode implements TimeRewindInterface {
             if (lastCollider.isOnLayer(LayerNames.WALLS)) {
                 die();
             }
-            if (lastCollider.isOnLayer(LayerNames.PLAYER) && deadFrames <= 0) {
-                ((Player) lastCollider).hit(vel, damage);
-                die();
-            }
+//            if (lastCollider.isOnLayer(LayerNames.PLAYER) && deadFrames <= 0) {
+//                ((Player) lastCollider).takeGun(myGun);
+//                queueFree();
+//            }
              if (lastCollider.isOnLayer(LayerNames.ELVES)) {
                 ((Elf) lastCollider).hit(vel, damage);
                  die();

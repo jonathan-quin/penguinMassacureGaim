@@ -103,6 +103,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
         bulletHolder = getRootNode().getChild("bulletHolder");
 
         addToGroup("rewind");
+        addToGroup("player");
 
         addChild(ObjectPool.get(TextureEntity.class).init(TextureHolder.penguinTexture,0f,1f,0,0));
         lastChild().setName("sprite");
@@ -118,6 +119,8 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
     public void update(double delta){
 
+        //delta *= 2;
+
         targetSpeed.set(0.0f,0.0f);
 
         boolean onFloor = testMove(0,-1);
@@ -127,10 +130,10 @@ public class Player extends MovementNode implements TimeRewindInterface {
             takeMovementInput(onFloor,delta);
 
 
-            if (myGun != null){
+            if (myGun != null && !Globals.sceneJustChanged){
 
                 if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)){
-                    bulletHolder.addChild(ObjectPool.get(myGun.throwClass).initThrow(globalPosition,Utils.getGlobalMousePosition()));
+                    bulletHolder.addChild(ObjectPool.get(myGun.throwClass).initThrow(globalPosition,Utils.getGlobalMousePosition(),vel));
                     removeChild(myGun);
                     myGun = null;
                 }
@@ -208,6 +211,14 @@ public class Player extends MovementNode implements TimeRewindInterface {
         removeChild(myGun);
         myGun = null;
 
+        double newSpeed = Globals.gameSpeed/1.04;
+        if (Globals.gameSpeed < 0.01){
+            newSpeed = 0;
+        }
+
+        if (SceneHandler.getCurrentRoot() instanceof TimeRewindRoot )
+        ((TimeRewindRoot)SceneHandler.getCurrentRoot()).setNextGameSpeed(newSpeed);
+
         vel.x = lerp(vel.x,0,0.1f);
         vel.y -= GRAVITY * delta;
     }
@@ -246,13 +257,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
             rotation += rotationChange;
 
-            if (false && myGun != null){
-                if (sprite.getFlipX()) {
-                    myGun.rotation += toRadians(rotationChange);
-                } else {
-                    myGun.rotation -= toRadians(rotationChange);
-                }
-            }
+
 
         }
         else{
@@ -283,6 +288,15 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.C)){
             Globals.showCollision = !Globals.showCollision;
+
+            if (Globals.showCollision){
+                Globals.camera.setToOrtho(false, (float) (Globals.screenSize.x), (float) (Globals.screenSize.y));
+            }
+            else{
+                Globals.camera.setToOrtho(false, (float) (Globals.screenSize.x * 0.65), (float) (Globals.screenSize.y * 0.65));
+
+            }
+
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.O)){
@@ -293,21 +307,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
             health += 1000000;
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.V)){
 
-            if (getRootNode().getChild("debugElf") == null){
-                getRootNode().addChild(ObjectPool.get(MouseFollowSprite.class).init(TextureHolder.elfTexture, 0, 0, 0, 0));
-                getRootNode().lastChild().setName("debugElf");
-            }
-
-            Vector2 tempValue = Utils.getGlobalMousePosition();
-
-            tempValue.set(16 * (int) (tempValue.x/16),16 * (int) (tempValue.y/16));
-
-            //add(poolGet(Elf.class).init(200,-180,ObjectPool.get(ElfRevolver.class)));
-
-            System.out.println("add(poolGet(Elf.class).init(" + tempValue.x + "f , " + tempValue.y + "f ,ObjectPool.get(ElfRevolver.class)));" );
-        }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)){
             System.out.println(position);
