@@ -71,13 +71,13 @@ public class TimeRewindRoot extends Root{
 
             if (!nextGameSpeedChanged){
                 if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-                    Globals.gameSpeed = lerp((float) gameSpeed,0.1f,0.2f);
+                    Globals.gameSpeed = lerp((float) gameSpeed,0.1f,0.15f);
                 } else {
                     if (framesSinceLastRewind < 60){
                         Globals.gameSpeed = lerp((float) gameSpeed,1f,0.05f);
                     }
                     else{
-                        Globals.gameSpeed = lerp((float) gameSpeed,1f,0.3f);
+                        Globals.gameSpeed = lerp((float) gameSpeed,1f,0.1f);
                     }
 
                 }
