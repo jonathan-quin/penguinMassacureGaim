@@ -150,6 +150,10 @@ public class levelCreator extends Node {
             if (gunNumber < 0) gunNumber = 2;
         }
 
+        if (Gdx.input.isKeyJustPressed(Input.Keys.L)){
+            System.out.println(SceneHandler.getCurrentScene());
+        }
+
 
         Vector2 tempValue = Utils.getGlobalMousePosition();
 

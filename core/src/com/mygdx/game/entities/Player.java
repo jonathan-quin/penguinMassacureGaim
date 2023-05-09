@@ -119,6 +119,8 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
     public void update(double delta){
 
+        //delta *= 2;
+
         targetSpeed.set(0.0f,0.0f);
 
         boolean onFloor = testMove(0,-1);

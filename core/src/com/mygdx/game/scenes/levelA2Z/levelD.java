@@ -47,7 +47,7 @@ public class levelD extends TimeRewindRoot {
 
 
         add(poolGet(TimeVortex.class).init(-1956,0,ObjectPool.getGarbage(Vector2.class).set(5,0),ObjectPool.getGarbage(Vector2.class).set(1,0),0.008));
-        add(poolGet(TimeVortex.class).init((float) (1948 + 16 * 34),0,ObjectPool.getGarbage(Vector2.class).set(-1,0)));
+        add(poolGet(TimeVortex.class).init((float) (1948 + 16 * 35.5),0,ObjectPool.getGarbage(Vector2.class).set(-1,0)));
 
         add(poolGet(TimeVortexVertical.class).init(0,-2900,ObjectPool.getGarbage(Vector2.class).set(0,10),ObjectPool.getGarbage(Vector2.class).set(0,60),0.004));
 

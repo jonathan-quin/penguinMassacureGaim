@@ -5,6 +5,7 @@ import com.mygdx.game.entities.*;
 import com.mygdx.game.entities.guns.elfGuns.ElfMiniGun;
 import com.mygdx.game.entities.guns.elfGuns.ElfRevolver;
 import com.mygdx.game.entities.guns.elfGuns.ElfShotgun;
+import com.mygdx.game.entities.guns.floorGuns.FloorRevolver;
 import com.mygdx.game.entities.guns.penguinGuns.PenguinRevolver;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TextureHolder;
@@ -23,29 +24,26 @@ public class levelB extends TimeRewindRoot {
         add(ObjectPool.get(Node.class).init(0,30));
         last().addChild(ObjectPool.get(ParalaxBackground.class).init(0,0, TextureHolder.georgeParalaxMountainsAndTrees));
 
-        add(ObjectPool.get(Node.class).init(0,0));
-        last().addChild(poolGet(EndLevelGate.class).init(200.0f,-288.0f,"","","NEXTSCENE"));
+        add(poolGet(TileMapProcessor.class).init(TileMapHolder.tutorial4));
 
         add(ObjectPool.get(Node.class).init(0,0));
+        last().addChild(poolGet(EndLevelGate.class).init(440.0f,16.0f,"","","tutorial7"));
 
+        add(ObjectPool.get(Node.class).init(0,0));
         last().setName("bulletHolder");
 
-        add(poolGet(Player.class).init(88.0f,-16.0f));
-        ((Player) last()).takeGun(PenguinRevolver.class);
+        add(poolGet(Player.class).init(56.0f,0.0f));
 
-        add(poolGet(Elf.class).init(312.0f , -16.0f ,ObjectPool.get(ElfMiniGun.class),true));
-        add(poolGet(ElfVip.class).init(152.0f , -128.0f ,ObjectPool.get(ElfRevolver.class),true));
-        add(poolGet(ElfVip.class).init(248.0f , -208.0f ,ObjectPool.get(ElfRevolver.class),false));
-        add(poolGet(Elf.class).init(248.0f , -128.0f ,ObjectPool.get(ElfRevolver.class),false));
-        add(poolGet(Elf.class).init(152.0f , -208.0f ,ObjectPool.get(ElfRevolver.class),true));
-
-
-        add(poolGet(TileMapProcessor.class).init(TileMapHolder.levelB));
+        add(poolGet(Elf.class).init(344.0f , 0.0f ,ObjectPool.get(ElfMiniGun.class),true));
+        add(poolGet(FloorRevolver.class).init(88.0f,-12.0f));
 
 
 
-        add(poolGet(TimeVortex.class).init(-1956,0,ObjectPool.getGarbage(Vector2.class).set(10,0),ObjectPool.getGarbage(Vector2.class).set(60,0),0.008));
-        add(poolGet(TimeVortex.class).init((float) (1948 + 16 * 32),0,ObjectPool.getGarbage(Vector2.class).set(-1,0)));
+
+
+
+        add(poolGet(TimeVortex.class).init(-1956,0,ObjectPool.getGarbage(Vector2.class).set(20,0)));
+        add(poolGet(TimeVortex.class).init((float) (1948 + 16 * 32.4),0,ObjectPool.getGarbage(Vector2.class).set(-1,0)));
 
     }
 
