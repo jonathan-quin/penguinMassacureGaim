@@ -4,6 +4,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
 import com.mygdx.game.entities.guns.elfGuns.ElfGun;
+import com.mygdx.game.entities.guns.elfGuns.ElfMiniGun;
+import com.mygdx.game.entities.guns.elfGuns.ElfRevolver;
+import com.mygdx.game.entities.guns.elfGuns.ElfShotgun;
+import com.mygdx.game.helpers.constants.Globals;
 import com.mygdx.game.helpers.constants.LayerNames;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TextureHolder;
@@ -295,6 +299,16 @@ public class ElfVip extends Elf implements TimeRewindInterface {
 
                     for (GenericBullet bullet : myGun.shoot(ObjectPool.getGarbage(Vector2.class).set(globalPosition).sub(0,-2))){
                         bulletHolder.addChild(bullet);
+                    }
+
+                    if (myGun.getClass().equals(ElfMiniGun.class)){
+                        playSound(Globals.Sounds.MINIGUNSHOOT);
+                    }
+                    if (myGun.getClass().equals(ElfShotgun.class)){
+                        playSound(Globals.Sounds.SHOTGUNSHOOT);
+                    }
+                    if (myGun.getClass().equals(ElfRevolver.class)){
+                        playSound(Globals.Sounds.REVOLVERSHOOT);
                     }
 
                 }

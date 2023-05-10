@@ -142,6 +142,8 @@ public class Player extends MovementNode implements TimeRewindInterface {
             if (myGun != null && !Globals.sceneJustChanged){
 
                 if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)){
+                    playSound(Globals.Sounds.JUMP);
+
                     bulletHolder.addChild(ObjectPool.get(myGun.throwClass).initThrow(globalPosition,Utils.getGlobalMousePosition(),vel));
                     removeChild(myGun);
                     myGun = null;
@@ -262,7 +264,10 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
         if (Gdx.input.isKeyPressed(Input.Keys.S)) vel.y -= 10;
 
-        if ((Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.SPACE)) && onFloor) vel.y = JUMPFORCE;
+        if ((Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.SPACE)) && onFloor){
+            playSound(Globals.Sounds.JUMP);
+            vel.y = JUMPFORCE;
+        }
 
 
         vel.x  = (float) lerp(vel.x,targetSpeed.x, ACCEL * delta);

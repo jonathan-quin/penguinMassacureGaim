@@ -5,6 +5,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
 import com.mygdx.game.entities.guns.elfGuns.ElfGun;
+import com.mygdx.game.entities.guns.elfGuns.ElfMiniGun;
+import com.mygdx.game.entities.guns.elfGuns.ElfRevolver;
+import com.mygdx.game.entities.guns.elfGuns.ElfShotgun;
 import com.mygdx.game.entities.guns.floorGuns.FloorGun;
 import com.mygdx.game.helpers.constants.Globals;
 import com.mygdx.game.helpers.constants.LayerNames;
@@ -426,6 +429,16 @@ public class Elf extends MovementNode implements TimeRewindInterface {
                         bulletHolder.addChild(bullet);
                     }
 
+                    if (myGun.getClass().equals(ElfMiniGun.class)){
+                        playSound(Globals.Sounds.MINIGUNSHOOT);
+                    }
+                    if (myGun.getClass().equals(ElfShotgun.class)){
+                        playSound(Globals.Sounds.SHOTGUNSHOOT);
+                    }
+                    if (myGun.getClass().equals(ElfRevolver.class)){
+                        playSound(Globals.Sounds.REVOLVERSHOOT);
+                    }
+
                 }
 
                 if (!canSeePlayer()){
@@ -575,6 +588,8 @@ public class Elf extends MovementNode implements TimeRewindInterface {
     public void jump(double height){
 
         vel.y = (float) Math.sqrt(abs(-2 * gravity * height));
+
+        playSound(Globals.Sounds.JUMP);
 
         if (state == State.WANDER){
             wanderJump = true;
@@ -942,6 +957,9 @@ public class Elf extends MovementNode implements TimeRewindInterface {
     public void die(Vector2 bulletVel) {
 
         queueFree();
+
+        playSound(Globals.Sounds.ELFDIE);
+
         bulletHolder.addChild(((FloorGun) ObjectPool.get(myGun.floorClass)).init(position.x,position.y,this.vel.x,this.vel.y));
 
         for (TimeParticle t : ParticleMaker.makeBloodyParticlesFromSprite(getChild("sprite",TextureEntity.class),bulletVel)){

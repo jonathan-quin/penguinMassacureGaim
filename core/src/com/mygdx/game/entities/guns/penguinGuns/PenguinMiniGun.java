@@ -3,7 +3,11 @@ package com.mygdx.game.entities.guns.penguinGuns;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.PenguinBullet;
+import com.mygdx.game.entities.guns.elfGuns.ElfMiniGun;
+import com.mygdx.game.entities.guns.elfGuns.ElfRevolver;
+import com.mygdx.game.entities.guns.elfGuns.ElfShotgun;
 import com.mygdx.game.entities.guns.elfGuns.thrownGuns.ThrownMiniGun;
+import com.mygdx.game.helpers.constants.Globals;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TextureHolder;
 
@@ -40,6 +44,11 @@ public class PenguinMiniGun extends PenguinGun{
     }
 
     protected GenericBullet[] getBullets(Vector2 pos) {
+
+
+            playSound(Globals.Sounds.MINIGUNSHOOT);
+
+
 
         float damage = 100;
         float bulletFromPlayer = 30;

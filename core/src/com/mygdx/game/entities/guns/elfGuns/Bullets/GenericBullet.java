@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.Elf;
 import com.mygdx.game.entities.Player;
 import com.mygdx.game.entities.TimeParticle;
+import com.mygdx.game.helpers.constants.Globals;
 import com.mygdx.game.helpers.constants.LayerNames;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TextureHolder;
@@ -123,13 +124,16 @@ public class GenericBullet extends MovementNode implements TimeRewindInterface {
 
         if (lastCollided){
             if (lastCollider.isOnLayer(LayerNames.WALLS)){
+                playSound(Globals.Sounds.BULLETHARD);
                 die();
             }
             if (lastCollider.isOnLayer(LayerNames.PLAYER)){
+                playSound(Globals.Sounds.BULLETSOFT);
                 ((Player) lastCollider).hit(vel,damage);
                 die();
             }
             if (lastCollider.isOnLayer(LayerNames.ELVES)){
+                playSound(Globals.Sounds.BULLETSOFT);
                 ((Elf) lastCollider).hit(vel,damage);
                 die();
             }
@@ -143,9 +147,13 @@ public class GenericBullet extends MovementNode implements TimeRewindInterface {
         if (bulletDetect.lastCollided){
 
             if (bulletDetect.lastCollider.isOnLayer(LayerNames.BULLETS)) {
+
+
+
                 GenericBullet other = ((GenericBullet) bulletDetect.lastCollider.getParent());
                 if (Math.abs(MathUtilsCustom.differenceBetweenAngles(vel.angleRad(), other.vel.angleRad())) > PI / 2) {
                     other.die();
+                    playSound(Globals.Sounds.BULLETHARD);
                     die();
                 }
             }
@@ -155,6 +163,7 @@ public class GenericBullet extends MovementNode implements TimeRewindInterface {
         gunDetect.getFirstCollision(ObjectPool.getGarbage(Vector2.class).set(0,0));
 
         if (gunDetect.lastCollided){
+            playSound(Globals.Sounds.BULLETHARD);
             die();
         }
 

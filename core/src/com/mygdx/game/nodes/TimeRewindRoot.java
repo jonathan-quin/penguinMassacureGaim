@@ -78,6 +78,7 @@ public class TimeRewindRoot extends Root{
 
         if (!playBack){
 
+            audio.stopLoop(Sounds.REWINDSTATIC);
 
             if (!nextGameSpeedChanged){
                 if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
@@ -98,6 +99,9 @@ public class TimeRewindRoot extends Root{
 
             }
             else{
+
+
+
                 gameSpeed = nextGameSpeed;
 
                 if (nextGameSpeed != 0){
@@ -111,6 +115,9 @@ public class TimeRewindRoot extends Root{
             boolean shouldRewind = Gdx.input.isKeyPressed(Input.Keys.R) && !sceneJustChanged;
 
             if (shouldRewind){
+
+                audio.loop(Sounds.REWINDSTATIC);
+
                 framesSinceLastRewind = 0;
 //                if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
 //                    trimPast();
@@ -169,6 +176,9 @@ public class TimeRewindRoot extends Root{
             }
         }
         else{
+
+            audio.loop(Sounds.REWINDSTATIC);
+
             switch (playBackStage){
                 case 0:
                     {
@@ -460,6 +470,9 @@ public class TimeRewindRoot extends Root{
     }
 
     public void close(){
+
+        audio.stopLoop(Sounds.REWINDSTATIC);
+
         rootNode.free();
         rootNode = null;
         gameSpeed = 1;

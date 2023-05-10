@@ -341,6 +341,10 @@ public class Node {
         return null;
     }
 
+    public void playSound(String sound){
+        myRoot.audio.play(sound);
+    }
+
     /**
      * Returns true if the node is a member of the specified group.
      *

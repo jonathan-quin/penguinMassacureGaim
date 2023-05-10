@@ -1,11 +1,15 @@
 package com.mygdx.game.helpers.constants;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapRenderer;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.HashMap;
+
+import static com.mygdx.game.helpers.constants.Globals.Sounds.*;
 
 public class Globals {
 
@@ -35,6 +39,8 @@ public class Globals {
 
     public static HashMap<String, Boolean> lobbyDoorsOpen = new HashMap<>();
 
+    public static HashMap<String, Sound> sounds = new HashMap<>();
+
     public Globals(){
 
     }
@@ -55,6 +61,31 @@ public class Globals {
         lobbyDoorsOpen.put("lobby8",false);
         lobbyDoorsOpen.put("lobby9",false);
         lobbyDoorsOpen.put("lobby10",false);
+
+
+
+        sounds.put(ELFDIE, Gdx.audio.newSound(Gdx.files.internal("sounds/elf explode.wav")));
+        sounds.put(BULLETSOFT, Gdx.audio.newSound(Gdx.files.internal("sounds/bullet impact 1.wav")));
+        sounds.put(BULLETHARD, Gdx.audio.newSound(Gdx.files.internal("sounds/bullet impact 3.wav")));
+        sounds.put(JUMP, Gdx.audio.newSound(Gdx.files.internal("sounds/jump noisee.mp3")));
+        sounds.put(SHOTGUNSHOOT, Gdx.audio.newSound(Gdx.files.internal("sounds/shotgun shot.mp3")));
+        sounds.put(REVOLVERSHOOT, Gdx.audio.newSound(Gdx.files.internal("sounds/revolver shotFinal.mp3")));
+        sounds.put(MINIGUNSHOOT, Gdx.audio.newSound(Gdx.files.internal("sounds/miniGunShot.mp3")));
+        sounds.put(REWINDSTATIC, Gdx.audio.newSound(Gdx.files.internal("sounds/staticcc.wav")));
+
+    }
+
+    public static class Sounds{
+        public static String ELFDIE = "elfDie";
+        public static String BULLETSOFT = "bulletHitSoft";
+        public static String BULLETHARD = "bulletHitHard";
+        public static String JUMP = "jump";
+
+        public static String SHOTGUNSHOOT = "shotgunShoot";
+        public static String REVOLVERSHOOT = "shotgunShoot";
+        public static String MINIGUNSHOOT = "shotgunShoot";
+
+        public static String REWINDSTATIC = "rewindStatic";
 
     }
 

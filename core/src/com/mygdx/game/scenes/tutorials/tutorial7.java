@@ -37,7 +37,7 @@ public class tutorial7 extends TimeRewindRoot {
         add(poolGet(Hints.class).init(250,130,TextureHolder.Text.rightClick));
         add(poolGet(Hints.class).init(250,0,TextureHolder.Text.S));
 
-        add(poolGet(Elf.class).init(344.0f , 0.0f ,ObjectPool.get(ElfShotgun.class),true));
+        //add(poolGet(Elf.class).init(344.0f , 0.0f ,ObjectPool.get(ElfShotgun.class),true));
         add(poolGet(Elf.class).init(376.0f , 0.0f ,ObjectPool.get(ElfShotgun.class),true));
         add(poolGet(FloorRevolver.class).init(88.0f,-12.0f));
 

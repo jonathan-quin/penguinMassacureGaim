@@ -7,6 +7,7 @@ import com.mygdx.game.entities.Player;
 import com.mygdx.game.entities.TimeParticle;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
 import com.mygdx.game.entities.guns.penguinGuns.PenguinGun;
+import com.mygdx.game.helpers.constants.Globals;
 import com.mygdx.game.helpers.constants.LayerNames;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TextureHolder;
@@ -74,6 +75,8 @@ public class ThrownGun extends MovementNode implements TimeRewindInterface {
 
     public ThrownGun initThrow(Vector2 start,Vector2 target,Vector2 startVelocity){
 
+
+
         Vector2 startPos = ObjectPool.getGarbage(Vector2.class).set(start);
         startPos.add( ObjectPool.getGarbage(Vector2.class).set(target.x-start.x,target.y-start.y).nor().scl(distanceFromPlayer));
 
@@ -106,6 +109,7 @@ public class ThrownGun extends MovementNode implements TimeRewindInterface {
 
         if (lastCollided ) {
             if (lastCollider.isOnLayer(LayerNames.WALLS)) {
+                playSound(Globals.Sounds.BULLETHARD);
                 die();
             }
 //            if (lastCollider.isOnLayer(LayerNames.PLAYER) && deadFrames <= 0) {
@@ -113,6 +117,7 @@ public class ThrownGun extends MovementNode implements TimeRewindInterface {
 //                queueFree();
 //            }
              if (lastCollider.isOnLayer(LayerNames.ELVES)) {
+                 playSound(Globals.Sounds.BULLETSOFT);
                 ((Elf) lastCollider).hit(vel, damage);
                  die();
             }

@@ -23,6 +23,8 @@ public class Root {
     /** The group handler. */
     public GroupHandler groups = new GroupHandler();
 
+    public AudioHandler audio = new AudioHandler();
+
     /**
      * Creates a new Root object.
      */
