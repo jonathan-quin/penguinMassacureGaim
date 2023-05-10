@@ -9,9 +9,7 @@ import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.SceneHandler;
 import com.mygdx.game.helpers.constants.TextureHolder;
 import com.mygdx.game.helpers.constants.TileMapHolder;
-import com.mygdx.game.nodes.Node;
-import com.mygdx.game.nodes.TileMapProcessor;
-import com.mygdx.game.nodes.TimeRewindRoot;
+import com.mygdx.game.nodes.*;
 
 public class tutorial7 extends TimeRewindRoot {
 
@@ -33,10 +31,15 @@ public class tutorial7 extends TimeRewindRoot {
 
         add(poolGet(Player.class).init(56.0f,0.0f));
 
+        add(poolGet(Hints.class).init(-250,130,TextureHolder.Text.R));
+        add(poolGet(Hints.class).init(-250,30,TextureHolder.Text.shift));
+        add(poolGet(Hints.class).init(-250,-90,TextureHolder.Text.leftClick));
+        add(poolGet(Hints.class).init(250,130,TextureHolder.Text.rightClick));
+        add(poolGet(Hints.class).init(250,0,TextureHolder.Text.S));
+
         add(poolGet(Elf.class).init(344.0f , 0.0f ,ObjectPool.get(ElfShotgun.class),true));
         add(poolGet(Elf.class).init(376.0f , 0.0f ,ObjectPool.get(ElfShotgun.class),true));
         add(poolGet(FloorRevolver.class).init(88.0f,-12.0f));
-
 
 
 

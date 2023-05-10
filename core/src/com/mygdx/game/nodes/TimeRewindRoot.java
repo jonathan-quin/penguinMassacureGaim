@@ -17,8 +17,7 @@ import java.util.ArrayList;
 
 import static com.badlogic.gdx.math.MathUtils.lerp;
 import static com.badlogic.gdx.math.MathUtils.sin;
-import static com.mygdx.game.helpers.constants.Globals.gameSpeed;
-import static com.mygdx.game.helpers.constants.Globals.sceneJustChanged;
+import static com.mygdx.game.helpers.constants.Globals.*;
 
 public class TimeRewindRoot extends Root{
 
@@ -63,6 +62,8 @@ public class TimeRewindRoot extends Root{
     }
 
     public void update(){
+
+
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.L)){
             SceneHandler.setCurrentScene("lobby");
@@ -210,6 +211,8 @@ public class TimeRewindRoot extends Root{
 
 
         }
+
+        timeRootStage = playBackStage;
 
 
     }
@@ -482,10 +485,6 @@ public class TimeRewindRoot extends Root{
         }
 
         past.clear();
-
-
-
-
 
     }
 

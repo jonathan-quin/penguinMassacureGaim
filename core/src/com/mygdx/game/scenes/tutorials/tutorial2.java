@@ -8,15 +8,15 @@ import com.mygdx.game.entities.guns.elfGuns.ElfShotgun;
 import com.mygdx.game.entities.guns.floorGuns.FloorShotgun;
 import com.mygdx.game.entities.guns.penguinGuns.PenguinMiniGun;
 import com.mygdx.game.entities.guns.penguinGuns.PenguinRevolver;
-import com.mygdx.game.helpers.constants.ObjectPool;
-import com.mygdx.game.helpers.constants.SceneHandler;
-import com.mygdx.game.helpers.constants.TextureHolder;
-import com.mygdx.game.helpers.constants.TileMapHolder;
+import com.mygdx.game.helpers.constants.*;
 import com.mygdx.game.nodes.Node;
+import com.mygdx.game.nodes.TextureEntity;
 import com.mygdx.game.nodes.TileMapProcessor;
 import com.mygdx.game.nodes.TimeRewindRoot;
 
 public class tutorial2 extends TimeRewindRoot {
+
+
 
     public void open(){
 
@@ -35,6 +35,10 @@ public class tutorial2 extends TimeRewindRoot {
         last().setName("bulletHolder");
 
         add(poolGet(Player.class).init(64.0f,-240.0f));
+
+        add(poolGet(Hints.class).init(-250,120,TextureHolder.Text.R));
+
+
         add(poolGet(FloorShotgun.class).init(1416.0f,-60.0f));
 
 

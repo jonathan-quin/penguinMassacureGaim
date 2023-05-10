@@ -47,5 +47,26 @@ public class TextureHolder {
 
     public static Texture georgeParalaxMountainsAndTrees = new Texture("georgesMountainParalax.png");
 
+    public static class Text{
+
+        public static Texture WAD = new Texture("text/WADtoMove.png");
+
+        public static Texture S = new Texture("text/StoFall.png");
+
+        public static Texture mustDie = new Texture("text/thisElfMustDie.png");
+
+        public static Texture lForLobby = new Texture("text/LForLobby.png");
+
+        public static Texture leftClick = new Texture("text/leftClickToShoot.png");
+
+        public static Texture rightClick = new Texture("text/rightClickToThrow.png");
+
+        public static Texture shift = new Texture("text/shift.png");
+
+        public static Texture R = new Texture("text/RtoRewind.png");
+
+        public static Texture shootDown = new Texture("text/shootDown.png");
+
+    }
 
 }

@@ -32,13 +32,20 @@ public class tutorial5 extends TimeRewindRoot {
 
 
         add(poolGet(Player.class).init(152.0f,-144.0f));
+
+        add(poolGet(Hints.class).init(-250,130,TextureHolder.Text.R));
+        add(poolGet(Hints.class).init(-250,30,TextureHolder.Text.shift));
+        add(poolGet(Hints.class).init(-250,-90,TextureHolder.Text.leftClick));
+        add(poolGet(Hints.class).init(250,130,TextureHolder.Text.rightClick));
+        add(poolGet(Hints.class).init(250,0,TextureHolder.Text.S));
+
         add(poolGet(FloorRevolver.class).init(184.0f,-156.0f));
         add(poolGet(Elf.class).init(392.0f , -96.0f ,ObjectPool.get(ElfRevolver.class),true));
         //add(poolGet(Elf.class).init(424.0f , -96.0f ,ObjectPool.get(ElfRevolver.class),true));
         add(poolGet(ElfVip.class).init(216.0f , -16.0f ,ObjectPool.get(ElfRevolver.class),false));
 
 
-
+        add(poolGet(ElfVipHints.class).init(-0,65,TextureHolder.Text.mustDie));
 
 
         add(poolGet(TimeVortex.class).init(-1956,0,ObjectPool.getGarbage(Vector2.class).set(20,0)));

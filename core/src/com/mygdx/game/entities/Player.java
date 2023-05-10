@@ -112,6 +112,11 @@ public class Player extends MovementNode implements TimeRewindInterface {
         addChild(ObjectPool.get(ammoCounter.class).init(320,178));
         lastChild().setName("counter");
 
+        addChild(ObjectPool.get(TextureEntity.class).init(TextureHolder.Text.lForLobby,250,100,0,0));
+        ((TextureEntity) lastChild()).setScale(0.7f,0.7f);
+        lastChild().setName("lForLobby");
+        lastChild().addToGroup(GroupHandler.RENDERONTOP);
+
         //takeGun(PenguinRevolver.class);
         //addChild( ObjectPool.get(Raycast.class).init(0,0,100,-100,true,getMaskLayers(LayerNames.WALLS)) );
         //ray = (Raycast) lastChild();
@@ -123,6 +128,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
     public void update(double delta){
 
         //delta *= 2;
+        getChild("lForLobby", TextureEntity.class).setVisible(false);
 
         targetSpeed.set(0.0f,0.0f);
 
@@ -150,7 +156,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
                         for (GenericBullet bullet : myGun.shoot()) {
                             bulletHolder.addChild(bullet);
                         }
-                        vel.add(ObjectPool.get(Vector2.class).set(-1,0).rotateRad((float) myGun.rotation).scl((float) myGun.recoil));
+                        vel.add(ObjectPool.getGarbage(Vector2.class).set(-1,0).rotateRad((float) myGun.rotation).scl((float) myGun.recoil));
                     }
                 }
 
@@ -407,6 +413,12 @@ public class Player extends MovementNode implements TimeRewindInterface {
         updateGlobalPosition();
         Globals.cameraOffset.set(globalPosition);
 
+        if (Globals.timeRootStage != 0){
+            getChild("lForLobby", TextureEntity.class).setVisible(true);
+        }
+        else{
+            getChild("lForLobby", TextureEntity.class).setVisible(false);
+        }
 
         return null;
     }

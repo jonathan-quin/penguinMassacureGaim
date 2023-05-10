@@ -31,6 +31,10 @@ public class tutorial4 extends TimeRewindRoot {
         last().setName("bulletHolder");
 
         add(poolGet(Player.class).init(56.0f,0.0f));
+        add(poolGet(Hints.class).init(-250,130,TextureHolder.Text.R));
+        add(poolGet(Hints.class).init(-250,30,TextureHolder.Text.shift));
+        add(poolGet(Hints.class).init(-250,-90,TextureHolder.Text.leftClick));
+        add(poolGet(Hints.class).init(250,130,TextureHolder.Text.rightClick));
 
         add(poolGet(Elf.class).init(344.0f , 0.0f ,ObjectPool.get(ElfRevolver.class),true));
         add(poolGet(FloorRevolver.class).init(88.0f,-12.0f));

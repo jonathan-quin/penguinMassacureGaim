@@ -19,7 +19,7 @@ public class TimeParticle extends Particle implements TimeRewindInterface {
 
     @Override
     public TimeParticle init() {
-        init(ObjectPool.getGarbage(Vector2.class).set(0,0),0,0,0,0,ObjectPool.get(Vector2.class).set(0,0),0.01,0,1,false, Color.WHITE,Color.WHITE,0,0);
+        init(ObjectPool.getGarbage(Vector2.class).set(0,0),0,0,0,0,ObjectPool.getGarbage(Vector2.class).set(0,0),0.01,0,1,false, Color.WHITE,Color.WHITE,0,0);
         return this;
     }
 

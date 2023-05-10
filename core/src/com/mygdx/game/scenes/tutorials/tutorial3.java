@@ -33,6 +33,8 @@ public class tutorial3 extends TimeRewindRoot {
 
 
         add(poolGet(Player.class).init(72.0f,-96.0f));
+        add(poolGet(Hints.class).init(-250,120,TextureHolder.Text.R));
+        add(poolGet(Hints.class).init(-250,0,TextureHolder.Text.shift));
 
         add(poolGet(Elf.class).init(216f , -224.0f ,ObjectPool.get(ElfMiniGun.class),false));
 

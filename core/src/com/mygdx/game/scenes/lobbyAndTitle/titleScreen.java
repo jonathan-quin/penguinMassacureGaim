@@ -47,9 +47,13 @@ public class titleScreen extends Root {
 
         add(focusStealer);
 
+
+
         //add(ObjectPool.get(levelCreator.class).init());
 
         add(poolGet(TileMapProcessor.class).init(TileMapHolder.titleScreen));
+
+        add(ObjectPool.get(TextureEntity.class).init(TextureHolder.Text.WAD,350,-500,0,0));
 
     }
 

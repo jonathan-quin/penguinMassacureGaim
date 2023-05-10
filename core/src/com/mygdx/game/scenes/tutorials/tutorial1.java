@@ -10,6 +10,7 @@ import com.mygdx.game.helpers.constants.TextureHolder;
 import com.mygdx.game.helpers.constants.TileMapHolder;
 import com.mygdx.game.nodes.Node;
 import com.mygdx.game.nodes.Root;
+import com.mygdx.game.nodes.TextureEntity;
 import com.mygdx.game.nodes.TileMapProcessor;
 
 public class tutorial1 extends Root {
@@ -28,6 +29,8 @@ public class tutorial1 extends Root {
         last().addChild(poolGet(EndLevelGate.class).init(1688.0f,-272.0f,"","","tutorial2"));
 
         add(poolGet(Player.class).init(968.0f,-432.0f));
+
+        add(ObjectPool.get(TextureEntity.class).init(TextureHolder.Text.WAD,1000,-570,0,0));
 
 
 
