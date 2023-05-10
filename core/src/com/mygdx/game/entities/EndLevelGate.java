@@ -70,6 +70,8 @@ public class EndLevelGate extends StaticNode implements TimeRewindInterface {
 
          updateVIPStatus();
 
+         if (Globals.sceneJustChanged) return;
+
         if (open)
             getFirstCollision(ObjectPool.getGarbage(Vector2.class).set(0,0));
 
