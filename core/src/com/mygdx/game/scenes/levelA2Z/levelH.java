@@ -33,7 +33,7 @@ public class levelH extends TimeRewindRoot {
         add(poolGet(Player.class).init(552.0f,-240.0f));
         ((Player) last()).takeGun(PenguinRevolver.class);
         add(poolGet(Elf.class).init(632.0f , -240.0f ,ObjectPool.get(ElfShotgun.class),false));
-        add(poolGet(ElfVip.class).init(232.0f , -352.0f ,ObjectPool.get(ElfMiniGun.class),false));
+        add(poolGet(ElfVip.class).init(232.0f , -352.0f ,ObjectPool.get(ElfShotgun.class),false));
         add(poolGet(Elf.class).init(168.0f , -352.0f ,ObjectPool.get(ElfRevolver.class),false));
         add(poolGet(ElfVip.class).init(104.0f , -352.0f ,ObjectPool.get(ElfShotgun.class),false));
         add(poolGet(Elf.class).init(136.0f , -496.0f ,ObjectPool.get(ElfShotgun.class),false));
@@ -66,7 +66,7 @@ public class levelH extends TimeRewindRoot {
         add(poolGet(TimeVortex.class).init((float) (1948 + 16 * 45),0,ObjectPool.getGarbage(Vector2.class).set(-1,0)));
 
         add(poolGet(TimeVortexVertical.class).init(0,-3200,ObjectPool.getGarbage(Vector2.class).set(0,1)));
-        add(poolGet(TimeVortexVertical.class).init(0,2700,ObjectPool.getGarbage(Vector2.class).set(0,-10),ObjectPool.getGarbage(Vector2.class).set(0,-30),0.008));
+        add(poolGet(TimeVortexVertical.class).init(0,2550,ObjectPool.getGarbage(Vector2.class).set(0,-10),ObjectPool.getGarbage(Vector2.class).set(0,-70),0.008));
 
 
     }

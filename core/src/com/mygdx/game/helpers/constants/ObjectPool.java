@@ -1,5 +1,7 @@
 package com.mygdx.game.helpers.constants;
 
+import com.mygdx.game.nodes.TextureEntity;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -73,6 +75,20 @@ public class ObjectPool {
         }
 
         hashObjectsStored.get(obj.getClass()).add(obj);
+    }
+
+    public static void printTextureEntityParents() {
+
+        String temp = "";
+
+        for (Object obj :  hashObjectsInUse.get(TextureEntity.class)){
+            TextureEntity tex = (TextureEntity) obj;
+
+            temp += " " + tex.getParent().getClass();
+        }
+
+        System.out.println(temp);
+
     }
 
     public void removeFromInUse(Object obj){

@@ -308,6 +308,10 @@ public class Player extends MovementNode implements TimeRewindInterface {
             SceneHandler.goToNextScene();
         }
 
+        if (Gdx.input.isKeyJustPressed(Input.Keys.T)){
+            ObjectPool.printTextureEntityParents();
+        }
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.C)){
             Globals.showCollision = !Globals.showCollision;
 

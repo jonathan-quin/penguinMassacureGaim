@@ -206,7 +206,7 @@ public class ColliderObject extends Node {
         if (children.contains(child)){
 
             children.remove(children.indexOf(child));
-
+            ObjectPool.removeBackwards(child);
         }
 
         if (child instanceof CollisionShape){

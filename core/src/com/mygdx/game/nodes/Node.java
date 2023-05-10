@@ -245,6 +245,7 @@ public class Node {
 
         if (children.contains(child)){
             children.remove(child);
+            ObjectPool.removeBackwards(child);
             return true;
         }
 
