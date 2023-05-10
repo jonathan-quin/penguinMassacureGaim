@@ -20,7 +20,7 @@ public class levelH extends TimeRewindRoot {
         rootNode = poolGet(Node.class).init(0,0);
         rootNode.setMyRoot(this);
 
-        add(ObjectPool.get(Node.class).init(0,-300));
+        add(ObjectPool.get(Node.class).init(0,-550));
         last().addChild(ObjectPool.get(ParalaxBackground.class).init(0,0, TextureHolder.georgeParalaxMountainsAndTrees));
 
         add(ObjectPool.get(Node.class).init(0,0));

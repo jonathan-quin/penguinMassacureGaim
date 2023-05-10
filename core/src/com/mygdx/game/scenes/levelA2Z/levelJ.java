@@ -23,10 +23,11 @@ public class levelJ extends TimeRewindRoot {
         last().addChild(ObjectPool.get(ParalaxBackground.class).init(0,0, TextureHolder.georgeParalaxMountainsAndTrees));
 
         add(ObjectPool.get(Node.class).init(0,0));
+        last().addChild(poolGet(EndLevelGate.class).init(960.0f , -96.0f,"","lobby2","lobby"));
 
+        add(ObjectPool.get(Node.class).init(0,0));
         last().setName("bulletHolder");
 
-        add(poolGet(EndLevelGate.class).init(960.0f , -96.0f,"","lobby2","lobby"));
 
         add(poolGet(Player.class).init(48.0f , -112.0f));
         ((Player) last()).takeGun(PenguinRevolver.class);

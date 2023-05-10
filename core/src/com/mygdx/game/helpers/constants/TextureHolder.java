@@ -14,7 +14,7 @@ public class TextureHolder {
     public static Texture greenBullet = new Texture("bulletGreenOutline.png");
     public static Texture redBullet = new Texture("redBullet.png");
 
-
+    public static Texture countBullet = new Texture("ammoCountBullet.png");
     public static Texture elfTexture = new Texture("elfForNow.png");
     public static Texture elfVipTexture = new Texture("elf vip for now.png");
 

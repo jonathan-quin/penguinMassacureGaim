@@ -21,10 +21,10 @@ public class PenguinMiniGun extends PenguinGun{
         fixedAimSpeed = Math.toDegrees(6);
 
 
-        startingAmmo = 40;
+        startingAmmo = 30;
         ammoLeft = startingAmmo;
 
-        recoil = 60;
+        recoil = 75;
 
         tex = TextureHolder.greenMiniGun;
         texOffset = new Vector2(13,-0.5f);

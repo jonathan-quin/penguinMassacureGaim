@@ -64,6 +64,15 @@ public class TimeRewindRoot extends Root{
 
     public void update(){
 
+        if (Gdx.input.isKeyJustPressed(Input.Keys.L)){
+            SceneHandler.setCurrentScene("lobby");
+            return;
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.M)){
+            SceneHandler.setCurrentScene("titleScreen");
+            return;
+        }
+
         framesSinceLastRewind++;
 
         if (!playBack){
@@ -183,11 +192,16 @@ public class TimeRewindRoot extends Root{
                 }
                 case 2:
                 {
+
+
                     playBack(playBackFrame);
                     //delete(playBackFrame);
                     playBackFrame++;
                     if (playBackFrame > past.size() - 1) {
-                        SceneHandler.setCurrentScene(nextScene);
+                        playBackFrame = 0;
+                        playBackStage = 0;
+
+                        //SceneHandler.setCurrentScene(nextScene);
                     }
                     break;
                 }

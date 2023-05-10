@@ -157,6 +157,11 @@ public class ElfVip extends Elf implements TimeRewindInterface {
 
         myGun.updateTimeUntilNextShot(delta);
 
+        if (onFloor){
+            repositionJump = false;
+            wanderJump = false;
+        }
+
         switch (state){
             case WANDER:
 
@@ -198,7 +203,7 @@ public class ElfVip extends Elf implements TimeRewindInterface {
 
                 double targetX = moveTowardsPoint(player.globalPosition,onFloor,away);
 
-                vel.x = lerp(vel.x, (float) (targetX * myGun.moveSpeed), (float) (wanderAccel * delta));
+                vel.x = lerp(vel.x, (float) (targetX * myGun.moveSpeed * 0.6), (float) (wanderAccel * delta));
 
                 vel.set( moveAndSlide(vel,delta) );
 
@@ -248,6 +253,29 @@ public class ElfVip extends Elf implements TimeRewindInterface {
                 }
 
                 break;
+
+                /*getChild("exclaim",TextureEntity.class).setVisible(false);
+                getChild("question",TextureEntity.class).setVisible(true);
+
+                double targetX2 = moveTowardsPoint(lastPlayerPos,onFloor,false);
+
+
+
+                vel.x = lerp(vel.x, (float) (targetX2 * searchSpeed), (float) (wanderAccel * delta));
+
+
+
+                vel.set( moveAndSlide(vel,delta) );
+
+                if (canSeePlayer()){
+                    state = State.CHASE;
+                }
+
+                if (!repositionJump && (MathUtilsCustom.isEqualApprox(vel.x,0,0.1) || MathUtilsCustom.isEqualApprox(globalPosition.x,lastPlayerPos.x,4))){
+                    state = State.WANDER;
+                }
+
+                break;*/
             }
             case ATTACK:
 
@@ -326,7 +354,7 @@ public class ElfVip extends Elf implements TimeRewindInterface {
                     vel.x = lerp(vel.x, (float) 0, (float) (0.2 * 60 * delta));
                 }
 
-                vel.x = lerp(vel.x, (float) (targetSpeedX2 * myGun.moveSpeed), (float) (wanderAccel * delta));
+                vel.x = lerp(vel.x, (float) (targetSpeedX2 * myGun.moveSpeed * 0.6), (float) (wanderAccel * delta));
 
                 vel.set( moveAndSlide(vel,delta) );
 

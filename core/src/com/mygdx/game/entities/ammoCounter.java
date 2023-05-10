@@ -19,8 +19,8 @@ public class ammoCounter extends Node {
     public void display(int num, double reloadTimeLeft, double maxReload){
 
         while (num > children.size()){
-            addChild(ObjectPool.get(TextureEntity.class).init(TextureHolder.greenBullet, -children.size() * 16, 0, 0, 0));
-            ((TextureEntity)lastChild()).setScale(2,2);
+            addChild(ObjectPool.get(TextureEntity.class).init(TextureHolder.countBullet, -children.size() * 16, 0, 0, 0));
+            //((TextureEntity)lastChild()).setScale(2,2);
         }
         while (num < children.size()){
             removeChild(lastChild());
@@ -33,7 +33,7 @@ public class ammoCounter extends Node {
                 child.setRotation(90);
             }
             else{
-                child.setRotation(90 + (90 * (maxReload - reloadTimeLeft)/maxReload));
+                child.setRotation(90 - (90 * (maxReload - reloadTimeLeft)/maxReload));
             }
 
 
