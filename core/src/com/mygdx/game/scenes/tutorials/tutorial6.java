@@ -26,7 +26,7 @@ public class tutorial6 extends TimeRewindRoot {
         add(poolGet(TileMapProcessor.class).init(TileMapHolder.tutorial6));
 
         add(ObjectPool.get(Node.class).init(0,0));
-        last().addChild(poolGet(EndLevelGate.class).init(488.0f,0.0f,"","","Lobby"));
+        last().addChild(poolGet(EndLevelGate.class).init(488.0f,0.0f,"","","lobby"));
 
         add(ObjectPool.get(Node.class).init(0,0));
         last().setName("bulletHolder");

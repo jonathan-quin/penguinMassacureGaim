@@ -43,6 +43,17 @@ public class Globals {
         lobbyDoorsOpen.put("lobby-Level2",false);
         lobbyDoorsOpen.put("lobby-Level3",false);
 
+        lobbyDoorsOpen.put("lobby1",true);
+        lobbyDoorsOpen.put("lobby2",false);
+        lobbyDoorsOpen.put("lobby3",false);
+        lobbyDoorsOpen.put("lobby4",false);
+        lobbyDoorsOpen.put("lobby5",false);
+        lobbyDoorsOpen.put("lobby6",false);
+        lobbyDoorsOpen.put("lobby7",false);
+        lobbyDoorsOpen.put("lobby8",false);
+        lobbyDoorsOpen.put("lobby9",false);
+        lobbyDoorsOpen.put("lobby10",false);
+
     }
 
     public static float inverse(float num){

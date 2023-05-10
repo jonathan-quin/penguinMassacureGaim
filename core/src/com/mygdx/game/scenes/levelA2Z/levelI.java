@@ -24,7 +24,7 @@ public class levelI extends TimeRewindRoot {
         last().addChild(ObjectPool.get(ParalaxBackground.class).init(0,0, TextureHolder.georgeParalaxMountainsAndTrees));
 
         add(ObjectPool.get(Node.class).init(0,0));
-        last().addChild(poolGet(EndLevelGate.class).init(856.0f,-160.0f,"","","NEXTSCENE"));
+        last().addChild(poolGet(EndLevelGate.class).init(856.0f,-160.0f,"","lobby7","lobby"));
 
         add(ObjectPool.get(Node.class).init(0,0));
 

@@ -11,6 +11,7 @@ public class GroupHandler {
     }
 
     public static final String QUEUEFREE = "queueFree";
+    public static final String RENDERONTOP = "renderOnTop";
 
     public ArrayList<String> names = new ArrayList<>();
     public  ArrayList<ArrayList<Node>> nodes = new ArrayList<ArrayList<Node>>();

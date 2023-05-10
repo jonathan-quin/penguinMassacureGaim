@@ -1,4 +1,4 @@
-package com.mygdx.game.scenes.lobbyAndLevels;
+package com.mygdx.game.scenes.trash;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.Elf;
@@ -23,7 +23,7 @@ public class tempLevel3 extends TimeRewindRoot {
         add(ObjectPool.get(Node.class).init(0,0));
         last().setName("bulletHolder");
 
-        add(poolGet(EndLevelGate.class).init(712,-893,"","","Lobby"));
+        add(poolGet(EndLevelGate.class).init(712,-893,"","","lobby"));
 
 
         add(poolGet(Player.class).init(115,-60));

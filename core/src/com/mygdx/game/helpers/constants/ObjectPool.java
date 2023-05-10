@@ -164,7 +164,7 @@ public class ObjectPool {
 
     public static void remove(Object obj){
 
-        if (obj == null) return;;
+        if (obj == null) return;
 
         if (removeFromList(hashObjectsInUse.get(obj.getClass()),obj))
          putIntoStorage(obj);

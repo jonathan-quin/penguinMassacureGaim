@@ -796,13 +796,13 @@ public class Elf extends MovementNode implements TimeRewindInterface {
      */
     public double moveTowardsPoint(Vector2 point, boolean onFloor, boolean away){
 
-        if (repositionJump){
+        if (!onFloor && repositionJump){
 
             return 0;
 
         }
 
-        if (wanderJump){
+        if (!onFloor && wanderJump){
             vel.x = (float) jumpXVelocity;
         }
 

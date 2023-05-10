@@ -31,7 +31,7 @@ public class levelF extends TimeRewindRoot {
 //        last().addChild(poolGet(EndLevelGate.class).init(440.0f,16.0f,"","","NEXTSCENE"));
 
         add(ObjectPool.get(Node.class).init(0,0));
-        last().addChild(poolGet(EndLevelGate.class).init(280.0f,-128.0f,"","","NEXTSCENE"));
+        last().addChild(poolGet(EndLevelGate.class).init(280.0f,-128.0f,"","lobby10","lobby"));
 
         add(ObjectPool.get(Node.class).init(0,0));
 

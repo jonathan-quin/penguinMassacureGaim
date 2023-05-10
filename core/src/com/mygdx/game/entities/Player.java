@@ -109,6 +109,9 @@ public class Player extends MovementNode implements TimeRewindInterface {
         lastChild().setName("sprite");
         addChild(ObjectPool.get(CollisionShape.class).init(8,12,0,0));
 
+        addChild(ObjectPool.get(ammoCounter.class).init(320,178));
+        lastChild().setName("counter");
+
         //takeGun(PenguinRevolver.class);
         //addChild( ObjectPool.get(Raycast.class).init(0,0,100,-100,true,getMaskLayers(LayerNames.WALLS)) );
         //ray = (Raycast) lastChild();
@@ -150,6 +153,17 @@ public class Player extends MovementNode implements TimeRewindInterface {
                         vel.add(ObjectPool.get(Vector2.class).set(-1,0).rotateRad((float) myGun.rotation).scl((float) myGun.recoil));
                     }
                 }
+
+                if (myGun != null){
+                    getChild("counter", ammoCounter.class).display(myGun.ammoLeft,myGun.timeUntilNextShot,1d/myGun.fireRate);
+                }else{
+                    getChild("counter", ammoCounter.class).display(0,1,1);
+                }
+
+            } else{
+
+                getChild("counter", ammoCounter.class).display(0,1,1);
+
             }
 
         }
@@ -218,6 +232,8 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
         if (SceneHandler.getCurrentRoot() instanceof TimeRewindRoot )
         ((TimeRewindRoot)SceneHandler.getCurrentRoot()).setNextGameSpeed(newSpeed);
+
+        getChild("counter", ammoCounter.class).display(0,1,1);
 
         vel.x = lerp(vel.x,0,0.1f);
         vel.y -= GRAVITY * delta;
@@ -382,6 +398,10 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
         if (vars[7] != null){
             takeGun((Class) vars[7],(double)vars[8],(int)vars[9],(double) vars[10]);
+            getChild("counter", ammoCounter.class).display(myGun.ammoLeft,myGun.timeUntilNextShot,1d/myGun.fireRate);
+        }
+        else{
+            getChild("counter", ammoCounter.class).display(0,1,1);
         }
 
         updateGlobalPosition();

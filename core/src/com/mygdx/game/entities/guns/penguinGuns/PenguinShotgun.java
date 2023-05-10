@@ -30,7 +30,7 @@ public class PenguinShotgun extends PenguinGun{
         texOffset = new Vector2(12,-3.5f);
 
         timeUntilNextShot = 0;
-        fireRate = 1.2;
+        fireRate = 1.4;
 
         throwClass = ThrownShotgun.class;
 

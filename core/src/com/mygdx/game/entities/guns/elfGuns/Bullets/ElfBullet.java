@@ -9,4 +9,9 @@ public class ElfBullet extends GenericBullet{
         myTexture = TextureHolder.redBullet;
     }
 
+    public void update(double delta) {
+        killPlayer = true;
+        super.update(delta);
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.mygdx.game.scenes.lobbyAndLevels;
+package com.mygdx.game.scenes.trash;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.*;
@@ -26,7 +26,7 @@ public class tempLevel1 extends TimeRewindRoot {
 
         last().setName("bulletHolder");
 
-        add(poolGet(EndLevelGate.class).init(915,-386,"","lobby-Level2","Lobby"));
+        add(poolGet(EndLevelGate.class).init(915,-386,"","lobby-Level2","lobby"));
 
         add(poolGet(Player.class).init(115,-260));
         ((Player) last()).takeGun(PenguinRevolver.class);

@@ -30,7 +30,7 @@ public class MyGdxGame extends ApplicationAdapter {
 
 		SceneHandler.ready();
 
-		SceneHandler.setCurrentScene("levelA");
+		SceneHandler.setCurrentScene("titleScreen");
 
 		Globals.globalsInit();
 

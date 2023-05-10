@@ -4,13 +4,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.nodes.GroupHandler;
 import com.mygdx.game.nodes.Node;
 import com.mygdx.game.nodes.Root;
-import com.mygdx.game.scenes.TestScene;
-import com.mygdx.game.scenes.TestScene2;
-import com.mygdx.game.scenes.TimeRewindScene;
 import com.mygdx.game.scenes.levelA2Z.*;
-import com.mygdx.game.scenes.lobbyAndLevels.*;
+import com.mygdx.game.scenes.lobbyAndTitle.lobby;
+import com.mygdx.game.scenes.lobbyAndTitle.titleScreen;
 import com.mygdx.game.scenes.tutorials.*;
-import com.mygdx.game.scenes.tutorials.tutorial5;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,11 +35,14 @@ public class SceneHandler {
         scenes.put("TestScene2", new TestScene2());
         scenes.put("TimeRewindTest", new TimeRewindScene());
 
-        scenes.put("Lobby", new Lobby());
-        scenes.put("Level1", new Level1());
+
+
         scenes.put("Level2", new tempLevel2());
         scenes.put("Level3", new tempLevel3());
         */
+
+        scenes.put("lobby", new lobby());
+        scenes.put("titleScreen", new titleScreen());
 
         scenes.put("levelA", new levelA());
         scenes.put("levelB", new levelB());
@@ -53,8 +53,9 @@ public class SceneHandler {
         scenes.put("levelG", new levelG());
         scenes.put("levelH", new levelH());
         scenes.put("levelI", new levelI());
+        scenes.put("levelJ", new levelJ());
 
-        /*
+
         scenes.put("tutorial1", new tutorial1());
         scenes.put("tutorial2", new tutorial2());
         scenes.put("tutorial3", new tutorial3());
@@ -63,7 +64,7 @@ public class SceneHandler {
         scenes.put("tutorial6", new tutorial6());
         scenes.put("tutorial7", new tutorial7());
         scenes.put("tutorial8", new tutorial8());
-        */
+
 
 
 
@@ -142,6 +143,9 @@ public class SceneHandler {
 
         tempScene.render(batch);
 
+        for (Node n : tempScene.groups.getNodesInGroup(GroupHandler.RENDERONTOP)){
+            n.renderCascade(batch);
+        }
 
         batch.end();
 
@@ -157,7 +161,7 @@ public class SceneHandler {
         ObjectPool.takeOutTrash();
 
 
-       // ObjectPool.printTotal();
+       //ObjectPool.printTotal();
 
         for (Node n : tempScene.groups.getNodesInGroup(GroupHandler.QUEUEFREE)){
             n.free();
@@ -166,8 +170,8 @@ public class SceneHandler {
         tempScene.groups.clearGroup(GroupHandler.QUEUEFREE);
         
         if (sceneChangeThisFrame){
-//            ObjectPool.printTotal();
-//            ObjectPool.printObjectBreakdownInUse();
+//          ObjectPool.printTotal();
+//          ObjectPool.printObjectBreakdownInUse();
             tempScene.close();
 
             currentScene.init();

@@ -40,6 +40,8 @@ public class GenericBullet extends MovementNode implements TimeRewindInterface {
     public boolean deadFramesElves =  false;
     public boolean deadFramesPlayer = false;
 
+    boolean killPlayer = true;
+
     public Texture myTexture;
 
     public GenericBullet(){
@@ -106,7 +108,13 @@ public class GenericBullet extends MovementNode implements TimeRewindInterface {
             setMaskLayers(arr,getMaskLayers());
         }
         else{
-            setMaskLayers(getMaskLayers(LayerNames.WALLS,LayerNames.ELVES,LayerNames.PLAYER),getMaskLayers());
+
+            if (killPlayer){
+                setMaskLayers(getMaskLayers(LayerNames.WALLS,LayerNames.ELVES,LayerNames.PLAYER),getMaskLayers());
+            } else{
+                setMaskLayers(getMaskLayers(LayerNames.WALLS,LayerNames.ELVES),getMaskLayers());
+            }
+
         }
 
         moveAndSlide(vel,(float) delta);

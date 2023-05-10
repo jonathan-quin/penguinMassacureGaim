@@ -31,7 +31,7 @@ public class PenguinGun extends Node {
     public Vector2 texOffset;
 
     public double timeUntilNextShot;
-    protected double fireRate; //shots per second
+    public double fireRate; //shots per second
 
     public Node bulletHolder;
 

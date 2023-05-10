@@ -20,11 +20,11 @@ public class levelH extends TimeRewindRoot {
         rootNode = poolGet(Node.class).init(0,0);
         rootNode.setMyRoot(this);
 
-        add(ObjectPool.get(Node.class).init(0,30));
+        add(ObjectPool.get(Node.class).init(0,-300));
         last().addChild(ObjectPool.get(ParalaxBackground.class).init(0,0, TextureHolder.georgeParalaxMountainsAndTrees));
 
         add(ObjectPool.get(Node.class).init(0,0));
-        last().addChild(poolGet(EndLevelGate.class).init(216.0f,-992.0f,"","","NEXTSCENE"));
+        last().addChild(poolGet(EndLevelGate.class).init(216.0f,-992.0f,"","","lobby"));
 
         add(ObjectPool.get(Node.class).init(0,0));
 
@@ -63,7 +63,7 @@ public class levelH extends TimeRewindRoot {
 
 
         add(poolGet(TimeVortex.class).init(-1956,0,ObjectPool.getGarbage(Vector2.class).set(1,0)));
-        add(poolGet(TimeVortex.class).init((float) (1948 + 16 * 51),0,ObjectPool.getGarbage(Vector2.class).set(-1,0)));
+        add(poolGet(TimeVortex.class).init((float) (1948 + 16 * 45),0,ObjectPool.getGarbage(Vector2.class).set(-1,0)));
 
         add(poolGet(TimeVortexVertical.class).init(0,-3200,ObjectPool.getGarbage(Vector2.class).set(0,1)));
         add(poolGet(TimeVortexVertical.class).init(0,2700,ObjectPool.getGarbage(Vector2.class).set(0,-10),ObjectPool.getGarbage(Vector2.class).set(0,-30),0.008));
