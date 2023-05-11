@@ -16,12 +16,14 @@ import com.mygdx.game.helpers.constants.TextureHolder;
 import com.mygdx.game.helpers.utilities.MathUtilsCustom;
 import com.mygdx.game.helpers.utilities.ParticleMaker;
 import com.mygdx.game.helpers.utilities.TimeRewindInterface;
+import com.mygdx.game.helpers.utilities.Utils;
 import com.mygdx.game.nodes.*;
 
 import java.util.ArrayList;
 
 import static com.badlogic.gdx.math.MathUtils.degreesToRadians;
 import static com.badlogic.gdx.math.MathUtils.lerp;
+import static com.mygdx.game.helpers.utilities.Utils.is_on_screen;
 import static java.lang.Math.*;
 
 public class Elf extends MovementNode implements TimeRewindInterface {
@@ -589,7 +591,14 @@ public class Elf extends MovementNode implements TimeRewindInterface {
 
         vel.y = (float) Math.sqrt(abs(-2 * gravity * height));
 
-        playSound(Globals.Sounds.JUMP);
+        if (is_on_screen(position,20,20)){
+            playSound(Globals.Sounds.JUMP);
+            System.out.println(this);
+            System.out.println(position);
+            System.out.println(myGun.getClass());
+            System.out.println(state);
+        }
+
 
         if (state == State.WANDER){
             wanderJump = true;
