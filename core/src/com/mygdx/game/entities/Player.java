@@ -188,7 +188,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
         if (signum(tempVelY) != signum(vel.y)) vel.y = 0;
 
 
-        takeDebugInputs();
+        //takeDebugInputs();
         Globals.cameraOffset.set(position);
         //System.out.println(Globals.cameraOffset);
 
