@@ -23,6 +23,8 @@ public class TimeRewindRoot extends Root{
 
     ArrayList<ArrayList<ArrayList<Object>>> past = new ArrayList<>();
 
+    ArrayList<String[]> pastSounds =  new ArrayList<>();
+
     double time = 0;
     double lastSaveTime = 0;
 
@@ -177,11 +179,12 @@ public class TimeRewindRoot extends Root{
         }
         else{
 
-            audio.loop(Sounds.REWINDSTATIC);
+
 
             switch (playBackStage){
                 case 0:
                     {
+                        audio.loop(Sounds.REWINDSTATIC);
                     playBackStage++;
                     playBackFrame = past.size() - 1;
                     break;
@@ -204,8 +207,8 @@ public class TimeRewindRoot extends Root{
                 case 2:
                 {
 
-
-                    playBack(playBackFrame);
+                    audio.stopLoop(Sounds.REWINDSTATIC);
+                    playBackSound(playBackFrame);
                     //delete(playBackFrame);
                     playBackFrame++;
                     if (playBackFrame > past.size() - 1) {
@@ -245,6 +248,9 @@ public class TimeRewindRoot extends Root{
             thisFrame.add( ((TimeRewindInterface) n).save());
 
         }
+
+        pastSounds.add(audio.getAndClearLastSounds());
+
     }
 
     public void loadNodes() {
@@ -316,6 +322,9 @@ public class TimeRewindRoot extends Root{
             ObjectPool.removeBackwards(lastFrame);
         }
 
+        if (!holding)
+        pastSounds.remove(pastSounds.size()-1);
+
     }
 
     public void delete(int frame) {
@@ -367,6 +376,45 @@ public class TimeRewindRoot extends Root{
 
             ((TimeRewindInterface) obj).load(currentNode.toArray());
 
+        }
+
+
+    }
+
+    public void playBackSound(int frame){
+        for (Node n : groups.getNodesInGroup("rewind")) {
+
+            n.free();
+        }
+
+        ArrayList<ArrayList<Object>> currentFrame;
+
+
+
+
+        currentFrame = past.get(frame);
+
+
+
+        for (ArrayList<Object> currentNode : currentFrame) {
+
+            Object obj = ObjectPool.get((Class) ((ArrayList) currentNode.get(0)).get(0));
+
+            ((TimeRewindInterface) obj).init();
+
+            ((Node)((ArrayList) currentNode.get(0)).get(1)).addChild((Node) obj);
+            ((TimeRewindInterface) obj).setLastSave((ArrayList<Object>) ((ArrayList) currentNode.get(0)).get(2));
+
+            ((Node) obj).updateGlobalPosition();
+
+
+
+            ((TimeRewindInterface) obj).load(currentNode.toArray());
+
+        }
+
+        for (String sound : pastSounds.get(frame)){
+            audio.play(sound);
         }
 
 

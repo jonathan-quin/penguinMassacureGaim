@@ -3,6 +3,7 @@ package com.mygdx.game.nodes;
 import com.badlogic.gdx.audio.Sound;
 import com.mygdx.game.helpers.constants.Globals;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AudioHandler {
@@ -11,11 +12,16 @@ public class AudioHandler {
 
     HashMap<String,Long> loopIds = new HashMap<>();
 
-
+    ArrayList<String> soundsMade = new ArrayList<>();
 
     public void play(String effect){
+        soundsMade.add(effect);
         Globals.sounds.get(effect).play(1f);
     }
+
+//    public void play(String effect,float volume){
+//        Globals.sounds.get(effect).play(volume);
+//    }
 
     public void loop(String sound){
         if (!loopIds.containsKey(sound)){
@@ -34,6 +40,20 @@ public class AudioHandler {
         }
     }
 
+
+    public String[] getAndClearLastSounds(){
+
+        String[] temp = new String[soundsMade.size()];
+
+        for (int i = 0; i < soundsMade.size(); i++){
+            temp[i] = soundsMade.get(i);
+        }
+
+        soundsMade.clear();
+
+        return temp;
+
+    }
 
 
 
