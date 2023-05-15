@@ -1,8 +1,10 @@
 package com.mygdx.game.entities;
 
-import com.badlogic.gdx.graphics.Color;
+import static java.lang.Math.signum;
+
+import java.util.ArrayList;
+
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.helpers.constants.Globals;
 import com.mygdx.game.helpers.constants.ObjectPool;
@@ -11,10 +13,6 @@ import com.mygdx.game.helpers.utilities.TimeRewindInterface;
 import com.mygdx.game.helpers.utilities.Utils;
 import com.mygdx.game.nodes.Node;
 import com.mygdx.game.nodes.TextureEntity;
-
-import java.util.ArrayList;
-
-import static java.lang.Math.signum;
 
 public class ParalaxBackground extends Node implements TimeRewindInterface {
 

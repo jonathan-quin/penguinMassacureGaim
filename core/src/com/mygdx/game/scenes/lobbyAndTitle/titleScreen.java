@@ -1,10 +1,7 @@
 package com.mygdx.game.scenes.lobbyAndTitle;
 
-import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.EndLevelGate;
-import com.mygdx.game.entities.ParalaxBackground;
 import com.mygdx.game.entities.Player;
-import com.mygdx.game.entities.levelCreator;
 import com.mygdx.game.helpers.constants.Globals;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TextureHolder;

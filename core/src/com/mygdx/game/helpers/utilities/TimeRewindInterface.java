@@ -1,7 +1,6 @@
 package com.mygdx.game.helpers.utilities;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public interface TimeRewindInterface {
 

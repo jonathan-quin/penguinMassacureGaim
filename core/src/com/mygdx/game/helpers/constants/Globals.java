@@ -1,16 +1,22 @@
 package com.mygdx.game.helpers.constants;
 
+import static com.mygdx.game.helpers.constants.Globals.Sounds.BULLETHARD;
+import static com.mygdx.game.helpers.constants.Globals.Sounds.BULLETSOFT;
+import static com.mygdx.game.helpers.constants.Globals.Sounds.ELFDIE;
+import static com.mygdx.game.helpers.constants.Globals.Sounds.JUMP;
+import static com.mygdx.game.helpers.constants.Globals.Sounds.MINIGUNSHOOT;
+import static com.mygdx.game.helpers.constants.Globals.Sounds.REVOLVERSHOOT;
+import static com.mygdx.game.helpers.constants.Globals.Sounds.REWINDSTATIC;
+import static com.mygdx.game.helpers.constants.Globals.Sounds.SHOTGUNSHOOT;
+
+import java.util.HashMap;
+
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapRenderer;
 import com.badlogic.gdx.math.Vector2;
-
-import java.util.HashMap;
-
-import static com.mygdx.game.helpers.constants.Globals.Sounds.*;
 
 public class Globals {
 

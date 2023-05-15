@@ -1,10 +1,9 @@
 package com.mygdx.game.nodes;
 
-import com.badlogic.gdx.audio.Sound;
-import com.mygdx.game.helpers.constants.Globals;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import com.mygdx.game.helpers.constants.Globals;
 
 public class AudioHandler {
 

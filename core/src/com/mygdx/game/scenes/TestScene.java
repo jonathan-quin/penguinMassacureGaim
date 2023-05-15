@@ -1,11 +1,10 @@
 package com.mygdx.game.scenes;
 
-import com.mygdx.game.entities.*;
+import com.mygdx.game.entities.Player;
+import com.mygdx.game.entities.SimpleIcePlatform;
 import com.mygdx.game.helpers.constants.ObjectPool;
-import com.mygdx.game.helpers.constants.TextureHolder;
-import com.mygdx.game.helpers.constants.TileMapHolder;
-import com.mygdx.game.helpers.utilities.TileMapInfo;
-import com.mygdx.game.nodes.*;
+import com.mygdx.game.nodes.Node;
+import com.mygdx.game.nodes.Root;
 
 public class TestScene extends Root {
 

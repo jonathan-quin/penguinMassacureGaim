@@ -1,7 +1,12 @@
 package com.mygdx.game.scenes.tutorials;
 
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.entities.*;
+import com.mygdx.game.entities.Elf;
+import com.mygdx.game.entities.EndLevelGate;
+import com.mygdx.game.entities.Hints;
+import com.mygdx.game.entities.ParalaxBackground;
+import com.mygdx.game.entities.Player;
+import com.mygdx.game.entities.TimeVortex;
 import com.mygdx.game.entities.guns.elfGuns.ElfMiniGun;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.SceneHandler;

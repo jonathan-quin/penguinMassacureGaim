@@ -1,11 +1,9 @@
 package com.mygdx.game.nodes.collisionShapeHelpers;
 
+import static java.lang.Math.abs;
+
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.helpers.constants.ObjectPool;
-
-import static com.badlogic.gdx.math.MathUtils.clamp;
-
-import static java.lang.Math.abs;
 
 public class AABB {
 

@@ -1,5 +1,7 @@
 package com.mygdx.game.nodes;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -8,8 +10,6 @@ import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.helpers.constants.Globals;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.nodes.collisionShapeHelpers.SweepInfo;
-
-import java.util.ArrayList;
 
 public class Raycast extends Node{
 

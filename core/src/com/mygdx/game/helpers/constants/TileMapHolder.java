@@ -1,9 +1,9 @@
 package com.mygdx.game.helpers.constants;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.helpers.utilities.TileMapInfo;
-
-import java.util.ArrayList;
 
 public class TileMapHolder {
 

@@ -1,23 +1,35 @@
 package com.mygdx.game.entities;
 
+import static java.lang.Math.min;
+import static java.lang.Math.signum;
+import static java.lang.Math.toRadians;
+
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
-import com.mygdx.game.entities.guns.floorGuns.FloorGun;
 import com.mygdx.game.entities.guns.penguinGuns.PenguinGun;
-import com.mygdx.game.helpers.constants.*;
+import com.mygdx.game.helpers.constants.Globals;
+import com.mygdx.game.helpers.constants.LayerNames;
+import com.mygdx.game.helpers.constants.ObjectPool;
+import com.mygdx.game.helpers.constants.SceneHandler;
+import com.mygdx.game.helpers.constants.TextureHolder;
 import com.mygdx.game.helpers.utilities.MathUtilsCustom;
 import com.mygdx.game.helpers.utilities.ParticleMaker;
 import com.mygdx.game.helpers.utilities.TimeRewindInterface;
 import com.mygdx.game.helpers.utilities.Utils;
-import com.mygdx.game.nodes.*;
-
-import java.util.ArrayList;
-
-import static java.lang.Math.*;
+import com.mygdx.game.nodes.CollisionShape;
+import com.mygdx.game.nodes.GroupHandler;
+import com.mygdx.game.nodes.MovementNode;
+import com.mygdx.game.nodes.Node;
+import com.mygdx.game.nodes.Particle;
+import com.mygdx.game.nodes.Raycast;
+import com.mygdx.game.nodes.TextureEntity;
+import com.mygdx.game.nodes.TimeRewindRoot;
 
 public class Player extends MovementNode implements TimeRewindInterface {
 

@@ -1,8 +1,9 @@
 package com.mygdx.game.entities;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.guns.elfGuns.ElfMiniGun;
@@ -19,11 +20,8 @@ import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.SceneHandler;
 import com.mygdx.game.helpers.constants.TextureHolder;
 import com.mygdx.game.helpers.utilities.Utils;
-import com.mygdx.game.nodes.GroupHandler;
 import com.mygdx.game.nodes.Node;
 import com.mygdx.game.nodes.TextureEntity;
-
-import java.util.ArrayList;
 
 public class levelCreator extends Node {
 

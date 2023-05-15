@@ -1,14 +1,12 @@
 package com.mygdx.game.entities;
 
-import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TextureHolder;
-import com.mygdx.game.helpers.utilities.TimeRewindInterface;
 import com.mygdx.game.nodes.GroupHandler;
 import com.mygdx.game.nodes.Node;
 import com.mygdx.game.nodes.TextureEntity;
 
-import java.util.ArrayList;
+
 
 public class ammoCounter extends Node {
 

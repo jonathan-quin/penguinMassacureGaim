@@ -1,7 +1,13 @@
 package com.mygdx.game.scenes.levelA2Z;
 
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.entities.*;
+import com.mygdx.game.entities.Elf;
+import com.mygdx.game.entities.ElfVip;
+import com.mygdx.game.entities.EndLevelGate;
+import com.mygdx.game.entities.ParalaxBackground;
+import com.mygdx.game.entities.Player;
+import com.mygdx.game.entities.TimeVortex;
+import com.mygdx.game.entities.TimeVortexVertical;
 import com.mygdx.game.entities.guns.elfGuns.ElfRevolver;
 import com.mygdx.game.entities.guns.elfGuns.ElfShotgun;
 import com.mygdx.game.entities.guns.floorGuns.FloorRevolver;

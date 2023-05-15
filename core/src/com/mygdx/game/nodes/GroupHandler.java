@@ -1,8 +1,8 @@
 package com.mygdx.game.nodes;
 
-import com.mygdx.game.helpers.constants.ObjectPool;
-
 import java.util.ArrayList;
+
+import com.mygdx.game.helpers.constants.ObjectPool;
 
 public class GroupHandler {
 

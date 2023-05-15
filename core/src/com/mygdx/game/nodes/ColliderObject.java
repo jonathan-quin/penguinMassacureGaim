@@ -1,11 +1,11 @@
 package com.mygdx.game.nodes;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.nodes.collisionShapeHelpers.SweepInfo;
-
-import java.util.ArrayList;
 
 public class ColliderObject extends Node {
 

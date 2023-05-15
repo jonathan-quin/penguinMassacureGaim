@@ -1,16 +1,9 @@
 package com.mygdx.game.scenes.levelA2Z;
 
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.entities.*;
-import com.mygdx.game.entities.guns.elfGuns.ElfRevolver;
-import com.mygdx.game.entities.guns.elfGuns.ElfShotgun;
-import com.mygdx.game.entities.guns.elfGuns.ElfMiniGun;
-import com.mygdx.game.entities.guns.floorGuns.FloorRevolver;
-import com.mygdx.game.entities.guns.floorGuns.FloorShotgun;
-import com.mygdx.game.entities.guns.floorGuns.FloorMiniGun;
-import com.mygdx.game.entities.guns.penguinGuns.PenguinRevolver;
-import com.mygdx.game.entities.guns.penguinGuns.PenguinShotgun;
-import com.mygdx.game.entities.guns.penguinGuns.PenguinMiniGun;
+import com.mygdx.game.entities.ParalaxBackground;
+import com.mygdx.game.entities.TimeVortex;
+import com.mygdx.game.entities.levelCreator;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TextureHolder;
 import com.mygdx.game.helpers.constants.TileMapHolder;

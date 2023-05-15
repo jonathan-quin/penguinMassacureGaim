@@ -1,12 +1,12 @@
 package com.mygdx.game.nodes;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Vector2;
+import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.helpers.constants.Globals;
 import com.mygdx.game.helpers.constants.ObjectPool;
-import java.util.ArrayList;
 
 /**
  * The Node class represents a single node in a tree hierarchy. Each node has a position, a name, a list of child nodes,

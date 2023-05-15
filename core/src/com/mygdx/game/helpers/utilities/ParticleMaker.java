@@ -1,5 +1,7 @@
 package com.mygdx.game.helpers.utilities;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -8,12 +10,7 @@ import com.mygdx.game.entities.TimeParticle;
 import com.mygdx.game.helpers.constants.LayerNames;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.nodes.ColliderObject;
-import com.mygdx.game.nodes.Particle;
 import com.mygdx.game.nodes.TextureEntity;
-
-import java.util.ArrayList;
-
-import static java.lang.Math.toRadians;
 
 public class ParticleMaker {
 

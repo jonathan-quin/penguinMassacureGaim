@@ -6,9 +6,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.helpers.constants.Constants;
 import com.mygdx.game.helpers.constants.Globals;
-import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.SceneHandler;
-import com.mygdx.game.nodes.*;
+import com.mygdx.game.nodes.Root;
 
 public class MyGdxGame extends ApplicationAdapter {
 

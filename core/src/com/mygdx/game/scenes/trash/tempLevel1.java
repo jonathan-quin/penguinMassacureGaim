@@ -1,8 +1,12 @@
 package com.mygdx.game.scenes.trash;
 
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.entities.*;
-import com.mygdx.game.entities.guns.elfGuns.ElfCrackShotgun;
+import com.mygdx.game.entities.Elf;
+import com.mygdx.game.entities.ElfVip;
+import com.mygdx.game.entities.EndLevelGate;
+import com.mygdx.game.entities.ParalaxBackground;
+import com.mygdx.game.entities.Player;
+import com.mygdx.game.entities.TimeVortex;
 import com.mygdx.game.entities.guns.elfGuns.ElfMiniGun;
 import com.mygdx.game.entities.guns.elfGuns.ElfRevolver;
 import com.mygdx.game.entities.guns.elfGuns.ElfShotgun;
@@ -10,7 +14,9 @@ import com.mygdx.game.entities.guns.penguinGuns.PenguinRevolver;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TextureHolder;
 import com.mygdx.game.helpers.constants.TileMapHolder;
-import com.mygdx.game.nodes.*;
+import com.mygdx.game.nodes.Node;
+import com.mygdx.game.nodes.TileMapProcessor;
+import com.mygdx.game.nodes.TimeRewindRoot;
 
 public class tempLevel1 extends TimeRewindRoot {
 

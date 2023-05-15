@@ -5,7 +5,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.helpers.constants.LayerNames;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TextureHolder;
-import com.mygdx.game.nodes.*;
+import com.mygdx.game.nodes.CollisionShape;
+import com.mygdx.game.nodes.StaticNode;
+import com.mygdx.game.nodes.TextureEntity;
 
 public class SimpleIcePlatform extends StaticNode {
 

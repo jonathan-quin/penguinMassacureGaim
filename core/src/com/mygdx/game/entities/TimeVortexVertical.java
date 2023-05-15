@@ -1,14 +1,18 @@
 package com.mygdx.game.entities;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.helpers.constants.*;
+import com.mygdx.game.helpers.constants.Globals;
+import com.mygdx.game.helpers.constants.LayerNames;
+import com.mygdx.game.helpers.constants.ObjectPool;
+import com.mygdx.game.helpers.constants.SceneHandler;
+import com.mygdx.game.helpers.constants.TextureHolder;
 import com.mygdx.game.helpers.utilities.TimeRewindInterface;
 import com.mygdx.game.nodes.CollisionShape;
 import com.mygdx.game.nodes.StaticNode;
 import com.mygdx.game.nodes.TextureEntity;
 import com.mygdx.game.nodes.TimeRewindRoot;
-
-import java.util.ArrayList;
 
 public class TimeVortexVertical extends StaticNode implements TimeRewindInterface {
 

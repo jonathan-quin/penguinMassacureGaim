@@ -1,23 +1,24 @@
 package com.mygdx.game.nodes;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.helpers.constants.Globals;
-import com.mygdx.game.helpers.constants.ObjectPool;
-import com.mygdx.game.helpers.constants.SceneHandler;
-import com.mygdx.game.helpers.utilities.MathUtilsCustom;
-import com.mygdx.game.helpers.utilities.TimeRewindInterface;
+import static com.badlogic.gdx.math.MathUtils.lerp;
+import static com.mygdx.game.helpers.constants.Globals.gameSpeed;
+import static com.mygdx.game.helpers.constants.Globals.sceneJustChanged;
+import static com.mygdx.game.helpers.constants.Globals.timeRootStage;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
-import static com.badlogic.gdx.math.MathUtils.lerp;
-import static com.badlogic.gdx.math.MathUtils.sin;
-import static com.mygdx.game.helpers.constants.Globals.*;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.helpers.constants.Globals;
+import com.mygdx.game.helpers.constants.Globals.Sounds;
+import com.mygdx.game.helpers.constants.ObjectPool;
+import com.mygdx.game.helpers.constants.SceneHandler;
+import com.mygdx.game.helpers.utilities.MathUtilsCustom;
+import com.mygdx.game.helpers.utilities.TimeRewindInterface;
 
 public class TimeRewindRoot extends Root{
 

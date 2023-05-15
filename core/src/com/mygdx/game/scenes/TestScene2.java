@@ -6,7 +6,6 @@ import com.mygdx.game.entities.Player;
 import com.mygdx.game.entities.SimpleIcePlatform;
 import com.mygdx.game.entities.guns.elfGuns.ElfRevolver;
 import com.mygdx.game.entities.guns.penguinGuns.PenguinMiniGun;
-import com.mygdx.game.entities.guns.penguinGuns.PenguinRevolver;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.helpers.constants.TextureHolder;
 import com.mygdx.game.nodes.Node;
