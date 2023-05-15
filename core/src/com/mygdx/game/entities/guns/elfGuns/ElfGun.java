@@ -1,10 +1,13 @@
 package com.mygdx.game.entities.guns.elfGuns;
 
+import static java.lang.Math.PI;
+import static java.lang.Math.abs;
+import static java.lang.Math.max;
+import static java.lang.Math.signum;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
-
-import static java.lang.Math.*;
 
 public class ElfGun {
 

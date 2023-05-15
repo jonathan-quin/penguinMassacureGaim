@@ -1,5 +1,9 @@
 package com.mygdx.game.entities.guns.elfGuns.Bullets;
 
+import static java.lang.Math.PI;
+
+import java.util.ArrayList;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.Elf;
@@ -17,10 +21,6 @@ import com.mygdx.game.nodes.CollisionShape;
 import com.mygdx.game.nodes.MovementNode;
 import com.mygdx.game.nodes.StaticNode;
 import com.mygdx.game.nodes.TextureEntity;
-
-import java.util.ArrayList;
-
-import static java.lang.Math.PI;
 
 
 public class GenericBullet extends MovementNode implements TimeRewindInterface {
