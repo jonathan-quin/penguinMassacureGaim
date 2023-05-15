@@ -25,6 +25,8 @@ public class levelJ extends TimeRewindRoot {
         add(ObjectPool.get(Node.class).init(0,0));
         last().addChild(poolGet(EndLevelGate.class).init(960.0f , -96.0f,"","lobby2","lobby"));
 
+        add(poolGet(TileMapProcessor.class).init(TileMapHolder.realLevel1));
+
         add(ObjectPool.get(Node.class).init(0,0));
         last().setName("bulletHolder");
 
@@ -41,7 +43,7 @@ public class levelJ extends TimeRewindRoot {
 
 
 
-        add(poolGet(TileMapProcessor.class).init(TileMapHolder.realLevel1));
+
 
         add(poolGet(TimeVortex.class).init(-1970,0,ObjectPool.getGarbage(Vector2.class).set(60,0)));
         add(poolGet(TimeVortex.class).init(3000,0,ObjectPool.getGarbage(Vector2.class).set(-1,0)));

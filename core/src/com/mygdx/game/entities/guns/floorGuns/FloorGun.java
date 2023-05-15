@@ -140,6 +140,8 @@ public class FloorGun extends MovementNode implements TimeRewindInterface {
         this.vel.set((Vector2) vars[2]);
         sprite.setRotation((Float) vars[3]);
 
+
+
         if ((boolean) vars[4]) queueFree();
 
         updateGlobalPosition();

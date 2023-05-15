@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.helpers.constants.ObjectPool;
+import com.mygdx.game.helpers.constants.SpritePool;
 
 
 public class TextureEntity extends Node {
@@ -42,7 +43,7 @@ public class TextureEntity extends Node {
     public TextureEntity(Texture image, float posX, float posY,float offsetX,float offsetY){
         super(posX,posY);
         if (image != null)
-        sprite = (new PoolableSprite()).init(image);
+            objectGetSprite(image);
         this.offset = new Vector2(offsetX,offsetY);
         myColor = new Color(0,0,0,0);
     }
@@ -54,12 +55,8 @@ public class TextureEntity extends Node {
 
         myColor.set( Color.WHITE );
 
-        if (sprite == null) {
-            sprite = (new PoolableSprite()).init(image);
-        }
-        else{
-            ((PoolableSprite)sprite).init(image);
-        }
+
+        objectGetSprite(image);
 
         this.offset.set(offsetX,offsetY);
 
@@ -68,6 +65,16 @@ public class TextureEntity extends Node {
         setRotation(0);
 
         return this;
+    }
+
+    public void objectGetSprite(Texture tex){
+        SpritePool.remove(sprite);
+        sprite = SpritePool.get(tex);
+
+        sprite.setScale(1,1);
+        setVisible(true);
+        setRotation(0);
+        setMyColor(Color.WHITE);
     }
 
 
@@ -136,7 +143,7 @@ public class TextureEntity extends Node {
     public void free(){
         super.free();
         //ObjectPool.remove(sprite);
-
+        SpritePool.remove(sprite);
 
     }
 

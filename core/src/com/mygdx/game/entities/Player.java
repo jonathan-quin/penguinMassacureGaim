@@ -113,7 +113,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
         lastChild().setName("counter");
 
         addChild(ObjectPool.get(TextureEntity.class).init(TextureHolder.Text.lForLobby,250,100,0,0));
-        ((TextureEntity) lastChild()).setScale(0.7f,0.7f);
+        ((TextureEntity) lastChild()).setScale(1f,1f);
         lastChild().setName("lForLobby");
         lastChild().addToGroup(GroupHandler.RENDERONTOP);
 

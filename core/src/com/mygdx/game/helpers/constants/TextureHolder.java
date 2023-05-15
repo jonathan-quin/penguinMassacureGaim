@@ -55,7 +55,7 @@ public class TextureHolder {
 
         public static Texture mustDie = new Texture("text/thisElfMustDie.png");
 
-        public static Texture lForLobby = new Texture("text/LForLobby.png");
+        public static Texture lForLobby = new Texture("text/newLobbyMessage.png");
 
         public static Texture leftClick = new Texture("text/leftClickToShoot.png");
 
