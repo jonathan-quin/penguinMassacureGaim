@@ -91,14 +91,7 @@ public class ObjectPool {
 
     }
 
-    public void removeFromInUse(Object obj){
 
-        if (removeFromList( hashObjectsInUse.get(obj.getClass()),obj )){
-
-        }
-
-
-    }
 
     public static int count = 0;
 

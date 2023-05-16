@@ -69,12 +69,14 @@ public class TextureEntity extends Node {
 
     public void objectGetSprite(Texture tex){
         SpritePool.remove(sprite);
+        sprite = null;
         sprite = SpritePool.get(tex);
 
         sprite.setScale(1,1);
         setVisible(true);
         setRotation(0);
         setMyColor(Color.WHITE);
+        setFlip(false,false);
     }
 
 
@@ -142,9 +144,6 @@ public class TextureEntity extends Node {
 
     public void free(){
         super.free();
-        //ObjectPool.remove(sprite);
-        SpritePool.remove(sprite);
-
     }
 
 

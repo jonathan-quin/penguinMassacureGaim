@@ -68,14 +68,7 @@ public class SpritePool {
 
 
 
-    public void removeFromInUse(Sprite obj){
 
-        if (removeFromList( hashObjectsInUse.get(obj.getTexture()),obj )){
-
-        }
-
-
-    }
 
 
 
@@ -91,7 +84,9 @@ public class SpritePool {
 
     public static void remove(Sprite obj){
 
-        if (obj == null) return;
+        if (obj == null){
+            return;
+        }
 
         if (removeFromList(hashObjectsInUse.get(obj.getTexture()),obj))
             putIntoStorage(obj);
