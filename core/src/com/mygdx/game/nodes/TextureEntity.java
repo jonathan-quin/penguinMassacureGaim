@@ -85,6 +85,11 @@ public class TextureEntity extends Node {
     public void setScale(float x, float y){
         sprite.setScale(x,y);
     }
+
+    public void setScale(float scl){
+        sprite.setScale(scl,scl);
+    }
+
     public void setFlip(boolean flipX,boolean flipY)
     {
         sprite.setFlip(flipX,flipY);

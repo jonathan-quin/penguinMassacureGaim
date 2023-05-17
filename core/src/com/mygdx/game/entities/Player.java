@@ -132,6 +132,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
         addChild(ObjectPool.get(ThrowPathIndicator.class).init(0,0));
         lastChild().setName("throwPath");
+        ((ThrowPathIndicator) lastChild()).setVisible(false);
 
         //takeGun(PenguinRevolver.class);
         //addChild( ObjectPool.get(Raycast.class).init(0,0,100,-100,true,getMaskLayers(LayerNames.WALLS)) );
@@ -159,7 +160,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
                 ThrowPathIndicator pathIndicator = getChild("throwPath", ThrowPathIndicator.class);
 
-                if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)){
+                if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.F)){
 
                     pathIndicator.setVisible(true);
 

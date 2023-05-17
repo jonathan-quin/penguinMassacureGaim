@@ -42,10 +42,11 @@ public class TextureHolder {
 
     public static Texture whitePixel = new Texture("whitePixel.png");
 
-
+    public static Texture greyCircleHighRes = new Texture("Circle_Davys-Grey_Solid.png");
     public static Texture paralaxMountainsAndTrees = new Texture("paralaxBackGroundTrees.png");
 
     public static Texture georgeParalaxMountainsAndTrees = new Texture("georgesMountainParalax.png");
+
 
     public static class Text{
 
@@ -66,6 +67,8 @@ public class TextureHolder {
         public static Texture R = new Texture("text/RtoRewind.png");
 
         public static Texture shootDown = new Texture("text/shootDown.png");
+
+
 
     }
 

@@ -65,6 +65,10 @@ public class FloorGun extends MovementNode implements TimeRewindInterface {
         return this;
     }
 
+    public FloorGun init(float posX,float posY){
+        return init(posX,posY,0,0);
+    }
+
 
     public void update(double delta) {
 
