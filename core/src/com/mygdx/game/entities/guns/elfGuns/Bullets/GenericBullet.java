@@ -3,6 +3,7 @@ package com.mygdx.game.entities.guns.elfGuns.Bullets;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.Elf;
+import com.mygdx.game.entities.ExplodingBarrel;
 import com.mygdx.game.entities.Player;
 import com.mygdx.game.entities.TimeParticle;
 import com.mygdx.game.helpers.constants.Globals;
@@ -137,9 +138,11 @@ public class GenericBullet extends MovementNode implements TimeRewindInterface {
                 ((Elf) lastCollider).hit(vel,damage);
                 die();
             }
-
-
-
+            if (lastCollider.isOnLayer(LayerNames.EXPLODINGBARREL)){
+                playSound(Globals.Sounds.BULLETHARD);
+                ((ExplodingBarrel) lastCollider).hit(vel, damage);
+                die();
+            }
         }
 
         bulletDetect.getFirstCollision(ObjectPool.getGarbage(Vector2.class).set(0,0));

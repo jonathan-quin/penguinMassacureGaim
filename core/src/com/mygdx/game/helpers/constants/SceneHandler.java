@@ -1,19 +1,35 @@
 package com.mygdx.game.helpers.constants;
+import static com.mygdx.game.helpers.constants.Globals.camera;
+import static com.mygdx.game.helpers.constants.Globals.sceneJustChanged;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.nodes.GroupHandler;
 import com.mygdx.game.nodes.Node;
 import com.mygdx.game.nodes.Root;
-import com.mygdx.game.scenes.levelA2Z.*;
+import com.mygdx.game.scenes.levelA2Z.levelA;
+import com.mygdx.game.scenes.levelA2Z.levelB;
+import com.mygdx.game.scenes.levelA2Z.levelC;
+import com.mygdx.game.scenes.levelA2Z.levelD;
+import com.mygdx.game.scenes.levelA2Z.levelE;
+import com.mygdx.game.scenes.levelA2Z.levelF;
+import com.mygdx.game.scenes.levelA2Z.levelG;
+import com.mygdx.game.scenes.levelA2Z.levelH;
+import com.mygdx.game.scenes.levelA2Z.levelI;
+import com.mygdx.game.scenes.levelA2Z.levelJ;
 import com.mygdx.game.scenes.lobbyAndTitle.lobby;
 import com.mygdx.game.scenes.lobbyAndTitle.titleScreen;
-import com.mygdx.game.scenes.tutorials.*;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import static com.mygdx.game.helpers.constants.Globals.camera;
-import static com.mygdx.game.helpers.constants.Globals.sceneJustChanged;
+import com.mygdx.game.scenes.tutorials.tutorial1;
+import com.mygdx.game.scenes.tutorials.tutorial2;
+import com.mygdx.game.scenes.tutorials.tutorial3;
+import com.mygdx.game.scenes.tutorials.tutorial4;
+import com.mygdx.game.scenes.tutorials.tutorial5;
+import com.mygdx.game.scenes.tutorials.tutorial6;
+import com.mygdx.game.scenes.tutorials.tutorial7;
+import com.mygdx.game.scenes.tutorials.tutorial8;
 
 public class SceneHandler {
 

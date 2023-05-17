@@ -451,9 +451,9 @@ public class TimeRewindRoot extends Root{
 
             ArrayList<Object> getPast =  ((ArrayList)((ArrayList) currentNode.get(0)).get(2));
 
-//            if (getPast == null){
-//                continue;
-//            }
+        //    if (getPast == null){
+        //        continue;
+        //    }
 
             Object obj = ObjectPool.get((Class) ((ArrayList) currentNode.get(0)).get(0));
 
