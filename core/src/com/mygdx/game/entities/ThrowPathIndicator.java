@@ -33,15 +33,19 @@ public class ThrowPathIndicator extends Node {
             removeChild(lastChild());
         }
 
+        //System.out.println(startingPos);
+
         for (int i = 0; i < children.size(); i++){
 
-            
+            double time = i/10;
+
+
 
             TextureEntity child = (TextureEntity) children.get(i);
 
-            child.position.x = startingPos.x + vel.x * i;
+            child.position.x = (float) (startingPos.x + vel.x * time);
 
-            child.position.y = 0; // (float) (startingPos.y + (vel.y * i + 0.5 * gravity * i*i));
+            child.position.y = (float) (startingPos.y + (vel.y * i + 0.5 * gravity * time * time));
 
         }
 

@@ -165,7 +165,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
                     ThrownGun tempThrownGun = ObjectPool.getGarbage(myGun.throwClass);
 
-                    pathIndicator.display(tempThrownGun.getInitStart(globalPosition,Utils.getGlobalMousePosition()),tempThrownGun.getInitVel(globalPosition,Utils.getGlobalMousePosition(),vel), GRAVITY);
+                    pathIndicator.display(tempThrownGun.getInitStart(globalPosition,Utils.getGlobalMousePosition()).sub(position),tempThrownGun.getInitVel(globalPosition,Utils.getGlobalMousePosition(),vel), GRAVITY);
 
                 } else if(pathIndicator.visible){
                     pathIndicator.setVisible(false);
