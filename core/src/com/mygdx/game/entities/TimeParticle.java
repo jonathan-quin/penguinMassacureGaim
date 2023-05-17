@@ -64,17 +64,13 @@ public class TimeParticle extends Particle implements TimeRewindInterface {
         a.add(new Color(color)); //3
         a.add(rotation); //4
 
-        a.add(new Color(targetColor)); //5
-        a.add(new Vector2(accel)); //6
-        a.add(rotationVel); //7
-        a.add(lifeSpan); //8
-        a.add(gravity); //9
-        a.add(damping); //10
-        a.add(speedForward); //11
-        a.add(collide); //12
-        a.add(bounce); //13
-        a.add(lerpToColor); //14
-        a.add(moveToColor); //15
+        if (lastSave == null){ //5
+            a.add(makeInfo());
+        }
+        else{
+            a.add(lastSave.get(5));
+        }
+
 
         if (mask.size() > 0){ //16
             a.add(mask.get(0));
@@ -93,24 +89,33 @@ public class TimeParticle extends Particle implements TimeRewindInterface {
         color.set((Color) vars[3]);
         rotation = (double) vars[4];
 
-        targetColor.set((Color) vars[5]);
-        accel.set((Vector2) vars[6]);
-        rotationVel = (double) vars[7];
-        lifeSpan = (double) vars[8];
-        gravity = (double) vars[9];
-        damping = (double) vars[10];
-        speedForward = (double) vars[11];
-        collide = (boolean) vars[12];
-        bounce = (double) vars[13];
-        lerpToColor = (double) vars[14];
-        moveToColor = (double) vars[15];
+        set((TimeParticleInfo) vars[5]);
 
-        if (vars[16] != null)mask.add((Integer) vars[16]);
+        if (vars[6] != null)mask.add((Integer) vars[6]);
 
         sprite.setMyColor(color);
         sprite.setRotation(rotation);
 
         return null;
+    }
+
+    public void set(TimeParticleInfo T){
+        targetColor.set(T.targetColor);
+        accel.set(T.accel);
+        rotationVel = T.rotationVel;
+        lifeSpan = T.lifeSpan;
+        gravity = T.gravity;
+        damping = T.damping;
+        speedForward = T.speedForward;
+        collide = T.collide;
+        bounce = T.bounce;
+        lerpToColor = T.lerpToColor;
+        moveToColor = T.moveToColor;
+        paint = T.paint;
+    }
+
+    public TimeParticleInfo makeInfo(){
+        return new TimeParticleInfo().init(rotationVel,lifeSpan,gravity,accel,damping,speedForward,bounce,collide,targetColor,lerpToColor,moveToColor,paint);
     }
 
     ArrayList<Object> lastSave = null;
