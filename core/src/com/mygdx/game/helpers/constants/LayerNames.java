@@ -10,4 +10,5 @@ public class LayerNames {
     public static final int ELVES = 4;
     public static final int BULLETS = 5;
     public static final int THROWNGUNS = 6;
+    public static final int EXPLODINGBARREL = 7;
 }

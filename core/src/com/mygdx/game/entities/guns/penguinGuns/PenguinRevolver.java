@@ -28,7 +28,7 @@ public class PenguinRevolver extends PenguinGun{
         recoil = 100;
 
         tex =TextureHolder.greenRevolver;
-        texOffset = new Vector2(3,-3.5f);
+        texOffset = new Vector2(12,-3.5f);
 
         timeUntilNextShot = 0;
         fireRate = 2;

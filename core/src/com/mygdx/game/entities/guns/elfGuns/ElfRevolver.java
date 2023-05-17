@@ -22,7 +22,7 @@ public class ElfRevolver extends ElfGun {
 
         tex = TextureHolder.redRevolver;
         floorClass = FloorRevolver.class;
-        texOffset = new Vector2(0,0);
+        texOffset = new Vector2(10, -2);
 
         timeUntilNextShot = 0;
         fireRate = 1.2;

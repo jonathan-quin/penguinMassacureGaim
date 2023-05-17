@@ -99,7 +99,7 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         lastChild().setName("question");
 
 
-        addChild(ObjectPool.get(CollisionShape.class).init(8,12,0,0));
+        addChild(ObjectPool.get(CollisionShape.class).init(8,16,0,4));
 
         addChild(ObjectPool.get(ColliderObject.class).init(350,0,getMaskLayers(LayerNames.PLAYER),getMaskLayers()));
         lastChild().setName("playerDetect");
@@ -238,6 +238,7 @@ public class Elf extends MovementNode implements TimeRewindInterface {
 
         getChild("gunSprite",TextureEntity.class).setRotation( toDegrees(myGun.rotation));
         getChild("gunSprite",TextureEntity.class).setFlip(false, myGun.shouldFlipY());
+        getChild("gunSprite",TextureEntity.class).offset.set(myGun.texOffset.x, (myGun.shouldFlipY() ? -1 : 1) * myGun.texOffset.y);
 
         switch (state){
             case WANDER:
@@ -330,6 +331,7 @@ public class Elf extends MovementNode implements TimeRewindInterface {
 
         getChild("gunSprite",TextureEntity.class).setRotation(toDegrees(myGun.rotation));
         getChild("gunSprite",TextureEntity.class).setFlip(false, myGun.shouldFlipY());
+        getChild("gunSprite",TextureEntity.class).offset.set(myGun.texOffset.x, (myGun.shouldFlipY() ? -1 : 1) * myGun.texOffset.y);
 
         myGun.updateTimeUntilNextShot(delta);
 
