@@ -8,7 +8,7 @@ import com.mygdx.game.nodes.TextureEntity;
 
 
 
-public class ammoCounter extends Node {
+public class AmmoCounter extends Node {
 
     public void ready(){
         addToGroup(GroupHandler.RENDERONTOP);

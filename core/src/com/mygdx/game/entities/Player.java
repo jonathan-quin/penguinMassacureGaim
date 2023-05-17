@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.entities.guns.elfGuns.Bullets.GenericBullet;
+import com.mygdx.game.entities.guns.elfGuns.thrownGuns.ThrownGun;
 import com.mygdx.game.entities.guns.penguinGuns.PenguinGun;
 import com.mygdx.game.helpers.constants.Globals;
 import com.mygdx.game.helpers.constants.LayerNames;
@@ -121,13 +122,16 @@ public class Player extends MovementNode implements TimeRewindInterface {
         lastChild().setName("sprite");
         addChild(ObjectPool.get(CollisionShape.class).init(8,12,0,0));
 
-        addChild(ObjectPool.get(ammoCounter.class).init(320,178));
+        addChild(ObjectPool.get(AmmoCounter.class).init(320,178));
         lastChild().setName("counter");
 
         addChild(ObjectPool.get(TextureEntity.class).init(TextureHolder.Text.lForLobby,250,100,0,0));
         ((TextureEntity) lastChild()).setScale(1f,1f);
         lastChild().setName("lForLobby");
         lastChild().addToGroup(GroupHandler.RENDERONTOP);
+
+        addChild(ObjectPool.get(ThrowPathIndicator.class).init(0,0));
+        lastChild().setName("throwPath");
 
         //takeGun(PenguinRevolver.class);
         //addChild( ObjectPool.get(Raycast.class).init(0,0,100,-100,true,getMaskLayers(LayerNames.WALLS)) );
@@ -153,7 +157,18 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
             if (myGun != null && !Globals.sceneJustChanged){
 
-                if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)){
+                ThrowPathIndicator pathIndicator = getChild("throwPath", ThrowPathIndicator.class);
+
+                if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)){
+
+                    pathIndicator.setVisible(true);
+
+                    ThrownGun tempThrownGun = ObjectPool.getGarbage(myGun.throwClass);
+
+                    pathIndicator.display(tempThrownGun.getInitStart(globalPosition,Utils.getGlobalMousePosition()),tempThrownGun.getInitVel(globalPosition,Utils.getGlobalMousePosition(),vel), GRAVITY);
+
+                } else if(pathIndicator.visible){
+                    pathIndicator.setVisible(false);
                     playSound(Globals.Sounds.JUMP);
 
                     bulletHolder.addChild(ObjectPool.get(myGun.throwClass).initThrow(globalPosition,Utils.getGlobalMousePosition(),vel));
@@ -175,14 +190,14 @@ public class Player extends MovementNode implements TimeRewindInterface {
                 }
 
                 if (myGun != null){
-                    getChild("counter", ammoCounter.class).display(myGun.ammoLeft,myGun.timeUntilNextShot,1d/myGun.fireRate);
+                    getChild("counter", AmmoCounter.class).display(myGun.ammoLeft,myGun.timeUntilNextShot,1d/myGun.fireRate);
                 }else{
-                    getChild("counter", ammoCounter.class).display(0,1,1);
+                    getChild("counter", AmmoCounter.class).display(0,1,1);
                 }
 
             } else{
 
-                getChild("counter", ammoCounter.class).display(0,1,1);
+                getChild("counter", AmmoCounter.class).display(0,1,1);
 
             }
 
@@ -253,7 +268,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
         if (SceneHandler.getCurrentRoot() instanceof TimeRewindRoot )
         ((TimeRewindRoot)SceneHandler.getCurrentRoot()).setNextGameSpeed(newSpeed);
 
-        getChild("counter", ammoCounter.class).display(0,1,1);
+        getChild("counter", AmmoCounter.class).display(0,1,1);
 
         vel.x = lerp(vel.x,0,0.1f);
         vel.y -= GRAVITY * delta;
@@ -425,10 +440,10 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
         if (vars[7] != null){
             takeGun((Class) vars[7],(double)vars[8],(int)vars[9],(double) vars[10]);
-            getChild("counter", ammoCounter.class).display(myGun.ammoLeft,myGun.timeUntilNextShot,1d/myGun.fireRate);
+            getChild("counter", AmmoCounter.class).display(myGun.ammoLeft,myGun.timeUntilNextShot,1d/myGun.fireRate);
         }
         else{
-            getChild("counter", ammoCounter.class).display(0,1,1);
+            getChild("counter", AmmoCounter.class).display(0,1,1);
         }
 
         updateGlobalPosition();

@@ -524,8 +524,13 @@ public class Elf extends MovementNode implements TimeRewindInterface {
         Raycast randCast = getChild("randCast",Raycast.class);
         randCast.dirty = true;
 
-        Vector2 playerDir = ObjectPool.getGarbage(Vector2.class).set(player.globalPosition).sub(globalPosition).scl(1,1).nor();
+        Vector2 playerDir = ObjectPool.getGarbage(Vector2.class).set(player.globalPosition).sub(globalPosition);//.scl(1,1).nor();
 
+        if (playerDir.len() < 40){
+            return true;
+        }
+
+        playerDir.nor();
         elfCheck.position .set( ObjectPool.getGarbage(Vector2.class).set(playerDir).scl(20));
         elfCheck.setCast(ObjectPool.getGarbage(Vector2.class).set(playerDir).scl(globalPosition.dst(player.globalPosition)-20));
 
