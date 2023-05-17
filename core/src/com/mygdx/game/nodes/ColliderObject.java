@@ -10,6 +10,13 @@ import com.mygdx.game.nodes.collisionShapeHelpers.SweepInfo;
 public class ColliderObject extends Node {
 
     public ColliderObject lastCollider;
+
+    public ArrayList<ColliderObject> getLastColliders() {
+        return lastColliders;
+    }
+
+    public ArrayList<ColliderObject> lastColliders;
+
     public boolean lastCollided;
     Array<CollisionShape> shapes;
     protected ArrayList<Integer> mask;
@@ -21,8 +28,9 @@ public class ColliderObject extends Node {
 
     public Vector2 getFirstCollision(Vector2 distance){
 
-        SweepInfo currentInfo = sweepTestArray(distance,myRoot.getCollidersInLayers(mask));
+        lastColliders.clear();
 
+        SweepInfo currentInfo = sweepTestArray(distance,myRoot.getCollidersInLayers(mask));
 
         Vector2 output =  ((Vector2) ObjectPool.getGarbage(Vector2.class) ).set(position.x + distance.x,position.y + distance.y);
 
@@ -41,6 +49,11 @@ public class ColliderObject extends Node {
 //            System.out.println("hey, 1673 after colliding");
 //        }
 
+        if (lastColliders.size() > 1){
+            System.out.println(this);
+            System.out.println(lastColliders);
+        }
+
         return output;
 
     }
@@ -53,6 +66,12 @@ public class ColliderObject extends Node {
         SweepInfo tempSweepInfo;
         for (CollisionShape myShape : shapes){
             tempSweepInfo = myShape.sweepTestArray(distance,other.getShapes());
+
+            if (tempSweepInfo.collides || tempSweepInfo.startedWithin){
+                //System.out.println("found one!");
+                lastColliders.add((ColliderObject) tempSweepInfo.collider);
+            }
+
             if (returnSweepInfo == null || tempSweepInfo.time < returnSweepInfo.time )
                 returnSweepInfo = tempSweepInfo;
 
@@ -109,6 +128,7 @@ public class ColliderObject extends Node {
         shapes.clear();
         lastCollider = null;
         lastCollided = false;
+        lastColliders.clear();
 
 
         setMaskLayers(mask,layers);
@@ -154,6 +174,7 @@ public class ColliderObject extends Node {
 
         lastCollider = null;
         lastCollided = false;
+        lastColliders = new ArrayList<ColliderObject>();
 
         if (myRoot != null){
             this.myRoot.colliders.add(this);
