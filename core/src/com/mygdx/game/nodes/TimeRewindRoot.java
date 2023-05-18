@@ -168,7 +168,7 @@ public class TimeRewindRoot extends Root{
 
                 if (time < lastSaveTime - 1f / 60f + 1f / 600f) {
                     trimPast();
-                    playBack((past.size()-1) + 0);
+                    playBack((past.size() - 1));
 
                     lastSaveTime = time;
                 }else{

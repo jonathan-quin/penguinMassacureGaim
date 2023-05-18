@@ -58,6 +58,8 @@ public class TimeVortexVertical extends StaticNode implements TimeRewindInterfac
 
         addChild( ObjectPool.get(CollisionShape.class).init(1024,1958,0,0));
 
+        updateParentPos();
+
         lastSave = null;
 
         return this;
