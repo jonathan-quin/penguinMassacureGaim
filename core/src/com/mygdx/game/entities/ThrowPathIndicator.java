@@ -14,6 +14,7 @@ import com.mygdx.game.nodes.TextureEntity;
 import java.util.ArrayList;
 
 import static com.badlogic.gdx.math.MathUtils.lerp;
+import static java.lang.Math.abs;
 
 public class ThrowPathIndicator extends Node {
 
@@ -29,9 +30,13 @@ public class ThrowPathIndicator extends Node {
 
     public void setVisible(boolean visible){
 
-        if (!this.visible && visible) justInvisible = true;
+        if (!this.visible && visible){
+            justInvisible = true;
+            //System.out.println("hey");
+        }
 
         this.visible = visible;
+
         for (int i = 0; i < children.size(); i++){
 
             if (children.get(i) instanceof TextureEntity){
@@ -59,13 +64,10 @@ public class ThrowPathIndicator extends Node {
     public void display(Vector2 startingPos ,Vector2 vel, double gravity){
 
 
-        System.out.println(vel);
-
-
         double maxTime = 3;
         double impactTime = maxTime;
 
-        ray.position.set(0,0);
+        ray.position.set(startingPos);
 
         int maxChecks = 100;
         for (int i = 0; i < maxChecks; i++){
@@ -77,7 +79,7 @@ public class ThrowPathIndicator extends Node {
             ray.updateRaycast();
             if (ray.isColliding()){
                 impactTime = time;
-                System.out.println("impact!");
+                //impactTime = abs(((ray.getCollisionPoint().x - globalPosition.x) - startingPos.x )/vel.x);
 
                 break;
             }
@@ -86,7 +88,7 @@ public class ThrowPathIndicator extends Node {
 
         }
 
-        circleNum = (int) (impactTime * 6) + 5;
+        circleNum = (int) (impactTime * 6) + 3;
 
 
         while (circleNum > circles.size()){
@@ -112,26 +114,21 @@ public class ThrowPathIndicator extends Node {
             child.setScale( lerp(0.012f,0.004f ,((float)i / circles.size())) );
             child.setMyColor(semiTransparent);
 
-            /*System.out.println("i/size " + (float)i / children.size());
-            System.out.println("I: " + i);
-            System.out.println("lerp: " + lerp(0.1f,0.001f ,((float)i / children.size())));
 
-*/
             float newX = (float) (startingPos.x + vel.x * time);
             float newY = (float) (startingPos.y + (vel.y * time + 0.5 * -gravity * time * time));
 
             if (justInvisible){
                 child.position.set(newX,newY);
+                //System.out.println("hey");
             } else{
                 child.position.lerp(ObjectPool.getGarbage(Vector2.class).set(newX,newY),0.3f);
             }
 
+        }
 
-
-            if (visible) {
-                justInvisible = false;
-            }
-
+        if (visible) {
+            justInvisible = false;
         }
 
     }

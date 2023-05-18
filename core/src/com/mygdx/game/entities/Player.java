@@ -215,6 +215,10 @@ public class Player extends MovementNode implements TimeRewindInterface {
         vel.set(moveAndSlide( vel,(float) delta) );
         if (signum(tempVelY) != signum(vel.y)) vel.y = 0;
 
+        if (Gdx.input.isKeyJustPressed(Input.Keys.T)){
+            Globals.ultraSlow = !Globals.ultraSlow;
+        }
+
 
         takeDebugInputs();
         Globals.cameraOffset.set(position);

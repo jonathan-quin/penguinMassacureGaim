@@ -36,6 +36,8 @@ public class Globals {
 
     public static int timeRootStage = 0;
 
+    public static boolean ultraSlow = false;
+
     public static boolean currentlyRewinding = false;
 
     public static Vector2 screenSize =  new Vector2(1024,600);
