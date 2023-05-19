@@ -40,7 +40,7 @@ public class TimeVortex extends StaticNode implements TimeRewindInterface {
 
     public TimeVortex init(float x, float y,Vector2 vel,Vector2 targetVel,double accel){
 
-        super.init( x, y, getMaskLayers(LayerNames.PLAYER), getMaskLayers());
+        super.init( x, y, getMaskLayers(LayerNames.PLAYER), getMaskLayers(LayerNames.VORTEX));
 
 
 

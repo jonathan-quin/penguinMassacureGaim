@@ -51,7 +51,7 @@ public class ThrowPathIndicator extends Node {
     }
     public void ready(){
         addToGroup(GroupHandler.RENDERONTOP);
-        addChild(ObjectPool.get(Raycast.class).init(0,0,0,0,false,Raycast.getMaskLayers(LayerNames.WALLS,LayerNames.ELVES,LayerNames.EXPLODINGBARREL)));
+        addChild(ObjectPool.get(Raycast.class).init(0,0,0,0,false,Raycast.getMaskLayers(LayerNames.WALLS,LayerNames.ELVES,LayerNames.EXPLODINGBARREL,LayerNames.VORTEX)));
         ray = (Raycast) lastChild();
 
         circles.clear();
