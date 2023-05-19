@@ -125,7 +125,7 @@ public class CollisionShape extends Node {
 
             //assuming you have created those x, y, width and height variables
 
-            Color tempColor = Globals.globalShape.getColor().cpy();
+            Color tempColor = Globals.globalShape.getColor();
 
             Globals.globalShape.setColor(myColor);
 
