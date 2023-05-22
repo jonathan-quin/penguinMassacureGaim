@@ -27,14 +27,15 @@ public class Rope extends Node{
 
         for (int i = 0; i < numPoints; i++){
             if (i == 0){
-                points[i] = new Point(MathUtilsCustom.newVec().set(0,0),10,1,5,40,true);
-            }else points[i] = new Point(MathUtilsCustom.newVec().set(i * 10,0),10,1,5,40,false);
+                points[i] = new Point(MathUtilsCustom.newVec().set(0,0),50,1,5,4,true);
+            }else points[i] = new Point(MathUtilsCustom.newVec().set(i * 10,0),50,1,5,4,false);
         }
 
         for (int i = 0; i < numPoints; i++){
             points[i].setNextPrevious(i + 1 < points.length ? points[i+1] : null , i - 1 > -1 ? points[i-1] : null  );
         }
 
+        points[2].debug = true;
 
 
 
@@ -47,23 +48,28 @@ public class Rope extends Node{
             //System.out.println("hey");
             points[i].render();
         }
+
     }
 
 
     public void update(double delta){
 
+        points[0].position.set(globalPosition).scl(0.3f);
 
         for (int i = 0; i < points.length; i++){
             points[i].update(delta);
         }
 
-        /*for (int i = 0; i < points.length; i++){
+        for (int i = 0; i < points.length; i++){
             points[i].resolveWithNext(delta);
         }
         for (int i = 0; i < points.length; i++){
             points[i].resolveWithPrevious(delta);
-        }*/
+        }
 
+        for (int i = 0; i < points.length; i++) {
+            points[i].vel.set(points[i].prevPosition.x - position.x, points[i].prevPosition.y - position.y).scl((float) Globals.inverse(delta));
+        }
 
     }
 
@@ -73,6 +79,8 @@ public class Rope extends Node{
 
         Vector2 position;
         Vector2 prevPosition;
+
+        Vector2 vel;
 
         double age = 0;
 
@@ -90,9 +98,13 @@ public class Rope extends Node{
 
         float gravity;
 
+        public boolean debug = false;
+
         public Point(Vector2 position, float lengthToNext, float weight, float extensionRigidity,  float gravity, boolean immobile) {
             this.position = new Vector2( position);
             this.prevPosition = new Vector2(position);
+
+            vel = new Vector2(0,0);
 
             next = null;
             previous = null;
@@ -120,48 +132,75 @@ public class Rope extends Node{
             if (immobile) return;
 
 
+             // * delta;
+//            if (debug){
+//                System.out.println("age: " + age + " speed: " + prevPosition.dst(position));// * (1f/delta));
+//            }
 
 
-            Vector2 oldPos = newVec().set(position);
-
-            position.sub(newVec().set(prevPosition.x-position.x,prevPosition.y-position.y).scl(1f/prevDelta).scl((float) delta));//.scl((float) delta));
-
-            position.add((float) 0, (float) (-gravity * delta));
+            updateVel(delta);
 
 
-            prevPosition.set(oldPos);
-            prevDelta = (float) delta;
-
-            System.out.println("age: " + age + " speed: " + prevPosition.dst(position) * (1f/delta));
+            if (false && debug){
+                System.out.println("pos: " + position);
+                System.out.println();
+            }
 
         }
 
-        public void updateVel(){
-            
+        public void updateVel(double delta){
+
+            //delta = 0.0166666;
+
+            prevPosition.set(position);
+
+            position.sub(vel.scl((float) delta));
+            position.y -= gravity * delta;
+
         }
+
 
         public void resolveWithNext(double delta){
 
             if (next == null) return;
 
+            float distance2Next = position.dst(next.position);
+
+//            if (!immobile) {
+//                position.sub(newVec().set(next.position.x - position.x, next.position.y - position.y).nor().scl((float) (distance2Next - lengthToNext * 0.5)));
+//                next.position.sub(newVec().set(next.position.x - position.x, next.position.y - position.y).nor().scl((float) (distance2Next - lengthToNext * -0.5)));
+//            }
+//
+//            if (debug){
+//                System.out.println( newVec().set(next.position.x - position.x, next.position.y - position.y).nor().scl(distance2Next - lengthToNext) );
+//            }
+
             Vector2 dir = newVec().set(next.position.x - position.x, next.position.y-position.y);
 
-            float distance2Next = position.dst(next.position);
+
 
             dir.nor();
 
             Vector2 dir2 = newVec().set(dir);
 
             if (!immobile){
-            dir.scl((float) Math.max(weight/(weight + (next.immobile ? 0 : next.weight)) * extensionRigidity * delta,distance2Next-lengthToNext));
+            //dir.scl((float) Math.max(weight/(weight + (next.immobile ? 0 : next.weight)) * extensionRigidity * delta,distance2Next-lengthToNext));
 
-            dir.scl(distance2Next-lengthToNext < 0 ? -1 : 1);
+                dir.scl((float) (distance2Next - lengthToNext));
 
-            position.add(dir);
+                //dir.scl(10);
+
+                dir.scl(distance2Next-lengthToNext < 0 ? -1 : 1);
+
+                position.add(dir);
             }
 
             if (!next.immobile){
-                dir2.scl(Math.max(weight / (weight + next.weight), distance2Next - lengthToNext));
+                //dir2.scl(Math.max(weight / (weight + next.weight), distance2Next - lengthToNext));
+
+                dir2.scl((float) distance2Next - lengthToNext);
+
+                //dir2.scl(10);
 
                 dir2.scl(distance2Next - lengthToNext < 0 ? 1 : -1);
 
