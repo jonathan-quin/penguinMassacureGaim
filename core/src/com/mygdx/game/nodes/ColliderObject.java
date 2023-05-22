@@ -49,7 +49,7 @@ public class ColliderObject extends Node {
 //            System.out.println("hey, 1673 after colliding");
 //        }
 
-        if (lastColliders.size() > 1){
+        if (false && lastColliders.size() > 1){
             System.out.println(this);
             System.out.println(lastColliders);
         }
@@ -178,7 +178,7 @@ public class ColliderObject extends Node {
 
         if (myRoot != null){
             this.myRoot.colliders.add(this);
-            System.out.println("added self to colliders");
+            //System.out.println("added self to colliders");
         }
 
         shapes = new Array<>();

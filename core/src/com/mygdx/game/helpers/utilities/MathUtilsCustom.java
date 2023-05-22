@@ -1,5 +1,9 @@
 package com.mygdx.game.helpers.utilities;
 
+import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.entities.TimeParticle;
+import com.mygdx.game.helpers.constants.ObjectPool;
+
 public class MathUtilsCustom {
     public static double moveTowardsZero(double num, double amount){
         if (num > 0) return Math.max(num-amount,0);
@@ -40,5 +44,8 @@ public class MathUtilsCustom {
     }
 
 
+    public static Vector2 newVec() {
+        return ObjectPool.getGarbage(Vector2.class);
+    }
 
 }

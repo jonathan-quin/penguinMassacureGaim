@@ -603,7 +603,7 @@ public class Elf extends MovementNode implements TimeRewindInterface {
 
         vel.y = (float) Math.sqrt(abs(-2 * gravity * height));
 
-        if (is_on_screen(position,20,20)){
+        if (false && is_on_screen(position,20,20)){
             playSound(Globals.Sounds.JUMP);
             System.out.println(this);
             System.out.println(position);
