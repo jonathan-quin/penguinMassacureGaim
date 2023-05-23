@@ -5,8 +5,9 @@ import com.mygdx.game.entities.SimpleIcePlatform;
 import com.mygdx.game.helpers.constants.ObjectPool;
 import com.mygdx.game.nodes.Node;
 import com.mygdx.game.nodes.Root;
+import com.mygdx.game.nodes.TimeRewindRoot;
 
-public class TestScene extends Root {
+public class TestScene extends TimeRewindRoot {
 
 
 

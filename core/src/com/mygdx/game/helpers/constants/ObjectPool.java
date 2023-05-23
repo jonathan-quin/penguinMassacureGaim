@@ -206,6 +206,7 @@ public class ObjectPool {
 //    }
 
     private static boolean removeFromList(ArrayList<Object> list, Object o){
+        if (list == null) return false;
         return removeFromList(list,o,false);
     }
 

@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.nodes.GroupHandler;
 import com.mygdx.game.nodes.Node;
 import com.mygdx.game.nodes.Root;
+import com.mygdx.game.scenes.TestScene;
 import com.mygdx.game.scenes.levelA2Z.levelA;
 import com.mygdx.game.scenes.levelA2Z.levelB;
 import com.mygdx.game.scenes.levelA2Z.levelC;
@@ -46,8 +47,10 @@ public class SceneHandler {
         scenes = new HashMap<>();
 
 
-        /*
+
         scenes.put("TestScene", new TestScene());
+
+        /*
         scenes.put("TestScene2", new TestScene2());
         scenes.put("TimeRewindTest", new TimeRewindScene());
 
