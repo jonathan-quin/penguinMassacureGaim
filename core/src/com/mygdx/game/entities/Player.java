@@ -134,6 +134,8 @@ public class Player extends MovementNode implements TimeRewindInterface {
         lastChild().setName("throwPath");
         ((ThrowPathIndicator) lastChild()).setVisible(false);
 
+
+        //if (bulletHolder.getChild(""))
         addChild(ObjectPool.get(Rope.class).init(0,300,20));
 
         //takeGun(PenguinRevolver.class);

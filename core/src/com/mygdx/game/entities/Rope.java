@@ -27,8 +27,8 @@ public class Rope extends Node{
 
         for (int i = 0; i < numPoints; i++){
             if (i == 0){
-                points[i] = new Point(MathUtilsCustom.newVec().set(0,0),50,1,5,4,true);
-            }else points[i] = new Point(MathUtilsCustom.newVec().set(i * 10,0),50,1,5,4,false);
+                points[i] = new Point(MathUtilsCustom.newVec().set(0,0),50,1,5,400f/3,true);
+            }else points[i] = new Point(MathUtilsCustom.newVec().set(i * 10,0),50,1,5,400f/3,false);
         }
 
         for (int i = 0; i < numPoints; i++){
@@ -54,21 +54,26 @@ public class Rope extends Node{
 
     public void update(double delta){
 
-        points[0].position.set(globalPosition).scl(0.3f);
+        //delta = 0.01666666;
+
+        points[0].position.set(globalPosition).scl(1f);
 
         for (int i = 0; i < points.length; i++){
             points[i].update(delta);
+            points[i].applyGrav(delta);
+            points[i].applyVel(delta);
         }
 
         for (int i = 0; i < points.length; i++){
             points[i].resolveWithNext(delta);
         }
-        for (int i = 0; i < points.length; i++){
+        for (int i = 0; i < points.length; i++) {
             points[i].resolveWithPrevious(delta);
         }
 
+
         for (int i = 0; i < points.length; i++) {
-            points[i].vel.set(points[i].prevPosition.x - position.x, points[i].prevPosition.y - position.y).scl((float) Globals.inverse(delta));
+            points[i].updateVel(delta);
         }
 
     }
@@ -132,31 +137,32 @@ public class Rope extends Node{
             if (immobile) return;
 
 
-             // * delta;
-//            if (debug){
-//                System.out.println("age: " + age + " speed: " + prevPosition.dst(position));// * (1f/delta));
-//            }
-
-
-            updateVel(delta);
-
-
-            if (false && debug){
+            if ( debug){
+                System.out.println("age: " + age + " vel: " + vel);
                 System.out.println("pos: " + position);
                 System.out.println();
             }
 
         }
 
+        public void applyGrav(double delta){
+            if (immobile) return;
+            position.y -= gravity * delta;
+        }
+
         public void updateVel(double delta){
 
             //delta = 0.0166666;
-
+            vel.set(prevPosition.x - position.x, prevPosition.y - position.y).scl((float) Globals.inverse(delta));
             prevPosition.set(position);
 
-            position.sub(vel.scl((float) delta));
-            position.y -= gravity * delta;
 
+
+        }
+
+        public void applyVel(double delta){
+            if (immobile) return;
+            position.sub(vel.scl((float) delta));
         }
 
 
@@ -186,7 +192,7 @@ public class Rope extends Node{
             if (!immobile){
             //dir.scl((float) Math.max(weight/(weight + (next.immobile ? 0 : next.weight)) * extensionRigidity * delta,distance2Next-lengthToNext));
 
-                dir.scl((float) (distance2Next - lengthToNext));
+                dir.scl((float) (distance2Next - lengthToNext)*0.4f);
 
                 //dir.scl(10);
 
@@ -198,7 +204,7 @@ public class Rope extends Node{
             if (!next.immobile){
                 //dir2.scl(Math.max(weight / (weight + next.weight), distance2Next - lengthToNext));
 
-                dir2.scl((float) distance2Next - lengthToNext);
+                dir2.scl((float) ((float) (distance2Next - lengthToNext )* 0.4));
 
                 //dir2.scl(10);
 
