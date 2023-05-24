@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class TextureHolder {
 
-    public static Texture penguinTexture = new Texture("penguinForNow.png");
+    public static Texture penguinTexture = new Texture("tanner's art/penguinForNow.png");
 
     public static Texture iceTexture = new Texture("simplePlatform.png");
 
@@ -28,17 +28,7 @@ public class TextureHolder {
 
     public static Texture timeVortex = new Texture("timeVortex.png");
 
-    public static Texture redRevolver = new Texture("UpdatedTextures\\revolverRedOutline.png");
 
-    public static Texture greenRevolver = new Texture("UpdatedTextures\\revolverGreenOutline.png");
-
-    public static Texture redShotgun = new Texture("edg32ShotgunRedOutline.png");
-
-    public static Texture redMiniGun = new Texture("miniGunRedOutline.png");
-
-    public static Texture greenShotgun = new Texture("edg32ShotgunGreenOutline.png");
-
-    public static Texture greenMiniGun = new Texture("miniGunGreenOutline.png");
 
     public static Texture whitePixel = new Texture("whitePixel.png");
 
@@ -47,6 +37,26 @@ public class TextureHolder {
 
     public static Texture georgeParalaxMountainsAndTrees = new Texture("georgesMountainParalax.png");
 
+    public static class Guns{
+
+        public static Texture redRevolver = new Texture("UpdatedTextures\\revolverRedOutline.png");
+
+        public static Texture greenRevolver = new Texture("UpdatedTextures\\revolverGreenOutline.png");
+
+        public static Texture redShotgun = new Texture("tanner's art/Enemy_Shotgun.png");
+
+        public static Texture greenShotgun = new Texture("tanner's art/Player_Shotgun.png");
+
+        public static Texture redMiniGun = new Texture("miniGunRedOutline.png");
+
+        public static Texture greenMiniGun = new Texture("miniGunGreenOutline.png");
+
+        public static Texture redSniper = new Texture("tanner's art/Enemy_Sniper.png");
+        public static Texture greenSniper = new Texture("tanner's art/Player_Sniper.png");
+
+
+
+    }
 
     public static class Text{
 

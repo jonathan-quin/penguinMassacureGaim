@@ -8,7 +8,7 @@ public class FloorShotgun extends FloorGun{
     public FloorShotgun() {
         super();
         myGun = PenguinShotgun.class;
-        myTex = TextureHolder.greenShotgun;
+        myTex = TextureHolder.Guns.greenShotgun;
     }
 
 }

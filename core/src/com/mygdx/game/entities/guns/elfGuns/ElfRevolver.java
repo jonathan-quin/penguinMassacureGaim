@@ -20,7 +20,7 @@ public class ElfRevolver extends ElfGun {
         aimSpeed = 0.1;
         fixedAimSpeed = Math.toDegrees(3);
 
-        tex = TextureHolder.redRevolver;
+        tex = TextureHolder.Guns.redRevolver;
         floorClass = FloorRevolver.class;
         texOffset = new Vector2(10, -2);
 

@@ -21,7 +21,7 @@ public class ElfShotgun extends ElfGun {
         aimSpeed = 0.04;
         fixedAimSpeed = Math.toDegrees(1.5);
 
-        tex = TextureHolder.redShotgun;
+        tex = TextureHolder.Guns.redShotgun;
         texOffset = new Vector2(10,0);
 
         timeUntilNextShot = 0;

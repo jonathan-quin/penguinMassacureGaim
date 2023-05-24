@@ -7,7 +7,7 @@ public class ThrownMiniGun extends ThrownGun {
 
     public ThrownMiniGun(){
         mySize = 6;
-        myTex = TextureHolder.greenMiniGun;
+        myTex = TextureHolder.Guns.greenMiniGun;
         throwSpeed = 250;
         distanceFromPlayer = 5;
         myGun = PenguinMiniGun.class;

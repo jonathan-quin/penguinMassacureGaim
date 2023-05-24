@@ -30,7 +30,7 @@ public class PenguinMiniGun extends PenguinGun{
 
         recoil = 75;
 
-        tex = TextureHolder.greenMiniGun;
+        tex = TextureHolder.Guns.greenMiniGun;
         texOffset = new Vector2(13,-0.5f);
 
         timeUntilNextShot = 0;

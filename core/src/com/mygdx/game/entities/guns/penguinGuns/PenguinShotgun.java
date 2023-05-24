@@ -27,7 +27,7 @@ public class PenguinShotgun extends PenguinGun{
 
         recoil = 500;
 
-        tex = TextureHolder.greenShotgun;
+        tex = TextureHolder.Guns.greenShotgun;
         texOffset = new Vector2(12,-3.5f);
 
         timeUntilNextShot = 0;

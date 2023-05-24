@@ -62,9 +62,9 @@ public class levelCreator extends Node {
         playerGuns.add(PenguinShotgun.class);
         playerGuns.add(PenguinMiniGun.class);
 
-        gunTextures.add(TextureHolder.redRevolver);
-        gunTextures.add(TextureHolder.redShotgun);
-        gunTextures.add(TextureHolder.redMiniGun);
+        gunTextures.add(TextureHolder.Guns.redRevolver);
+        gunTextures.add(TextureHolder.Guns.redShotgun);
+        gunTextures.add(TextureHolder.Guns.redMiniGun);
     }
     public levelCreator init(){
         super.init(0,0);
@@ -79,7 +79,7 @@ public class levelCreator extends Node {
         addChild(ObjectPool.get(TextureEntity.class).init(TextureHolder.elfTexture, 0, 0, 0, 0));
         sprite = (TextureEntity) lastChild();
 
-        addChild(ObjectPool.get(TextureEntity.class).init(TextureHolder.redRevolver, 0, 0, 0, 0));
+        addChild(ObjectPool.get(TextureEntity.class).init(TextureHolder.Guns.redRevolver, 0, 0, 0, 0));
         gunSprite = (TextureEntity) lastChild();
     }
 
@@ -239,7 +239,7 @@ public class levelCreator extends Node {
             addChild(ObjectPool.get(TextureEntity.class).init(TextureHolder.elfTexture, 0, 0, 0, 0));
             sprite = (TextureEntity) lastChild();
 
-            addChild(ObjectPool.get(TextureEntity.class).init(TextureHolder.redRevolver, 0, 0, 0, 0));
+            addChild(ObjectPool.get(TextureEntity.class).init(TextureHolder.Guns.redRevolver, 0, 0, 0, 0));
             gunSprite = (TextureEntity) lastChild();
 
             System.out.println("\n");

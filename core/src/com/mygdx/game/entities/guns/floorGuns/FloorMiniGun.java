@@ -8,7 +8,7 @@ public class FloorMiniGun extends FloorGun{
     public FloorMiniGun() {
         super();
         myGun = PenguinMiniGun.class;
-        myTex = TextureHolder.greenMiniGun;
+        myTex = TextureHolder.Guns.greenMiniGun;
     }
 
 }

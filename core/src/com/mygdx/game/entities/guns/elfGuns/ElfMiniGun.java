@@ -20,7 +20,7 @@ public class ElfMiniGun extends ElfGun {
         aimSpeed = 0.1;
         fixedAimSpeed = Math.toDegrees(7);
 
-        tex = TextureHolder.redMiniGun;
+        tex = TextureHolder.Guns.redMiniGun;
         floorClass = FloorMiniGun.class;
         texOffset = new Vector2(13,-0.5f);
 
