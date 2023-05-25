@@ -3,7 +3,9 @@ package com.mygdx.game.nodes;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
 import com.mygdx.game.helpers.constants.Globals;
+import com.mygdx.game.helpers.utilities.SoundAccelerator;
 
 public class AudioHandler {
 
@@ -15,8 +17,15 @@ public class AudioHandler {
 
     public void play(String effect){
         soundsMade.add(effect);
-        Globals.sounds.get(effect).play(1f);
+        //Globals.sounds.get(effect).play(1f);
+
+
+        SoundAccelerator.playAtSpeed(.5,"assets/sounds/thisIsMeSpeaking.wav");
+
+
     }
+
+
 
 //    public void play(String effect,float volume){
 //        Globals.sounds.get(effect).play(volume);
