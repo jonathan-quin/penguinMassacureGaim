@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
+import static com.badlogic.gdx.math.MathUtils.lerp;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
@@ -86,8 +87,8 @@ public class SoundAccelerator {
 
     }
 
-
-    public static void playAtSpeed(double speed, String file){
+    //works, technically. Totally kills quality.
+    public static void playAtSpeedV1(double speed, String file){
 
         double playBackSpeed = speed;
 
@@ -109,14 +110,63 @@ public class SoundAccelerator {
 
                 output[ min(output.length-1,( i * frameSize ) + j ) ] =
                         original[ min(original.length-1,
-                                (int) ( ((i * frameSize * playBackSpeed ) - ((i * frameSize * playBackSpeed ) % 4 ))+ j
+                                (int) ( ((i * frameSize * playBackSpeed ) - ((i * frameSize * playBackSpeed ) % frameSize ))+ j
                                 ) )];
 
             }
 
         }
 
-        //System.out.println(Arrays.toString(output));
+//        System.out.println(Arrays.toString(output));
+//        System.out.println("\n\nend v1\n\n");
+
+        playSound(output,audioFormat);
+
+    }
+
+    public static void playAtSpeedV2(double speed, String file){
+
+        double playBackSpeed = speed;
+
+        System.out.println("Playback Rate: " + playBackSpeed);
+
+
+        AudioFormat audioFormat = getFormat(file);
+        byte[] original = getAudioByteArray(file);
+
+        int frameSize = audioFormat.getFrameSize();
+        //System.out.println(frameSize);
+
+        byte[] output = new byte[(int) (original.length/playBackSpeed)];
+
+
+        for (int i = 0; i < (int)(output.length / frameSize); i++) {
+
+            for (int j = 0; j < frameSize; j++) {
+
+                byte prevValue = original[ max(0, min(original.length-1, (int) ( (((i-1) * frameSize * playBackSpeed ) - (((i-1) * frameSize * playBackSpeed ) % frameSize ))+ j) ))];
+                double iFrameSpeed = i * frameSize * playBackSpeed;
+                byte nextValue = original[ min(original.length-1, (int) ( (( iFrameSpeed) - ((iFrameSpeed) % frameSize ))+ j) )];
+
+                float progress = (float) (((iFrameSpeed - ((iFrameSpeed) - ((iFrameSpeed) % frameSize))))/frameSize);
+
+                if (false && j == 0){
+                    System.out.println("next " + (int) (((iFrameSpeed) - ((iFrameSpeed) % frameSize)) + j));
+                    System.out.println("next " + (((iFrameSpeed)  + j)));
+                    System.out.println("progress: " + progress);
+                }
+
+                progress = (progress > 1) ? 1 : progress;
+
+                output[ min(output.length-1,( i * frameSize ) + j ) ] = byteLerp(prevValue,nextValue,progress);
+
+
+            }
+
+        }
+
+//        System.out.println(Arrays.toString(output));
+//        System.out.println("\n\n\nend v2\n\n");
 
         playSound(output,audioFormat);
 
@@ -208,6 +258,14 @@ public class SoundAccelerator {
         }
 
         clip.start();
+    }
+
+    public static int intLerp(int start, int end, float progress){
+        return Math.round(lerp(start,end,progress));
+    }
+
+    public static byte byteLerp(float start, float end, float progress){
+        return (byte) Math.round(lerp(start,end,progress));
     }
 
 }

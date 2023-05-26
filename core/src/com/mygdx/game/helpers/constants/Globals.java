@@ -83,14 +83,14 @@ public class Globals {
         sounds.put(MINIGUNSHOOT, Gdx.audio.newSound(Gdx.files.internal("sounds/miniGunShot.mp3")));
         sounds.put(REWINDSTATIC, Gdx.audio.newSound(Gdx.files.internal("sounds/staticcc.wav")));
 
-        soundPaths.put(ELFDIE, ("sounds/elf explode.wav"));
-        soundPaths.put(BULLETSOFT, "sounds/bullet impact 1.wav");
-        soundPaths.put(BULLETHARD, "sounds/bullet impact 3.wav");
-        soundPaths.put(JUMP, "sounds/jump noisee.mp3");
-        soundPaths.put(SHOTGUNSHOOT, "sounds/shotgun shot.mp3");
-        soundPaths.put(REVOLVERSHOOT, "sounds/revolver shotFinal.mp3");
-        soundPaths.put(MINIGUNSHOOT, "sounds/miniGunShot.mp3");
-        soundPaths.put(REWINDSTATIC, "sounds/staticcc.wav");
+        soundPaths.put(ELFDIE, ( "assets/" + "sounds/elf explode.wav"));
+        soundPaths.put(BULLETSOFT, "assets/" + "sounds/bullet impact 1.wav");
+        soundPaths.put(BULLETHARD, "assets/" + "sounds/bullet impact 3.wav");
+        soundPaths.put(JUMP, "assets/" + "sounds/jump noisee.mp3");
+        soundPaths.put(SHOTGUNSHOOT, "assets/" + "sounds/shotgun shot.mp3");
+        soundPaths.put(REVOLVERSHOOT, "assets/" + "sounds/revolver shotFinal.mp3");
+        soundPaths.put(MINIGUNSHOOT, "assets/" + "sounds/miniGunShot.mp3");
+        soundPaths.put(REWINDSTATIC, "assets/" + "sounds/staticcc.wav");
 
     }
 

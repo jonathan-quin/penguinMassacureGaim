@@ -7,7 +7,7 @@ import java.util.HashMap;
 import com.mygdx.game.helpers.constants.Globals;
 import com.mygdx.game.helpers.utilities.SoundAccelerator;
 
-import javax.sound.sampled.AudioFormat;
+import static com.badlogic.gdx.math.MathUtils.lerp;
 
 public class AudioHandler {
 
@@ -22,7 +22,7 @@ public class AudioHandler {
 
 
         if (SoundAccelerator.getFormat(Globals.soundPaths.get(effect)) != null)
-        SoundAccelerator.playAtSpeed(Globals.gameSpeed,Globals.soundPaths.get(effect));
+        SoundAccelerator.playAtSpeedV2(lerp((float) Globals.gameSpeed,1,0f),Globals.soundPaths.get(effect));
 
         else{
             Globals.sounds.get(effect).play(1f);
