@@ -180,7 +180,7 @@ public class TimeRewindRoot extends Root{
         }
         else{
 
-
+            gameSpeed = 1;
 
             switch (playBackStage){
                 case 0:

@@ -96,20 +96,27 @@ public class SoundAccelerator {
 
         AudioFormat audioFormat = getFormat(file);
         byte[] original = getAudioByteArray(file);
-        int frameSize = audioFormat.getFrameSize();
 
+        int frameSize = audioFormat.getFrameSize();
+        //System.out.println(frameSize);
 
         byte[] output = new byte[(int) (original.length/playBackSpeed)];
 
-        double offset = 0;
-        for (int i = 0; i < (int)(output.length); i++) {
-            output[i] = original[(int) min(original.length-1,i + offset)];
 
-            if (i % (int) 1/speed == 0) offset++;
+        for (int i = 0; i < (int)(output.length / frameSize); i++) {
+
+            for (int j = 0; j < frameSize; j++) {
+
+                output[ min(output.length-1,( i * frameSize ) + j ) ] =
+                        original[ min(original.length-1,
+                                (int) ( ((i * frameSize * playBackSpeed ) - ((i * frameSize * playBackSpeed ) % 4 ))+ j
+                                ) )];
+
+            }
 
         }
 
-        System.out.println(Arrays.toString(output));
+        //System.out.println(Arrays.toString(output));
 
         playSound(output,audioFormat);
 
@@ -148,10 +155,9 @@ public class SoundAccelerator {
 
 
         AudioInputStream streamFromFile = null;
-        AudioFormat audioFormat = null;
         try{
             streamFromFile = AudioSystem.getAudioInputStream(audio);
-            audioFormat = streamFromFile.getFormat();
+
         } catch (Exception ex){
             System.out.println(ex);
         }

@@ -7,6 +7,8 @@ import java.util.HashMap;
 import com.mygdx.game.helpers.constants.Globals;
 import com.mygdx.game.helpers.utilities.SoundAccelerator;
 
+import javax.sound.sampled.AudioFormat;
+
 public class AudioHandler {
 
 
@@ -17,11 +19,14 @@ public class AudioHandler {
 
     public void play(String effect){
         soundsMade.add(effect);
-        //Globals.sounds.get(effect).play(1f);
 
 
-        SoundAccelerator.playAtSpeed(.5,"assets/sounds/thisIsMeSpeaking.wav");
+        if (SoundAccelerator.getFormat(Globals.soundPaths.get(effect)) != null)
+        SoundAccelerator.playAtSpeed(Globals.gameSpeed,Globals.soundPaths.get(effect));
 
+        else{
+            Globals.sounds.get(effect).play(1f);
+        }
 
     }
 
