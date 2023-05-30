@@ -15,7 +15,7 @@ public class SoundAccelerator {
 
 
 
-    public static void play(double speed){
+   /* public static void play(double speed){
 
         int playBackSpeed = (int) speed;
 
@@ -85,7 +85,7 @@ public class SoundAccelerator {
         //clip.loop(2*playBackSpeed);
         clip.start();
 
-    }
+    }*/
 
     //works, technically. Totally kills quality.
     public static void playAtSpeedV1(double speed, String file){
@@ -198,7 +198,41 @@ public class SoundAccelerator {
 
     }
 
+    public static AudioInputStream getAtSpeed(double speed, String file){
 
+        double playBackSpeed = speed;
+
+        System.out.println("Playback Rate (get): " + playBackSpeed);
+
+
+        AudioFormat audioFormat = getFormat(file);
+        byte[] original = getAudioByteArray(file);
+
+        int frameSize = audioFormat.getFrameSize();
+        //System.out.println(frameSize);
+
+        byte[] output = new byte[(int) (original.length/playBackSpeed)];
+
+
+        for (int i = 0; i < (int)(output.length / frameSize); i++) {
+
+            for (int j = 0; j < frameSize; j++) {
+
+                output[ min(output.length-1,( i * frameSize ) + j ) ] =
+                        original[ min(original.length-1,
+                                (int) ( ((i * frameSize * playBackSpeed ) - ((i * frameSize * playBackSpeed ) % frameSize ))+ j
+                                ) )];
+
+            }
+
+        }
+
+//        System.out.println(Arrays.toString(output));
+//        System.out.println("\n\nend v1\n\n");
+
+        return getAIS(output,audioFormat);
+
+    }
 
     public static byte[] getAudioByteArray(String file){
         File audio = new File(file);
@@ -258,6 +292,12 @@ public class SoundAccelerator {
         }
 
         clip.start();
+    }
+
+    public static AudioInputStream getAIS(byte[] sound,AudioFormat format){
+        ByteArrayInputStream bais = new ByteArrayInputStream(sound);
+        AudioInputStream aisAccelerated = new AudioInputStream(bais, format, sound.length);
+        return aisAccelerated;
     }
 
     public static int intLerp(int start, int end, float progress){

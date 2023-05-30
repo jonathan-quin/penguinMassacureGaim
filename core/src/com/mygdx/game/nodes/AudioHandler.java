@@ -21,11 +21,14 @@ public class AudioHandler {
         soundsMade.add(effect);
 
 
-        if (SoundAccelerator.getFormat(Globals.soundPaths.get(effect)) != null)
-        SoundAccelerator.playAtSpeedV2(lerp((float) Globals.gameSpeed,1,0f),Globals.soundPaths.get(effect));
+        Globals.timeRewindSounds.get(effect).play();
 
-        else{
-            Globals.sounds.get(effect).play(1f);
+    }
+
+    public void updateSoundSpeeds(){
+
+        for ( String key : Globals.timeRewindSounds.keySet().toArray(new String[0]) ) {
+            Globals.timeRewindSounds.get(key).updateSoundSpeeds(Globals.gameSpeed);
         }
 
     }

@@ -1,6 +1,5 @@
 package com.mygdx.game.entities;
 
-import static com.badlogic.gdx.math.MathUtils.lerp;
 import static java.lang.Math.min;
 import static java.lang.Math.signum;
 import static java.lang.Math.toRadians;
@@ -353,12 +352,13 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
 
         double speed = 1.4;
-        if (Gdx.input.isKeyJustPressed(Input.Keys.G)){
-            SoundAccelerator.playAtSpeedV2(speed,Globals.soundPaths.get(Globals.Sounds.BULLETSOFT));
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.H)){
-            SoundAccelerator.playAtSpeedV1(speed,Globals.soundPaths.get(Globals.Sounds.BULLETSOFT));
-        }
+
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.G)){
+//            SoundAccelerator.playAtSpeedV2(speed,Globals.timeRewindSounds.get(Globals.Sounds.BULLETSOFT));
+//        }
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.H)){
+//            SoundAccelerator.playAtSpeedV1(speed,Globals.timeRewindSounds.get(Globals.Sounds.BULLETSOFT));
+//        }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.C)){
             Globals.showCollision = !Globals.showCollision;
