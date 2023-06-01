@@ -18,7 +18,7 @@ public class TimeRewindSound {
     int numSpeeds;
     ArrayList<AudioInputStream> sounds = new ArrayList<>();
 
-    ArrayList<Clip> playing = new ArrayList<>();
+    public ArrayList<Clip> playing = new ArrayList<>();
 
     public TimeRewindSound(String filePath, double fileSpeed,int numSpeeds){
 
@@ -26,9 +26,11 @@ public class TimeRewindSound {
         this.fileSpeed = fileSpeed;
         this.numSpeeds = numSpeeds;
 
-        for (double i = 1D/numSpeeds; MathUtilsCustom.isEqualApprox(i,1,0.08) || i < 1; i += 1D/numSpeeds){
+        for (double i = 1D/numSpeeds; MathUtilsCustom.isEqualApprox(i,1,0.02) || i < 1; i += 1D/numSpeeds){
             sounds.add(SoundAccelerator.getAtSpeed(1/fileSpeed * i,filePath));
         }
+
+        currentSoundsIndex = sounds.size()-1;
 
     }
 
@@ -44,15 +46,22 @@ public class TimeRewindSound {
             }
         }
 
+        //System.out.println(speed);
+        //System.out.println(index);
+
         if (currentSoundsIndex == index){
             return;
         }
+        System.out.println("changing! " + currentSoundsIndex + " " + index + " " + playing.size());
+        currentSoundsIndex = index;
+
+
 
         for (int i = 0; i < playing.size();i++){
 
             double progress = ((double) playing.get(i).getMicrosecondPosition())/playing.get(i).getMicrosecondLength();
 
-            playing.get(i).close();
+            //playing.get(i).close();
 
             Clip clip = null;
 
@@ -84,8 +93,20 @@ public class TimeRewindSound {
             System.out.println(ex);
         }
 
-        playing.add(clip );
+        playing.add(clip);
+
+        assert clip != null;
+        clip.setFramePosition(0);
         clip.start();
+
+        System.out.println(playing.size() + " " + filePath);
+
+        for (int i = playing.size() - 1; i >= 0; i--){
+            if (!playing.get(i).isActive()){
+                playing.get(i).start();
+                playing.get(i);
+            }
+        }
     }
 
 

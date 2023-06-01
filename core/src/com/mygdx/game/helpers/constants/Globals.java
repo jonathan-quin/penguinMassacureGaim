@@ -14,6 +14,7 @@ import java.util.HashMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -51,6 +52,8 @@ public class Globals {
 
     public static HashMap<String, Sound> sounds = new HashMap<>();
     public static HashMap<String, TimeRewindSound> timeRewindSounds = new HashMap<>();
+
+    public static SpriteBatch fontBatch = new SpriteBatch();
 
     public Globals(){
 

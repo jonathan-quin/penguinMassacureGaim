@@ -28,6 +28,7 @@ public class AudioHandler {
     public void updateSoundSpeeds(){
 
         for ( String key : Globals.timeRewindSounds.keySet().toArray(new String[0]) ) {
+            System.out.println(key + " " + Globals.timeRewindSounds.get(key).playing.size());
             Globals.timeRewindSounds.get(key).updateSoundSpeeds(Globals.gameSpeed);
         }
 

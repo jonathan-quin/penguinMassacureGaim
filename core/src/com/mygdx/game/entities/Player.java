@@ -132,6 +132,10 @@ public class Player extends MovementNode implements TimeRewindInterface {
         ((ThrowPathIndicator) lastChild()).setVisible(false);
 
 
+        addChild(ObjectPool.get(Label.class).init((float) (5), (float) (595)));
+        lastChild().addToGroup(GroupHandler.RENDERONTOP);
+        lastChild().addToGroup("debugLabel");
+
         //if (bulletHolder.getChild(""))
 
 
