@@ -2,9 +2,7 @@ package com.mygdx.game.helpers.utilities;
 
 import com.mygdx.game.nodes.TimeRewindRoot;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
+import javax.sound.sampled.*;
 import java.util.ArrayList;
 
 import static java.lang.Math.abs;
@@ -86,7 +84,10 @@ public class TimeRewindSound {
     public void play(){
         Clip clip = null;
 
+
+
         try{
+            sounds.get(currentSoundsIndex).reset();
             clip = AudioSystem.getClip();
             clip.open(sounds.get(currentSoundsIndex));
         } catch (Exception ex){
@@ -99,14 +100,28 @@ public class TimeRewindSound {
         clip.setFramePosition(0);
         clip.start();
 
+        final Clip finalClip = clip;
+        clip.addLineListener(new LineListener() {
+            public void update(LineEvent myLineEvent) {
+                if (myLineEvent.getType() == LineEvent.Type.STOP) {
+                    finalClip.setFramePosition(0);
+                    finalClip.close();
+                    playing.remove(finalClip);
+                }
+            }
+        });
+
         System.out.println(playing.size() + " " + filePath);
 
-        for (int i = playing.size() - 1; i >= 0; i--){
-            if (!playing.get(i).isActive()){
-                playing.get(i).start();
-                playing.get(i);
-            }
-        }
+//        for (int i = playing.size() - 1; i >= 0; i--){
+//            if (playing.get(i).getMicrosecondLength() == playing.get(i).getMicrosecondPosition()){
+//                //playing.get(i).stop();
+//                playing.get(i).close();
+//                playing.remove(i);
+//
+//            }
+//        }
+
     }
 
 
