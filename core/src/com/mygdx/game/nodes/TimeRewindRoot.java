@@ -81,7 +81,7 @@ public class TimeRewindRoot extends Root{
 
         if (!playBack){
 
-            //audio.updateSoundSpeeds();
+            audio.updateSoundSpeeds();
 
             audio.stopLoop(Sounds.REWINDSTATIC);
 

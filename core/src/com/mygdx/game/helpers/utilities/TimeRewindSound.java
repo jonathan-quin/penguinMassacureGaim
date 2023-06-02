@@ -4,6 +4,7 @@ import com.mygdx.game.nodes.TimeRewindRoot;
 
 import javax.sound.sampled.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static java.lang.Math.abs;
 
@@ -16,7 +17,9 @@ public class TimeRewindSound {
     int numSpeeds;
     ArrayList<AudioInputStream> sounds = new ArrayList<>();
 
-    public ArrayList<Clip> playing = new ArrayList<>();
+    public ArrayList<signedClip> playing = new ArrayList<>();
+
+
 
     public TimeRewindSound(String filePath, double fileSpeed,int numSpeeds){
 
@@ -33,6 +36,8 @@ public class TimeRewindSound {
     }
 
     public void updateSoundSpeeds(double speed){
+
+        if (!(playing.size() > 0)) return;
 
         double distance = 100;
         int index = 0;
@@ -55,72 +60,119 @@ public class TimeRewindSound {
 
 
 
-        for (int i = 0; i < playing.size();i++){
+        for (int i = playing.size() -1; i >= 0 ;i--){
+            signedClip currentClip = playing.get(i);
+            double progress = currentClip.getProgress();
+            storeClip(currentClip);
 
-            double progress = ((double) playing.get(i).getMicrosecondPosition())/playing.get(i).getMicrosecondLength();
+            System.out.println(progress);
 
-            //playing.get(i).close();
-
-            Clip clip = null;
-
-            try{
-                clip = AudioSystem.getClip();
-                clip.open(sounds.get(index));
-            } catch (Exception ex){
-                System.out.println(ex);
-            }
-
-            playing.set(i,  clip );
-
-            playing.get(i).setMicrosecondPosition((long) progress * playing.get(i).getMicrosecondLength());
-
-
-            if (speed != 0) playing.get(i).start();
+            signedClip newClip = getClip(sounds.get(currentSoundsIndex));
+            currentClip.setProgress(progress);
+            newClip.start();
         }
 
 
     }
 
     public void play(){
+
+
+        signedClip clip = getClip();
+        clip.start();
+
+    }
+
+
+    HashMap<AudioInputStream,ArrayList<signedClip>> storedClips = new HashMap<>();
+
+    public signedClip getClip(){
+        return getClip(sounds.get(currentSoundsIndex));
+    }
+
+    public signedClip getClip(AudioInputStream type){
+
+        if (!storedClips.containsKey(type)){
+            storedClips.put(type,new ArrayList<signedClip>());
+        }
+
+
+        if (storedClips.get(type).size() > 0){
+
+            signedClip returnClip = storedClips.get(type).remove(storedClips.get(type).size()-1);
+
+            playing.add(returnClip);
+            returnClip.setProgress(0);
+            returnClip.stop();
+
+            return returnClip;
+        }
+
+
         Clip clip = null;
-
-
-
         try{
-            sounds.get(currentSoundsIndex).reset();
+            type.reset();
             clip = AudioSystem.getClip();
-            clip.open(sounds.get(currentSoundsIndex));
+            clip.open(type);
         } catch (Exception ex){
             System.out.println(ex);
         }
 
-        playing.add(clip);
-
         assert clip != null;
         clip.setFramePosition(0);
-        clip.start();
 
-        final Clip finalClip = clip;
+        final signedClip returnClip = new signedClip(type,clip);
         clip.addLineListener(new LineListener() {
             public void update(LineEvent myLineEvent) {
                 if (myLineEvent.getType() == LineEvent.Type.STOP) {
-                    finalClip.setFramePosition(0);
-                    finalClip.close();
-                    playing.remove(finalClip);
+                    storeClip(returnClip);
                 }
             }
         });
 
-        System.out.println(playing.size() + " " + filePath);
+        returnClip.stop();
 
-//        for (int i = playing.size() - 1; i >= 0; i--){
-//            if (playing.get(i).getMicrosecondLength() == playing.get(i).getMicrosecondPosition()){
-//                //playing.get(i).stop();
-//                playing.get(i).close();
-//                playing.remove(i);
-//
-//            }
-//        }
+        playing.add(returnClip);
+        return returnClip;
+
+
+    }
+
+    public void storeClip(signedClip clip){
+        clip.clip.stop();
+        clip.clip.setFramePosition(0);
+
+        playing.remove(clip);
+
+        storedClips.get(clip.ais).add(clip);
+    }
+
+    public class signedClip{
+        public AudioInputStream ais;
+        public Clip clip;
+
+        public signedClip(AudioInputStream ais, Clip clip) {
+            this.ais = ais;
+            this.clip = clip;
+        }
+
+        public void start(){
+            clip.start();
+        }
+
+        public void stop(){
+            clip.stop();
+        }
+
+        public double getProgress(){
+           return ((double) clip.getMicrosecondPosition())/clip.getMicrosecondLength();
+        }
+
+        public void setProgress(double progress){
+            clip.setMicrosecondPosition( (long) (progress * clip.getMicrosecondLength()) );
+
+            //System.out.println(progress + " " + ((long) (progress * clip.getMicrosecondLength())) + " " + clip.getMicrosecondLength());
+        }
 
     }
 

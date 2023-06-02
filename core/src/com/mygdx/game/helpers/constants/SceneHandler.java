@@ -190,7 +190,7 @@ public class SceneHandler {
         
         if (sceneChangeThisFrame){
 //          ObjectPool.printTotal();
-            ObjectPool.printObjectBreakdownInUse();
+            //ObjectPool.printObjectBreakdownInUse();
             tempScene.close();
 
             currentScene.init();
