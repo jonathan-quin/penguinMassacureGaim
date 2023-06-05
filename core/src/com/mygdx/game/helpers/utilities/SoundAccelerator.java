@@ -5,6 +5,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static com.badlogic.gdx.math.MathUtils.lerp;
@@ -234,6 +235,42 @@ public class SoundAccelerator {
 
     }
 
+    public static ArrayList<Object> getAtSpeedV2(double speed, String file){
+
+        double playBackSpeed = speed;
+
+        System.out.println("Playback Rate (get): " + playBackSpeed);
+
+
+        AudioFormat audioFormat = getFormat(file);
+        byte[] original = getAudioByteArray(file);
+
+        int frameSize = audioFormat.getFrameSize();
+        //System.out.println(frameSize);
+
+        byte[] output = new byte[(int) (original.length/playBackSpeed)];
+
+
+        for (int i = 0; i < (int)(output.length / frameSize); i++) {
+
+            for (int j = 0; j < frameSize; j++) {
+
+                output[ min(output.length-1,( i * frameSize ) + j ) ] =
+                        original[ min(original.length-1,
+                                (int) ( ((i * frameSize * playBackSpeed ) - ((i * frameSize * playBackSpeed ) % frameSize ))+ j
+                                ) )];
+
+            }
+
+        }
+
+//        System.out.println(Arrays.toString(output));
+//        System.out.println("\n\nend v1\n\n");
+
+        return getAISList(output,audioFormat);
+
+    }
+
     public static byte[] getAudioByteArray(String file){
         File audio = new File(file);
 
@@ -298,6 +335,18 @@ public class SoundAccelerator {
         ByteArrayInputStream bais = new ByteArrayInputStream(sound);
         AudioInputStream aisAccelerated = new AudioInputStream(bais, format, sound.length);
         return aisAccelerated;
+    }
+
+    public static ArrayList<Object> getAISList(byte[] sound, AudioFormat format){
+
+        ArrayList<Object> returnArr = new ArrayList<>();
+
+        returnArr.add(format);
+        returnArr.add(sound);
+        returnArr.add(0);
+        returnArr.add(sound.length);
+
+        return returnArr;
     }
 
     public static int intLerp(int start, int end, float progress){

@@ -18,13 +18,16 @@ public class Label extends Node {
 
     public Label(){
         font.getData().setScale(0.5f);
-        text = "Default Text";
+        //text = "Default Text";
         relativeToCamera = true;
     }
 
-    public void setText(String text){
-        this.text = text;
+    public void setText(String newText){
+
+        text = newText;
     }
+
+
 
     public void render(SpriteBatch batch){
         font.getScaleX();
@@ -46,7 +49,7 @@ public class Label extends Node {
 
         if (relativeToCamera){ //0 - 1000, 0 - 600
 
-            setText(position.toString());
+            //setText(position.toString());
 
             int x = (int) (position.x);
             int y = (int) (position.y);
@@ -57,6 +60,7 @@ public class Label extends Node {
 
             Globals.fontBatch.end();
         }
+
 
     }
 

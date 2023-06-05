@@ -1,38 +1,36 @@
 package com.mygdx.game.helpers.utilities;
 
-import com.mygdx.game.nodes.TimeRewindRoot;
-
 import javax.sound.sampled.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import static java.lang.Math.abs;
 
-public class TimeRewindSound {
+public class TimeRewindSoundV2 {
 
     double fileSpeed;
     String filePath;
 
     int currentSoundsIndex = 0;
     int numSpeeds;
-    ArrayList<AudioInputStream> sounds = new ArrayList<>();
+    //ArrayList<AudioInputStream> sounds = new ArrayList<>();
     ArrayList<ArrayList<Object>> soundsList = new ArrayList<>();
 
     public ArrayList<signedClip> playing = new ArrayList<>();
 
 
 
-    public TimeRewindSound(String filePath, double fileSpeed,int numSpeeds){
+    public TimeRewindSoundV2(String filePath, double fileSpeed, int numSpeeds){
 
         this.filePath = filePath;
         this.fileSpeed = fileSpeed;
         this.numSpeeds = numSpeeds;
 
         for (double i = 1D/numSpeeds; MathUtilsCustom.isEqualApprox(i,1,0.02) || i < 1; i += 1D/numSpeeds){
-            sounds.add(SoundAccelerator.getAtSpeed(1/fileSpeed * i,filePath));
+            soundsList.add(SoundAccelerator.getAtSpeedV2(1/fileSpeed * i,filePath));
         }
 
-        currentSoundsIndex = sounds.size()-1;
+        currentSoundsIndex = soundsList.size()-1;
 
     }
 
@@ -43,7 +41,7 @@ public class TimeRewindSound {
         double distance = 100;
         int index = 0;
 
-        for (int i = 0; i < sounds.size(); i++){
+        for (int i = 0; i < soundsList.size(); i++){
             if ( abs(speed - i * (1D/numSpeeds)) < distance ){
                 distance = abs(speed - i * (1D/numSpeeds));
                 index = i;
@@ -68,7 +66,7 @@ public class TimeRewindSound {
 
             System.out.println(progress);
 
-            signedClip newClip = getClip(sounds.get(currentSoundsIndex));
+            signedClip newClip = getClip(soundsList.get(currentSoundsIndex));
             currentClip.setProgress(progress);
             newClip.start();
         }
@@ -85,23 +83,25 @@ public class TimeRewindSound {
     }
 
 
-    HashMap<AudioInputStream,ArrayList<signedClip>> storedClips = new HashMap<>();
+
+
+    HashMap<Integer,ArrayList<signedClip>> storedClips = new HashMap<>();
 
     public signedClip getClip(){
 
-        return getClip(sounds.get(currentSoundsIndex));
+        return getClip(soundsList.get(currentSoundsIndex));
     }
 
-    public signedClip getClip(AudioInputStream type){
+    public signedClip getClip(ArrayList<Object> type){
 
-        if (!storedClips.containsKey(type)){
-            storedClips.put(type,new ArrayList<signedClip>());
+        if (!storedClips.containsKey(type.get(3))){
+            storedClips.put((Integer) type.get(3),new ArrayList<signedClip>());
         }
 
 
-        if (storedClips.get(type).size() > 0){
+        if (storedClips.get(type.get(3)).size() > 0){
 
-            signedClip returnClip = storedClips.get(type).remove(storedClips.get(type).size()-1);
+            signedClip returnClip = storedClips.get(type.get(3)).remove(storedClips.get(type.get(3)).size()-1);
 
             playing.add(returnClip);
             returnClip.setProgress(0);
@@ -113,9 +113,9 @@ public class TimeRewindSound {
 
         Clip clip = null;
         try{
-            type.reset();
+
             clip = AudioSystem.getClip();
-            clip.open(type);
+            clip.open((AudioFormat) type.get(0), (byte[]) type.get(1), (Integer) type.get(2),(int) type.get(3));
         } catch (Exception ex){
             System.out.println(ex);
         }
@@ -123,7 +123,7 @@ public class TimeRewindSound {
         assert clip != null;
         clip.setFramePosition(0);
 
-        final signedClip returnClip = new signedClip(type,clip);
+        final signedClip returnClip = new signedClip((Integer) type.get(3),clip);
         clip.addLineListener(new LineListener() {
             public void update(LineEvent myLineEvent) {
                 if (myLineEvent.getType() == LineEvent.Type.STOP) {
@@ -146,15 +146,15 @@ public class TimeRewindSound {
 
         playing.remove(clip);
 
-        storedClips.get(clip.ais).add(clip);
+        storedClips.get(clip.bufferSize).add(clip);
     }
 
     public class signedClip{
-        public AudioInputStream ais;
+        public int bufferSize;
         public Clip clip;
 
-        public signedClip(AudioInputStream ais, Clip clip) {
-            this.ais = ais;
+        public signedClip(int bufferSize, Clip clip) {
+            this.bufferSize = bufferSize;
             this.clip = clip;
         }
 

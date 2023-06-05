@@ -18,8 +18,8 @@ public class AudioHandler {
     ArrayList<String> soundsMade = new ArrayList<>();
 
     public void play(String effect){
-        soundsMade.add(effect);
 
+        soundsMade.add(effect);
 
         Globals.timeRewindSounds.get(effect).play();
 
@@ -27,12 +27,24 @@ public class AudioHandler {
 
     public void updateSoundSpeeds(){
 
+        String tempString = "";
+
+
         for ( String key : Globals.timeRewindSounds.keySet().toArray(new String[0]) ) {
-            //System.out.println(key + " " + Globals.timeRewindSounds.get(key).playing.size());
+
+            tempString += (key + " " + Globals.timeRewindSounds.get(key).playing.size() + "\n");
+
             Globals.timeRewindSounds.get(key).updateSoundSpeeds(Globals.gameSpeed);
         }
 
+        debugString = tempString;
+
+
+
+
     }
+
+    public String debugString = "default";
 
 
 
@@ -41,6 +53,7 @@ public class AudioHandler {
 //    }
 
     public void loop(String sound){
+
         if (!loopIds.containsKey(sound)){
             long id = Globals.sounds.get(sound).play(0.2f);
             Globals.sounds.get(sound).setLooping(id,true);

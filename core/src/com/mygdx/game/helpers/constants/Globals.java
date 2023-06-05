@@ -19,6 +19,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.helpers.utilities.TimeRewindSound;
+import com.mygdx.game.helpers.utilities.TimeRewindSoundV2;
 
 public class Globals {
 
@@ -51,7 +52,7 @@ public class Globals {
     public static HashMap<String, Boolean> lobbyDoorsOpen = new HashMap<>();
 
     public static HashMap<String, Sound> sounds = new HashMap<>();
-    public static HashMap<String, TimeRewindSound> timeRewindSounds = new HashMap<>();
+    public static HashMap<String, TimeRewindSoundV2> timeRewindSounds = new HashMap<>();
 
     public static SpriteBatch fontBatch = new SpriteBatch();
 
@@ -91,14 +92,14 @@ public class Globals {
 
         if (System.getProperty("os.name").equals("Windows 10")) OSPath = "assets/";
 
-        timeRewindSounds.put(ELFDIE, new TimeRewindSound( OSPath + "sounds/elf explode.wav",1,5));
-        timeRewindSounds.put(BULLETSOFT, new TimeRewindSound( OSPath + "sounds/bullet impact 1.wav",1,5));
-        timeRewindSounds.put(BULLETHARD, new TimeRewindSound( OSPath + "sounds/bullet impact 3.wav",1,5));
-        timeRewindSounds.put(JUMP, new TimeRewindSound(OSPath + "sounds/jumpnoiseeTenthSpeed.wav",0.1,5));
-        timeRewindSounds.put(SHOTGUNSHOOT, new TimeRewindSound( OSPath + "sounds/shotgunTenthSpeed.wav",0.1,5));
-        timeRewindSounds.put(REVOLVERSHOOT, new TimeRewindSound( OSPath + "sounds/shotgunTenthSpeed.wav",0.1,5));
-        timeRewindSounds.put(MINIGUNSHOOT, new TimeRewindSound( OSPath + "sounds/shotgunTenthSpeed.wav",0.1,5));
-        timeRewindSounds.put(REWINDSTATIC, new TimeRewindSound( OSPath + "sounds/staticcc.wav",1,5));
+        timeRewindSounds.put(ELFDIE, new TimeRewindSoundV2( OSPath + "sounds/elf explode.wav",1,5));
+        timeRewindSounds.put(BULLETSOFT, new TimeRewindSoundV2( OSPath + "sounds/bullet impact 1.wav",1,5));
+        timeRewindSounds.put(BULLETHARD, new TimeRewindSoundV2( OSPath + "sounds/bullet impact 3.wav",1,5));
+        timeRewindSounds.put(JUMP, new TimeRewindSoundV2(OSPath + "sounds/jumpnoiseeTenthSpeed.wav",0.1,5));
+        timeRewindSounds.put(SHOTGUNSHOOT, new TimeRewindSoundV2( OSPath + "sounds/shotgunTenthSpeed.wav",0.1,5));
+        timeRewindSounds.put(REVOLVERSHOOT, new TimeRewindSoundV2( OSPath + "sounds/shotgunTenthSpeed.wav",0.1,5));
+        timeRewindSounds.put(MINIGUNSHOOT, new TimeRewindSoundV2( OSPath + "sounds/shotgunTenthSpeed.wav",0.1,5));
+        timeRewindSounds.put(REWINDSTATIC, new TimeRewindSoundV2( OSPath + "sounds/staticcc.wav",1,5));
 
     }
 
