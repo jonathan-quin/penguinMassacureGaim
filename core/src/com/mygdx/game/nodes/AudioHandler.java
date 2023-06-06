@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import com.mygdx.game.helpers.constants.Globals;
 import com.mygdx.game.helpers.utilities.SoundAccelerator;
+import com.mygdx.game.helpers.utilities.TimeRewindSoundV2;
 
 import static com.badlogic.gdx.math.MathUtils.lerp;
 
@@ -32,7 +33,12 @@ public class AudioHandler {
 
         for ( String key : Globals.timeRewindSounds.keySet().toArray(new String[0]) ) {
 
-            tempString += (key + " " + Globals.timeRewindSounds.get(key).playing.size() + "\n");
+            ArrayList list = Globals.timeRewindSounds.get(key).playing;
+            tempString += (key + " " + list.size() + "\n");
+
+            for (Object clip :list) {
+                tempString += "\t" + ((TimeRewindSoundV2.signedClip) clip).getProgress();
+            }
 
             Globals.timeRewindSounds.get(key).updateSoundSpeeds(Globals.gameSpeed);
         }
