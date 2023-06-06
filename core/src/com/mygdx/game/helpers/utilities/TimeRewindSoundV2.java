@@ -11,7 +11,7 @@ public class TimeRewindSoundV2 {
     double fileSpeed;
     String filePath;
 
-    int currentSoundsIndex = 0;
+    public int currentSoundsIndex = 0;
     int numSpeeds;
     //ArrayList<AudioInputStream> sounds = new ArrayList<>();
     ArrayList<ArrayList<Object>> soundsList = new ArrayList<>();
@@ -173,7 +173,9 @@ public class TimeRewindSoundV2 {
         public void setProgress(double progress){
             clip.setMicrosecondPosition( (long) (progress * clip.getMicrosecondLength()) );
 
-            //System.out.println(progress + " " + ((long) (progress * clip.getMicrosecondLength())) + " " + clip.getMicrosecondLength());
+            System.out.println(progress + " " + ((long) (progress * clip.getMicrosecondLength())) + " " + clip.getMicrosecondLength());
+
+            System.out.println("clip progress after set: "+clip.getMicrosecondPosition());
         }
 
     }

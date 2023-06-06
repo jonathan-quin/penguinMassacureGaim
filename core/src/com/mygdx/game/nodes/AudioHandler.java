@@ -37,16 +37,14 @@ public class AudioHandler {
             tempString += (key + " " + list.size() + "\n");
 
             for (Object clip :list) {
-                tempString += "\t" + ((TimeRewindSoundV2.signedClip) clip).getProgress();
+                tempString += "\t" + ((TimeRewindSoundV2.signedClip) clip).getProgress() + "\n";
             }
 
             Globals.timeRewindSounds.get(key).updateSoundSpeeds(Globals.gameSpeed);
         }
 
+        tempString += "Sound speed: " + Globals.timeRewindSounds.get(Globals.Sounds.JUMP).currentSoundsIndex;
         debugString = tempString;
-
-
-
 
     }
 
