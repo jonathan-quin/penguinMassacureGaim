@@ -57,7 +57,9 @@ public class TimeRewindSoundV2 {
         System.out.println("changing! " + currentSoundsIndex + " " + index + " " + playing.size());
         currentSoundsIndex = index;
 
-
+        for (int i = playing.size() -1; i >= 0 ;i--){
+            if (playing.get(i).store) storeClip(playing.get(i));
+        }
 
         for (int i = playing.size() -1; i >= 0 ;i--){
             signedClip currentClip = playing.get(i);
@@ -67,9 +69,11 @@ public class TimeRewindSoundV2 {
             System.out.println(progress);
 
             signedClip newClip = getClip(soundsList.get(currentSoundsIndex));
-            currentClip.setProgress(progress);
+            newClip.setProgress(progress);
             newClip.start();
         }
+
+
 
 
     }
@@ -106,6 +110,7 @@ public class TimeRewindSoundV2 {
             playing.add(returnClip);
             returnClip.setProgress(0);
             returnClip.stop();
+            returnClip.store = false;
 
             return returnClip;
         }
@@ -127,18 +132,21 @@ public class TimeRewindSoundV2 {
         clip.addLineListener(new LineListener() {
             public void update(LineEvent myLineEvent) {
                 if (myLineEvent.getType() == LineEvent.Type.STOP) {
-                    storeClip(returnClip);
+                    returnClip.queueStore();
                 }
             }
         });
 
         returnClip.stop();
+        returnClip.store = false;
 
         playing.add(returnClip);
         return returnClip;
 
 
     }
+
+
 
     public void storeClip(signedClip clip){
         clip.stop();
@@ -153,13 +161,25 @@ public class TimeRewindSoundV2 {
         public int bufferSize;
         public Clip clip;
 
+        long clipPosition;
+
+        boolean store = false;
+
+        public void queueStore(){
+            store = true;
+        }
+
         public signedClip(int bufferSize, Clip clip) {
             this.bufferSize = bufferSize;
             this.clip = clip;
         }
 
         public void start(){
+            System.out.println("before starting: " + clip.getMicrosecondPosition() + " " + clipPosition);
+            clip.stop();
+            clip.setMicrosecondPosition(clipPosition);
             clip.start();
+            System.out.println("started at: " + clip.getMicrosecondPosition());
         }
 
         public void stop(){
@@ -171,11 +191,14 @@ public class TimeRewindSoundV2 {
         }
 
         public void setProgress(double progress){
-            clip.setMicrosecondPosition( (long) (progress * clip.getMicrosecondLength()) );
+            clipPosition = ( (long) (progress * clip.getMicrosecondLength()) );
 
             System.out.println(progress + " " + ((long) (progress * clip.getMicrosecondLength())) + " " + clip.getMicrosecondLength());
 
-            System.out.println("clip progress after set: "+clip.getMicrosecondPosition());
+            System.out.println("clip progress after set: "+ clipPosition);
+
+
+
         }
 
     }
