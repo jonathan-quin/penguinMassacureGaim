@@ -37,7 +37,13 @@ public class AudioHandler {
             tempString += (key + " " + list.size() + "\n");
 
             for (Object clip :list) {
-                tempString += "\t" + ((TimeRewindSoundV2.signedClip) clip).getProgress() + "\n";
+                tempString += "\t" + ((TimeRewindSoundV2.signedClip) clip).getProgress() + " ";
+
+                if (!(((TimeRewindSoundV2.signedClip) clip).getProgress() > 0 && ((TimeRewindSoundV2.signedClip) clip).getProgress() < 1)){
+                    tempString += ((TimeRewindSoundV2.signedClip) clip).clip.getMicrosecondPosition() + " " + ((TimeRewindSoundV2.signedClip) clip).clip.getMicrosecondLength();
+                }
+
+                tempString += "\n";
             }
 
             Globals.timeRewindSounds.get(key).updateSoundSpeeds(Globals.gameSpeed);

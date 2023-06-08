@@ -161,6 +161,8 @@ public class TimeRewindRoot extends Root{
 
             } else {
                 Globals.currentlyRewinding = true;
+                gameSpeed = 1;
+                audio.updateSoundSpeeds();
 
                 time -= Gdx.graphics.getDeltaTime() * gameSpeed;
 

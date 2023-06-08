@@ -92,14 +92,16 @@ public class Globals {
 
         if (System.getProperty("os.name").equals("Windows 10")) OSPath = "assets/";
 
-        timeRewindSounds.put(ELFDIE, new TimeRewindSoundV2( OSPath + "sounds/elf explode.wav",1,5));
-        timeRewindSounds.put(BULLETSOFT, new TimeRewindSoundV2( OSPath + "sounds/bullet impact 1.wav",1,5));
-        timeRewindSounds.put(BULLETHARD, new TimeRewindSoundV2( OSPath + "sounds/bullet impact 3.wav",1,5));
-        timeRewindSounds.put(JUMP, new TimeRewindSoundV2(OSPath + "sounds/jumpnoiseeTenthSpeed.wav",0.1,5));
-        timeRewindSounds.put(SHOTGUNSHOOT, new TimeRewindSoundV2( OSPath + "sounds/shotgunTenthSpeed.wav",0.1,5));
-        timeRewindSounds.put(REVOLVERSHOOT, new TimeRewindSoundV2( OSPath + "sounds/shotgunTenthSpeed.wav",0.1,5));
-        timeRewindSounds.put(MINIGUNSHOOT, new TimeRewindSoundV2( OSPath + "sounds/shotgunTenthSpeed.wav",0.1,5));
-        timeRewindSounds.put(REWINDSTATIC, new TimeRewindSoundV2( OSPath + "sounds/staticcc.wav",1,5));
+        int audioAccuracy = 20;
+
+        timeRewindSounds.put(ELFDIE, new TimeRewindSoundV2( OSPath + "sounds/elf explode.wav",1,audioAccuracy));
+        timeRewindSounds.put(BULLETSOFT, new TimeRewindSoundV2( OSPath + "sounds/bullet impact 1.wav",1,audioAccuracy));
+        timeRewindSounds.put(BULLETHARD, new TimeRewindSoundV2( OSPath + "sounds/bullet impact 3.wav",1,audioAccuracy));
+        timeRewindSounds.put(JUMP, new TimeRewindSoundV2(OSPath + "sounds/jumpnoiseeTenthSpeed.wav",0.1,audioAccuracy));
+        timeRewindSounds.put(SHOTGUNSHOOT, new TimeRewindSoundV2( OSPath + "sounds/shotgunTenthSpeed.wav",0.1,audioAccuracy));
+        timeRewindSounds.put(REVOLVERSHOOT, new TimeRewindSoundV2( OSPath + "sounds/shotgunTenthSpeed.wav",0.1,audioAccuracy));
+        timeRewindSounds.put(MINIGUNSHOOT, new TimeRewindSoundV2( OSPath + "sounds/shotgunTenthSpeed.wav",0.1,audioAccuracy));
+        timeRewindSounds.put(REWINDSTATIC, new TimeRewindSoundV2( OSPath + "sounds/staticcc.wav",1,audioAccuracy));
 
     }
 

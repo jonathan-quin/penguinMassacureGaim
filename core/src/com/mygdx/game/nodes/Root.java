@@ -6,6 +6,8 @@ import com.mygdx.game.helpers.constants.ObjectPool;
 
 import java.util.ArrayList;
 
+import static com.mygdx.game.helpers.constants.Globals.gameSpeed;
+
 /**
  * The Root class represents the root of a scene graph hierarchy.
  * It holds references to the colliders, the root node of the scene graph and a group handler.
@@ -65,7 +67,8 @@ public class Root {
      */
     public void update(){
 
-
+        gameSpeed = 1;
+        audio.updateSoundSpeeds();
         rootNode.updateCascade();
 
 
