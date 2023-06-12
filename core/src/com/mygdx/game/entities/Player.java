@@ -136,6 +136,11 @@ public class Player extends MovementNode implements TimeRewindInterface {
         lastChild().addToGroup(GroupHandler.RENDERONTOP);
         lastChild().addToGroup("debugLabel");
         debugLabel = (Label) lastChild();
+
+        String str = myRoot.audio.debugString;
+        debugLabel.setText(str);
+
+
         //((TextureEntity) lastChild()).setVisible(false);
 
         //if (bulletHolder.getChild(""))
@@ -155,7 +160,7 @@ public class Player extends MovementNode implements TimeRewindInterface {
 
 
         String str = myRoot.audio.debugString;
-        str = "";
+        //str = "";
         debugLabel.setText(str);
 
         //delta *= 2;

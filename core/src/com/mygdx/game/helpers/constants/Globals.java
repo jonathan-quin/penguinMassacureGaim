@@ -26,16 +26,12 @@ public class Globals {
     public static double gameSpeed = 1;
 
     public static OrthographicCamera camera;
-    public static MapRenderer mapRenderer;
-
     public static boolean showCollision = false;
     public static boolean aiIgnore = false;
 
     public static boolean sceneJustChanged = true;
 
     public static Vector2 screenStretch = new Vector2(1,1);
-
-    public static double playerDeadTime = -1;
 
     public static int timeRootStage = 0;
 
@@ -92,7 +88,7 @@ public class Globals {
 
         if (System.getProperty("os.name").equals("Windows 10")) OSPath = "assets/";
 
-        int audioAccuracy = 20;
+        int audioAccuracy = 5;
 
         timeRewindSounds.put(ELFDIE, new TimeRewindSoundV2( OSPath + "sounds/elf explode.wav",1,audioAccuracy));
         timeRewindSounds.put(BULLETSOFT, new TimeRewindSoundV2( OSPath + "sounds/bullet impact 1.wav",1,audioAccuracy));

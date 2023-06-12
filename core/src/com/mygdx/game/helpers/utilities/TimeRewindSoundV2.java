@@ -71,8 +71,7 @@ public class TimeRewindSoundV2 {
             //System.out.println(progress);
 
             signedClip newClip = getClip(soundsList.get(currentSoundsIndex));
-            newClip.setProgress(progress);
-            newClip.start();
+            newClip.start(progress);
         }
 
 
@@ -154,10 +153,9 @@ public class TimeRewindSoundV2 {
     public void storeClip(signedClip clip){
         clip.stop();
         clip.setProgress(0);
-
         playing.remove(clip);
-
         storedClips.get(clip.bufferSize).add(clip);
+        System.out.println(storedClips.get(clip.bufferSize).size());
     }
 
     public class signedClip{
@@ -178,12 +176,54 @@ public class TimeRewindSoundV2 {
         }
 
         public void start(){
-            clip.setMicrosecondPosition(clipPosition);
-            clip.start();
+
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    // code goes here.
+
+                    //if (clip.isRunning()) clip.stop();
+
+                    clip.setMicrosecondPosition(clipPosition);
+
+                    clip.start();
+
+                }
+
+            }).start();
+        }
+
+        public void start(final double progress){
+
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    // code goes here.
+
+                    //if (clip.isRunning()) clip.stop();
+
+                    clipPosition = ( (long) (progress * clip.getMicrosecondLength()) );
+                    clip.setMicrosecondPosition(clipPosition);
+                    clip.start();
+
+                }
+
+            }).start();
         }
 
         public void stop(){
-            clip.stop();
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    // code goes here.
+                    if (clip.isRunning())
+                        clip.stop();
+                }
+            }).start();
+
         }
 
         public double getProgress(){
@@ -192,9 +232,6 @@ public class TimeRewindSoundV2 {
 
         public void setProgress(double progress){
             clipPosition = ( (long) (progress * clip.getMicrosecondLength()) );
-
-
-
         }
 
     }
