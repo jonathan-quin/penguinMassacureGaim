@@ -134,6 +134,7 @@ public class TimeRewindSoundV2 {
         clip.addLineListener(new LineListener() {
             public void update(LineEvent myLineEvent) {
                 if (myLineEvent.getType() == LineEvent.Type.STOP) {
+                    if (returnClip.getProgress() > 0.98f)
                     returnClip.queueStore();
                 }
             }
