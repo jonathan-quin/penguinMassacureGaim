@@ -13,10 +13,14 @@ public class TimeRewindSoundV2 {
 
     public int currentSoundsIndex = 0;
     int numSpeeds;
-    //ArrayList<AudioInputStream> sounds = new ArrayList<>();
+
+    double lengthSeconds;
+
     ArrayList<ArrayList<Object>> soundsList = new ArrayList<>();
 
     public ArrayList<signedClip> playing = new ArrayList<>();
+
+    public ArrayList<Double> timeStamps = new ArrayList<>();
 
 
 
@@ -31,6 +35,9 @@ public class TimeRewindSoundV2 {
         }
 
         currentSoundsIndex = soundsList.size()-1;
+
+        lengthSeconds = getClip().clip.getMicrosecondLength()/1000000d;
+        System.out.println(filePath + " " + lengthSeconds);
 
     }
 
@@ -87,6 +94,41 @@ public class TimeRewindSoundV2 {
 
     }
 
+    public void play(double timeStamp){
+
+        timeStamps.add(timeStamp);
+        signedClip clip = getClip();
+        clip.start();
+
+    }
+
+    public void stopAll(){
+        for (int i = playing.size() -1; i >= 0 ;i--){
+            storeClip(playing.get(i));
+        }
+    }
+
+    public void loadSounds(double timeStamp){
+
+        for (int i = timeStamps.size() - 1; i >= 0; i--){
+            if (timeStamps.get(i) > timeStamp) continue;
+            if (timeStamps.get(i) + lengthSeconds < timeStamp) break;
+
+            double progress = (timeStamp - timeStamps.get(i))/lengthSeconds;
+
+            signedClip newClip = getClip();
+            newClip.setProgress(progress);
+            newClip.start();
+
+
+        }
+
+    }
+
+    public void clearTimeStamps(){
+        timeStamps.clear();
+    }
+
 
 
 
@@ -109,7 +151,7 @@ public class TimeRewindSoundV2 {
             signedClip returnClip = storedClips.get(type.get(3)).remove(storedClips.get(type.get(3)).size()-1);
 
             playing.add(returnClip);
-            returnClip.stop();
+
             returnClip.setProgress(0);
             returnClip.store = false;
 
@@ -140,7 +182,7 @@ public class TimeRewindSoundV2 {
             }
         });
 
-        returnClip.stop();
+
         returnClip.store = false;
 
         playing.add(returnClip);
@@ -153,10 +195,11 @@ public class TimeRewindSoundV2 {
 
     public void storeClip(signedClip clip){
         clip.stop();
+        clip.store = true;
         clip.setProgress(0);
         playing.remove(clip);
         storedClips.get(clip.bufferSize).add(clip);
-        System.out.println(storedClips.get(clip.bufferSize).size());
+        //System.out.println(storedClips.get(clip.bufferSize).size());
     }
 
     public class signedClip{

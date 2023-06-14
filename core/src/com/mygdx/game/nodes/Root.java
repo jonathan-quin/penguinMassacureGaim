@@ -119,6 +119,9 @@ public class Root {
 
         rootNode.free();
         rootNode = null;
+        audio.getAndClearLastSounds();
+        audio.stopAllSounds();
+        audio.clearPastSounds();
 
     }
 

@@ -75,13 +75,13 @@ public class Globals {
 
 
 
-        sounds.put(ELFDIE, Gdx.audio.newSound(Gdx.files.internal("sounds/elf explode.wav")));
-        sounds.put(BULLETSOFT, Gdx.audio.newSound(Gdx.files.internal("sounds/bullet impact 1.wav")));
-        sounds.put(BULLETHARD, Gdx.audio.newSound(Gdx.files.internal("sounds/bullet impact 3.wav")));
-        sounds.put(JUMP, Gdx.audio.newSound(Gdx.files.internal("sounds/jump noisee.mp3")));
-        sounds.put(SHOTGUNSHOOT, Gdx.audio.newSound(Gdx.files.internal("sounds/shotgun shot.mp3")));
-        sounds.put(REVOLVERSHOOT, Gdx.audio.newSound(Gdx.files.internal("sounds/revolver shotFinal.mp3")));
-        sounds.put(MINIGUNSHOOT, Gdx.audio.newSound(Gdx.files.internal("sounds/miniGunShot.mp3")));
+//        sounds.put(ELFDIE, Gdx.audio.newSound(Gdx.files.internal("sounds/elf explode.wav")));
+//        sounds.put(BULLETSOFT, Gdx.audio.newSound(Gdx.files.internal("sounds/bullet impact 1.wav")));
+//        sounds.put(BULLETHARD, Gdx.audio.newSound(Gdx.files.internal("sounds/bullet impact 3.wav")));
+//        sounds.put(JUMP, Gdx.audio.newSound(Gdx.files.internal("sounds/jump noisee.mp3")));
+//        sounds.put(SHOTGUNSHOOT, Gdx.audio.newSound(Gdx.files.internal("sounds/shotgun shot.mp3")));
+//        sounds.put(REVOLVERSHOOT, Gdx.audio.newSound(Gdx.files.internal("sounds/revolver shotFinal.mp3")));
+//        sounds.put(MINIGUNSHOOT, Gdx.audio.newSound(Gdx.files.internal("sounds/miniGunShot.mp3")));
         sounds.put(REWINDSTATIC, Gdx.audio.newSound(Gdx.files.internal("sounds/staticcc.wav")));
 
         String OSPath = "";
@@ -97,7 +97,7 @@ public class Globals {
         timeRewindSounds.put(SHOTGUNSHOOT, new TimeRewindSoundV2( OSPath + "sounds/shotgunTenthSpeed.wav",0.1,audioAccuracy));
         timeRewindSounds.put(REVOLVERSHOOT, new TimeRewindSoundV2( OSPath + "sounds/shotgunTenthSpeed.wav",0.1,audioAccuracy));
         timeRewindSounds.put(MINIGUNSHOOT, new TimeRewindSoundV2( OSPath + "sounds/shotgunTenthSpeed.wav",0.1,audioAccuracy));
-        timeRewindSounds.put(REWINDSTATIC, new TimeRewindSoundV2( OSPath + "sounds/staticcc.wav",1,audioAccuracy));
+        //timeRewindSounds.put(REWINDSTATIC, new TimeRewindSoundV2( OSPath + "sounds/staticcc.wav",1,audioAccuracy));
 
     }
 

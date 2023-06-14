@@ -1,5 +1,6 @@
 package com.mygdx.game.nodes;
 
+import static com.badlogic.gdx.math.MathUtils.isEqual;
 import static com.badlogic.gdx.math.MathUtils.lerp;
 import static com.mygdx.game.helpers.constants.Globals.gameSpeed;
 import static com.mygdx.game.helpers.constants.Globals.sceneJustChanged;
@@ -9,6 +10,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -82,8 +84,10 @@ public class TimeRewindRoot extends Root{
         if (!playBack){
 
             audio.updateSoundSpeeds();
+            audio.saveSounds = false;
+            audio.currentTime = time;
 
-            audio.stopLoop(Sounds.REWINDSTATIC);
+            if (framesSinceLastRewind == 2) audio.loadTimeStamps(time);
 
             if (!nextGameSpeedChanged){
                 if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
@@ -122,6 +126,7 @@ public class TimeRewindRoot extends Root{
             if (shouldRewind){
 
                 audio.loop(Sounds.REWINDSTATIC);
+                audio.stopAllSounds();
 
                 framesSinceLastRewind = 0;
 //                if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
@@ -143,10 +148,13 @@ public class TimeRewindRoot extends Root{
 
             if (!shouldRewind) {
                 Globals.currentlyRewinding = false;
+                audio.stopLoop(Globals.Sounds.REWINDSTATIC);
 
                 if (gameSpeed > 0.001){
                     rootNode.updateCascade();
                 }
+
+
 
                 time += Gdx.graphics.getDeltaTime() * gameSpeed;
 
@@ -184,6 +192,7 @@ public class TimeRewindRoot extends Root{
         else{
 
             gameSpeed = 1;
+            audio.saveSounds = false;
 
             switch (playBackStage){
                 case 0:
@@ -254,6 +263,10 @@ public class TimeRewindRoot extends Root{
         }
 
         pastSounds.add(audio.getAndClearLastSounds());
+        if (pastSounds.get(pastSounds.size()-1).length > 1){
+            System.out.println("lot of sounds: " + pastSounds.get(pastSounds.size()-1).length);
+            System.out.println(Arrays.toString(pastSounds.get(pastSounds.size() - 1)));
+        }
 
     }
 
@@ -421,6 +434,11 @@ public class TimeRewindRoot extends Root{
             audio.play(sound);
         }
 
+        if (pastSounds.get(frame).length > 5){
+            System.out.println("past sound frame length:" + pastSounds.get(frame).length);
+            System.out.println(Arrays.toString(pastSounds.get(frame)));
+        }
+
         audio.updateSoundSpeeds();
 
 
@@ -525,10 +543,12 @@ public class TimeRewindRoot extends Root{
 
     public void close(){
 
-        audio.stopLoop(Sounds.REWINDSTATIC);
+        super.close();
 
-        rootNode.free();
-        rootNode = null;
+        audio.stopLoop(Sounds.REWINDSTATIC);
+        pastSounds.clear();
+
+
         gameSpeed = 1;
 
         for (int i = past.size()-1; i > 0; i--){

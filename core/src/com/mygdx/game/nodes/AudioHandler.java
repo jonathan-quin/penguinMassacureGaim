@@ -18,11 +18,20 @@ public class AudioHandler {
 
     ArrayList<String> soundsMade = new ArrayList<>();
 
+    boolean saveSounds = false;
+    double currentTime = -1;
+
     public void play(String effect){
 
         soundsMade.add(effect);
+        System.out.println(effect + " " + soundsMade.size());
 
-        Globals.timeRewindSounds.get(effect).play();
+        if (saveSounds){
+            Globals.timeRewindSounds.get(effect).play();
+        }else{
+            Globals.timeRewindSounds.get(effect).play(currentTime);
+        }
+
 
     }
 
@@ -54,6 +63,30 @@ public class AudioHandler {
 
     }
 
+    public void stopAllSounds(){
+
+        for ( String key : Globals.timeRewindSounds.keySet().toArray(new String[0]) ) {
+            Globals.timeRewindSounds.get(key).stopAll();
+        }
+
+    }
+
+    public void loadTimeStamps(double timeStamp){
+
+        for ( String key : Globals.timeRewindSounds.keySet().toArray(new String[0]) ) {
+            Globals.timeRewindSounds.get(key).loadSounds(timeStamp);
+        }
+
+    }
+
+    public void clearPastSounds(){
+
+        for ( String key : Globals.timeRewindSounds.keySet().toArray(new String[0]) ) {
+            Globals.timeRewindSounds.get(key).clearTimeStamps();
+        }
+
+    }
+
     public String debugString = "default";
 
 
@@ -62,14 +95,18 @@ public class AudioHandler {
 //        Globals.sounds.get(effect).play(volume);
 //    }
 
+
+
     public void loop(String sound){
 
         if (!loopIds.containsKey(sound)){
-            long id = Globals.sounds.get(sound).play(0.2f);
+            long id = Globals.sounds.get(sound).play(1f);
             Globals.sounds.get(sound).setLooping(id,true);
             loopIds.put(sound,id);
+            System.out.println("looping");
         }else{
             Globals.sounds.get(sound).resume(loopIds.get(sound));
+            System.out.println("resuming");
         }
 
     }
@@ -77,6 +114,7 @@ public class AudioHandler {
     public void stopLoop(String sound){
         if (loopIds.containsKey(sound)){
             Globals.sounds.get(sound).pause(loopIds.get(sound));
+            System.out.println("stopping");
         }
     }
 
